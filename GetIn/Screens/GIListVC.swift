@@ -49,7 +49,31 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @objc func addList() {
+        var listTitle: String = ""
         
+        let alert = UIAlertController(title: "Add New List", message: "", preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = "list"
+        }
+        
+        let action = UIAlertAction(title: "Done", style: .default) { (_) in
+            let textField = alert.textFields![0] as UITextField
+            guard let text = textField.text else {return}
+            if textField.text != "" {
+                listTitle = text
+            } else {
+                print("TF is Empty...")
+                return
+            }
+            
+            let newList = List(title: listTitle, words: [])
+            print(newList.title)
+            self.lists.append(newList)
+            self.tableView.reloadData()
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     

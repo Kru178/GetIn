@@ -32,10 +32,6 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         list1.words = words
         
-//        list1.words?.append(word1)
-//        list1.words?.append(word2)
-//        list2.words?.append(word2)
-        
         lists.append(list1)
         lists.append(list2)
         

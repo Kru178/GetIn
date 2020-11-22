@@ -14,10 +14,11 @@
 		7828E86B25629497005C02B3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7828E86925629497005C02B3 /* LaunchScreen.storyboard */; };
 		7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8752567AF31005C02B3 /* GITabBarController.swift */; };
 		7828E8792567B06C005C02B3 /* GIListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8782567B06C005C02B3 /* GIListVC.swift */; };
-		7828E87D2567B2D7005C02B3 /* GITestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E87C2567B2D7005C02B3 /* GITestVC.swift */; };
 		7828E8912567E356005C02B3 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8902567E356005C02B3 /* List.swift */; };
 		7828E8952567E38B005C02B3 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8942567E38B005C02B3 /* Word.swift */; };
 		7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8982567E7B1005C02B3 /* GIWordsVC.swift */; };
+		7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E89C256A8F19005C02B3 /* GISettingsVC.swift */; };
+		7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,10 +31,11 @@
 		7828E86C25629497005C02B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7828E8752567AF31005C02B3 /* GITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GITabBarController.swift; sourceTree = "<group>"; };
 		7828E8782567B06C005C02B3 /* GIListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIListVC.swift; sourceTree = "<group>"; };
-		7828E87C2567B2D7005C02B3 /* GITestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GITestVC.swift; sourceTree = "<group>"; };
 		7828E8902567E356005C02B3 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		7828E8942567E38B005C02B3 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		7828E8982567E7B1005C02B3 /* GIWordsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIWordsVC.swift; sourceTree = "<group>"; };
+		7828E89C256A8F19005C02B3 /* GISettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GISettingsVC.swift; sourceTree = "<group>"; };
+		7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIAddWordVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +81,8 @@
 			children = (
 				7828E8782567B06C005C02B3 /* GIListVC.swift */,
 				7828E8982567E7B1005C02B3 /* GIWordsVC.swift */,
-				7828E87C2567B2D7005C02B3 /* GITestVC.swift */,
+				7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */,
+				7828E89C256A8F19005C02B3 /* GISettingsVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -184,11 +187,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */,
+				7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */,
+				7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */,
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
 				7828E8912567E356005C02B3 /* List.swift in Sources */,
 				7828E8952567E38B005C02B3 /* Word.swift in Sources */,
 				7828E86625629495005C02B3 /* GetIn.xcdatamodeld in Sources */,
-				7828E87D2567B2D7005C02B3 /* GITestVC.swift in Sources */,
 				7828E85C25629495005C02B3 /* AppDelegate.swift in Sources */,
 				7828E8792567B06C005C02B3 /* GIListVC.swift in Sources */,
 				7828E85E25629495005C02B3 /* SceneDelegate.swift in Sources */,

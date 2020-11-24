@@ -41,7 +41,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.prefersLargeTitles = true
        
         
-        configureTableView()
+        configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -77,18 +77,47 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    func configureTableView() {
-        view.addSubview(tableView)
+    func configureView() {
         
-        tableView.frame = view.bounds
         tableView.rowHeight = 80
         tableView.dataSource = self
         tableView.delegate = self
-        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.reloadData()
+        view.addSubview(tableView)
+        
+        //Add learn button
+        let learnButton = UIButton(type: .system)
+        learnButton.layer.cornerRadius = 12
+        learnButton.backgroundColor = .gray
+        learnButton.tintColor = .white
+        learnButton.translatesAutoresizingMaskIntoConstraints = false
+        learnButton.setTitle("LEARN WORDS", for: .normal)
+        learnButton.addTarget(self, action: #selector(learnButtonTapped), for: .touchUpInside)
+        view.addSubview(learnButton)
+        
+        NSLayoutConstraint.activate([
+            
+            learnButton.heightAnchor.constraint(equalToConstant: 50),
+            learnButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20),
+            learnButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            learnButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -5),
+            
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        
     }
     
+    // learnButton tapped
+    @objc func learnButtonTapped() {
+        
+    }
+    
+    
+    //MARK: - UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return lists.count

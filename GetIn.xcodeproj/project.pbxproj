@@ -20,6 +20,7 @@
 		7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E89C256A8F19005C02B3 /* GISettingsVC.swift */; };
 		7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */; };
 		7828E8B7256D7505005C02B3 /* GITestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8B6256D7505005C02B3 /* GITestVC.swift */; };
+		7828E8BE256D7F2D005C02B3 /* GIListPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		7828E89C256A8F19005C02B3 /* GISettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GISettingsVC.swift; sourceTree = "<group>"; };
 		7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIAddWordVC.swift; sourceTree = "<group>"; };
 		7828E8B6256D7505005C02B3 /* GITestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GITestVC.swift; sourceTree = "<group>"; };
+		7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIListPickerVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */,
 				7828E89C256A8F19005C02B3 /* GISettingsVC.swift */,
 				7828E8B6256D7505005C02B3 /* GITestVC.swift */,
+				7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
 				7828E8912567E356005C02B3 /* List.swift in Sources */,
 				7828E8952567E38B005C02B3 /* Word.swift in Sources */,
+				7828E8BE256D7F2D005C02B3 /* GIListPickerVC.swift in Sources */,
 				7828E86625629495005C02B3 /* GetIn.xcdatamodeld in Sources */,
 				7828E85C25629495005C02B3 /* AppDelegate.swift in Sources */,
 				7828E8B7256D7505005C02B3 /* GITestVC.swift in Sources */,

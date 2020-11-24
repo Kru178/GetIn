@@ -37,7 +37,8 @@ class GITabBarController: UITabBarController {
     
     func createTestVC() -> UINavigationController {
         let testVC = GITestVC()
-        testVC.tabBarItem = UITabBarItem(title: "Test", image: UIImage(systemName: "square.and.pencil"), selectedImage: UIImage(systemName: "square.and.pencil"))
+        testVC.title = "Test"
+        testVC.tabBarItem = UITabBarItem(title: "Test", image: UIImage(systemName: "gamecontroller"), selectedImage: UIImage(systemName: "gamecontroller"))
         
         return UINavigationController(rootViewController: testVC)
     }

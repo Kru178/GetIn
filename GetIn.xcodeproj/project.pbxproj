@@ -19,6 +19,8 @@
 		7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8982567E7B1005C02B3 /* GIWordsVC.swift */; };
 		7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E89C256A8F19005C02B3 /* GISettingsVC.swift */; };
 		7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */; };
+		7828E8A8256A98BF005C02B3 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8A7256A98BF005C02B3 /* UIHelper.swift */; };
+		7828E8B2256A9B56005C02B3 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8B1256A9B56005C02B3 /* ListViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		7828E8982567E7B1005C02B3 /* GIWordsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIWordsVC.swift; sourceTree = "<group>"; };
 		7828E89C256A8F19005C02B3 /* GISettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GISettingsVC.swift; sourceTree = "<group>"; };
 		7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIAddWordVC.swift; sourceTree = "<group>"; };
+		7828E8A7256A98BF005C02B3 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
+		7828E8B1256A9B56005C02B3 /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +72,8 @@
 		7828E85A25629495005C02B3 /* GetIn */ = {
 			isa = PBXGroup;
 			children = (
+				7828E8AB256A9ABE005C02B3 /* Cells */,
+				7828E8A6256A98AA005C02B3 /* Utility */,
 				7828E88F2567E33B005C02B3 /* Model */,
 				7828E8812567B418005C02B3 /* CustomViews */,
 				7828E8802567B3E7005C02B3 /* Screens */,
@@ -115,6 +121,22 @@
 				7828E8942567E38B005C02B3 /* Word.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		7828E8A6256A98AA005C02B3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				7828E8A7256A98BF005C02B3 /* UIHelper.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		7828E8AB256A9ABE005C02B3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7828E8B1256A9B56005C02B3 /* ListViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,6 +211,8 @@
 				7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */,
 				7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */,
 				7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */,
+				7828E8A8256A98BF005C02B3 /* UIHelper.swift in Sources */,
+				7828E8B2256A9B56005C02B3 /* ListViewCell.swift in Sources */,
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
 				7828E8912567E356005C02B3 /* List.swift in Sources */,
 				7828E8952567E38B005C02B3 /* Word.swift in Sources */,

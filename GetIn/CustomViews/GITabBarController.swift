@@ -14,6 +14,7 @@ class GITabBarController: UITabBarController {
 
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [createListVC(), createAddWordVC(), createSettingsVC()]
+        selectedIndex = 1
     }
     
     

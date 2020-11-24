@@ -13,7 +13,7 @@ class GITabBarController: UITabBarController {
         super.viewDidLoad()
 
         UITabBar.appearance().tintColor = .systemGreen
-        viewControllers = [createListVC(), createAddWordVC(), createSettingsVC()]
+        viewControllers = [createListVC(), createAddWordVC(), createTestVC(), createSettingsVC()]
     }
     
     
@@ -33,6 +33,15 @@ class GITabBarController: UITabBarController {
         
         return UINavigationController(rootViewController: addWordVC)
     }
+    
+    
+    func createTestVC() -> UINavigationController {
+        let testVC = GITestVC()
+        testVC.tabBarItem = UITabBarItem(title: "Test", image: UIImage(systemName: "square.and.pencil"), selectedImage: UIImage(systemName: "square.and.pencil"))
+        
+        return UINavigationController(rootViewController: testVC)
+    }
+    
     
     func createSettingsVC() -> UINavigationController {
         let settingsVC = GISettingsVC()

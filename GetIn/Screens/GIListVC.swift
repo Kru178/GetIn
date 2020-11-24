@@ -95,6 +95,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         learnButton.setTitle("LEARN WORDS", for: .normal)
         learnButton.addTarget(self, action: #selector(learnButtonTapped), for: .touchUpInside)
         view.addSubview(learnButton)
+        view.backgroundColor = .systemBackground
         
         NSLayoutConstraint.activate([
             
@@ -106,7 +107,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: learnButton.topAnchor),
         ])
         
     }

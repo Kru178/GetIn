@@ -30,7 +30,8 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     @objc func start() {
-        
+        let vc = GIStartTestVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     

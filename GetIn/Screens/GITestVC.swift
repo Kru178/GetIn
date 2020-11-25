@@ -49,7 +49,10 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if options[indexPath.row] == options[0] {
-//            start test
+            
+            let vc = GIStartTestVC()
+            navigationController?.pushViewController(vc, animated: true)
+
         } else {
             let choiceVC = GIListPickerVC()
             navigationController?.pushViewController(choiceVC, animated: true)

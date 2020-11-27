@@ -7,34 +7,22 @@
 
 import UIKit
 
-class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+protocol GIListVCDelegate: class {
+    func addWord(listIndex: Int, word: WordModel)
+}
+
+class GIListVC: UIViewController {
     
     let tableView = UITableView()
-    var lists = [List]()
-    
-    var list1 = List(title: "list 1", words: nil, selected: false)
-    var list2 = List(title: "list 2", words: nil, selected: false)
-    
-    var word1 = Word(title: "hello", translation: "privet")
-    var word2 = Word(title: "bye-bye", translation: "poka")
-    
-    
+    var dictionaryModel = DictionaryModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let words = [word1, word2]
-        
-        list1.words = words
-        
-        lists.append(list1)
-        lists.append(list2)
-        
         
         title = "Your Lists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
         navigationController?.navigationBar.prefersLargeTitles = true
        
-        
         configureView()
     }
     
@@ -57,9 +45,9 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 return
             }
             
-            let newList = List(title: listTitle, words: [], selected: false)
+            let newList = List(title: listTitle)
             print(newList.title)
-            self.lists.append(newList)
+            self.dictionaryModel.vocabulary.append(newList)
             self.tableView.reloadData()
         }
         
@@ -69,7 +57,6 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     func configureView() {
-        
         
         tableView.rowHeight = 80
         tableView.dataSource = self
@@ -101,43 +88,50 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: learnButton.topAnchor),
         ])
-        
     }
     
     // learnButton tapped
     @objc func learnButtonTapped() {
         
     }
-    
-    
-    //MARK: - UITableViewDataSource, UITableViewDelegate
+}
+
+extension GIListVC: UITableViewDataSource, UITableViewDelegate {
+    //MARK: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lists.count
+        return dictionaryModel.vocabulary.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         
         tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = lists[indexPath.row].title
-        cell.detailTextLabel?.text = "Words: \(lists[indexPath.row].words?.count ?? 0)"
+        cell.accessoryType = .disclosureIndicator //?
+        cell.textLabel?.text = dictionaryModel.vocabulary[indexPath.row].title
+        cell.detailTextLabel?.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count)"
         
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let vc = GIWordsVC()
-        vc.listName = lists[indexPath.row].title
-        vc.words = lists[indexPath.row].words ?? []
+        vc.listName = dictionaryModel.vocabulary[indexPath.row].title
+        vc.words = dictionaryModel.vocabulary[indexPath.row].words
+        vc.delegate = self
+        vc.index = indexPath.row
         
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
+
+extension GIListVC: GIListVCDelegate {
     
+    func addWord(listIndex: Int, word: WordModel) {
+        dictionaryModel.vocabulary[listIndex].words.append(word)
+        tableView.reloadData()
+    }
 }

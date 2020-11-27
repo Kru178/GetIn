@@ -9,10 +9,10 @@ import UIKit
 
 class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    var dictionaryModel = DictionaryModel()
+    
     let tableView = UITableView()
     let options = ["Test Over All Lists", "Pick A List"]
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,11 +51,13 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         if options[indexPath.row] == options[0] {
             
             let vc = GIStartTestVC()
+            vc.dictionaryModel = dictionaryModel
             navigationController?.pushViewController(vc, animated: true)
 
         } else {
             let choiceVC = GIListPickerVC()
             navigationController?.pushViewController(choiceVC, animated: true)
+            choiceVC.dictionaryModel = dictionaryModel
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

@@ -9,12 +9,13 @@ import UIKit
 
 class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var dictionaryModel = DictionaryModel()
     
     let tableView = UITableView()
     var lists: [List] = []
     
-    var list1 = List(title: "list 1", words: nil, selected: false)
-    var list2 = List(title: "list 2", words: nil, selected: false)
+    var list1 = List(title: "list 1")
+    var list2 = List(title: "list 2")
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -11,5 +11,6 @@ struct List: Codable {
     
     let title: String
     var words: [Word]?
+    var selected: Bool
     
 }

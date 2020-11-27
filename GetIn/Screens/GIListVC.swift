@@ -12,18 +12,12 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView()
     var lists = [List]()
     
-    var list1 = List(title: "list 1", words: nil)
-    var list2 = List(title: "list 2", words: nil)
+    var list1 = List(title: "list 1", words: nil, selected: false)
+    var list2 = List(title: "list 2", words: nil, selected: false)
     
     var word1 = Word(title: "hello", translation: "privet")
     var word2 = Word(title: "bye-bye", translation: "poka")
     
-    
-    override func loadView() {
-        super.loadView()
-        
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +36,6 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
        
         
         configureView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
     }
     
     
@@ -66,7 +57,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 return
             }
             
-            let newList = List(title: listTitle, words: [])
+            let newList = List(title: listTitle, words: [], selected: false)
             print(newList.title)
             self.lists.append(newList)
             self.tableView.reloadData()
@@ -78,6 +69,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     func configureView() {
+        
         
         tableView.rowHeight = 80
         tableView.dataSource = self
@@ -95,6 +87,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         learnButton.setTitle("LEARN WORDS", for: .normal)
         learnButton.addTarget(self, action: #selector(learnButtonTapped), for: .touchUpInside)
         view.addSubview(learnButton)
+        view.backgroundColor = .systemBackground
         
         NSLayoutConstraint.activate([
             
@@ -106,7 +99,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: learnButton.topAnchor),
         ])
         
     }
@@ -144,6 +137,7 @@ class GIListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         vc.words = lists[indexPath.row].words ?? []
         
         navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

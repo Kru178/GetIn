@@ -9,7 +9,7 @@ import UIKit
 
 class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    weak var delegate: GIListVCDelegate?
+    weak var delegate: GIWordsVCDelegate?
     
     var index = 0
     

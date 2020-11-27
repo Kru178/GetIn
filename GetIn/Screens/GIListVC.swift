@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol GIListVCDelegate: class {
+protocol GIWordsVCDelegate: class {
     func addWord(listIndex: Int, word: WordModel)
 }
 
@@ -128,7 +128,7 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension GIListVC: GIListVCDelegate {
+extension GIListVC: GIWordsVCDelegate {
     
     func addWord(listIndex: Int, word: WordModel) {
         dictionaryModel.vocabulary[listIndex].words.append(word)

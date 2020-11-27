@@ -9,6 +9,8 @@ import UIKit
 
 class GIStartTestVC: UIViewController {
 
+    var dictionaryModel = DictionaryModel()
+    
     let labelView = UIView()
     let label = UILabel()
     let button1 = UIButton()
@@ -16,7 +18,7 @@ class GIStartTestVC: UIViewController {
     let button3 = UIButton()
     let button4 = UIButton()
     
-    let questionArray = ["hello", "bye-bye"]
+    var questionArray = [WordModel]()
     var answerArray = ["A", "B", "C", "D"]
     let correctAnswer = "B"
     
@@ -26,6 +28,17 @@ class GIStartTestVC: UIViewController {
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .systemBackground
         tabBarController?.tabBar.isHidden = true
+        
+        let dictionary = dictionaryModel.vocabulary
+        var learningList = [WordModel]()
+        
+        for list in dictionary {
+            learningList.append(contentsOf: list.words)
+        }
+        
+        //add sort method by exp property
+        
+        questionArray = learningList
         
         configureView()
         buttonTitleSet()
@@ -40,7 +53,7 @@ class GIStartTestVC: UIViewController {
         labelView.addSubview(label)
         labelView.translatesAutoresizingMaskIntoConstraints = false
         
-        label.text = "How would you translate: \n\n\(questionArray.randomElement()!.uppercased())"
+        label.text = "How would you translate: \n\n\(questionArray.randomElement()?.word.uppercased() ?? "nil")"
         label.backgroundColor = .systemYellow
         label.textColor = .black
         label.numberOfLines = 0

@@ -9,9 +9,14 @@ import UIKit
 
 class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let tableView = UITableView()
-    var listName: String = ""
-    var words = [Word]()
+    weak var delegate: GIListVCDelegate?
+    
+    var index = 0
+    
+    private let tableView = UITableView()
+    
+    var listName = "default"
+    var words = [WordModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +31,6 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     @objc func addWord() {
-        var wordTitle: String?
-        var wordTranslation: String?
-//        var newWord: Word?
         
         let alert = UIAlertController(title: "Add New Word", message: "and translation :)", preferredStyle: .alert)
         alert.addTextField { textField in
@@ -42,22 +44,15 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField1 = alert.textFields![0] as UITextField
             let textField2 = alert.textFields![1] as UITextField
-            if textField1.text != "" {
-                wordTitle = textField1.text
-//                newWord?.title = wordTitle!
-            } else {
-                print("TF 1 is Empty...")
-            }
             
-            if textField2.text != "" {
-                wordTranslation = textField2.text
-//                newWord?.translation = wordTranslation!
-            } else {
-                print("TF 2 is Empty...")
-            }
+// MARK: FIX it later: activate "done" button if textFields is not empty
             
-            let newWord = Word(title: wordTitle!, translation: wordTranslation!)
-            print(newWord)
+            guard let word = textField1.text else { return }
+            guard let translation = textField2.text else { return }
+            
+            let newWord = WordModel(word: word, translation: translation)
+            
+            self.delegate?.addWord(listIndex: self.index, word: newWord)
             self.words.append(newWord)
             self.tableView.reloadData()
         }
@@ -78,12 +73,9 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "wordCell")
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return words.count
-//            ?? 1
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -91,15 +83,9 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.dequeueReusableCell(withIdentifier: "wordCell", for: indexPath)
         
-//        if let wrds = words  {
-            cell.textLabel?.text = words[indexPath.row].title
-            cell.detailTextLabel?.text = words[indexPath.row].translation
-//        } else {
-//            cell.textLabel?.text = "word"
-//            cell.detailTextLabel?.text = "translation"
-//        }
+        cell.textLabel?.text = words[indexPath.row].word
+        cell.detailTextLabel?.text = words[indexPath.row].translation
+
         return cell
     }
-    
-    
 }

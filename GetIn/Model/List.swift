@@ -7,10 +7,13 @@
 
 import Foundation
 
-struct List: Codable {
+class List: Codable {
     
-    let title: String
-    var words: [Word]?
-    var selected: Bool
+    var title: String
+    var words = [WordModel]()
+    var selected = false
     
+    init(title: String) {
+        self.title = title
+    }
 }

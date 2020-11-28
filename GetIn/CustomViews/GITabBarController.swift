@@ -16,6 +16,7 @@ class GITabBarController: UITabBarController {
 
         //test initital default vacabulary
         let word = WordModel(word: "hello", translation: "Привет")
+        word.exp = 500
         let list = List(title: "Default list")
         let list2 = List(title: "Second")
         list.words.append(word)

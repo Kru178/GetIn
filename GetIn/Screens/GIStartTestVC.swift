@@ -15,6 +15,12 @@ class GIStartTestVC: UIViewController {
     let labelView = UIView()
     let questionLabel = UILabel()
     let wordLabel = UILabel()
+    let counterLabel = UILabel()
+    var counter: Int = 1 {
+        didSet {
+            counterLabel.text = "\(counter) of 10"
+        }
+    }
     let button1 = UIButton()
     let button2 = UIButton()
     let button3 = UIButton()
@@ -37,6 +43,8 @@ class GIStartTestVC: UIViewController {
         for list in dictionary {
             learningList.append(contentsOf: list.words)
         }
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         
         //add sort method by exp property
         
@@ -66,6 +74,7 @@ class GIStartTestVC: UIViewController {
         labelView.layer.borderColor = UIColor.black.cgColor
         labelView.addSubview(questionLabel)
         labelView.addSubview(wordLabel)
+        labelView.addSubview(counterLabel)
         labelView.translatesAutoresizingMaskIntoConstraints = false
         
         questionLabel.text = "How would you translate:"
@@ -83,6 +92,14 @@ class GIStartTestVC: UIViewController {
         wordLabel.font = .boldSystemFont(ofSize: 23)
         wordLabel.textAlignment = .center
         wordLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        counterLabel.text = "\(counter) of 10"
+        counterLabel.textColor = .black
+//        counterLabel.backgroundColor = .green
+        counterLabel.numberOfLines = 0
+        counterLabel.font = .boldSystemFont(ofSize: 23)
+        counterLabel.textAlignment = .center
+        counterLabel.translatesAutoresizingMaskIntoConstraints = false
         
         button1.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button1.backgroundColor = .systemYellow
@@ -141,12 +158,12 @@ class GIStartTestVC: UIViewController {
             wordLabel.trailingAnchor.constraint(equalTo: labelView.trailingAnchor, constant: -40),
             wordLabel.bottomAnchor.constraint(equalTo: labelView.bottomAnchor, constant: -40),
             
-            button1.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 100),
+            button1.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 60),
             button1.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
             button1.widthAnchor.constraint(equalToConstant: 140),
             button1.heightAnchor.constraint(equalToConstant: 50),
             
-            button2.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 100),
+            button2.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 60),
             button2.leadingAnchor.constraint(equalTo: button1.trailingAnchor, constant: 20),
             button2.widthAnchor.constraint(equalToConstant: 140),
             button2.heightAnchor.constraint(equalToConstant: 50),
@@ -160,6 +177,11 @@ class GIStartTestVC: UIViewController {
             button4.leadingAnchor.constraint(equalTo: button3.trailingAnchor, constant: 20),
             button4.widthAnchor.constraint(equalToConstant: 140),
             button4.heightAnchor.constraint(equalToConstant: 50),
+            
+            counterLabel.topAnchor.constraint(equalTo: button4.bottomAnchor, constant: 10),
+            counterLabel.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
+            counterLabel.trailingAnchor.constraint(equalTo: labelView.trailingAnchor),
+            counterLabel.bottomAnchor.constraint(equalTo: testView.bottomAnchor)
         ])
     }
     
@@ -178,10 +200,24 @@ class GIStartTestVC: UIViewController {
     @objc func buttonPressed(sender: UIButton) {
         if sender.titleLabel?.text == correctAnswer {
         sender.backgroundColor = .systemGreen
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sender.backgroundColor = .systemYellow }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sender.backgroundColor = .systemYellow
+            self.counter += 1
+            UIView.animate(withDuration: 0.5) {
+                
+                self.testView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                self.testView.transform = .identity
+            }
+        }
         } else {
         sender.backgroundColor = .systemRed
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sender.backgroundColor = .systemYellow }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sender.backgroundColor = .systemYellow
+            self.counter += 1
+            UIView.animate(withDuration: 0.5) {
+                
+                self.testView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                self.testView.transform = .identity
+            }
+        }
         }
     }
 }

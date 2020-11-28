@@ -24,7 +24,8 @@ class WordModel: Codable {
         }
     }
     
-    private var minExp = 1000
+    private var maxExp = 1000
+    private var minExp = 500
     private var wordType = "primary"
     
     init(word: String, translation: String) {

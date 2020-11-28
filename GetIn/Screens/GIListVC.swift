@@ -110,7 +110,7 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         
         cell.accessoryType = .disclosureIndicator //?
         cell.textLabel?.text = dictionaryModel.vocabulary[indexPath.row].title
-        cell.detailTextLabel?.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count)"
+        cell.detailTextLabel?.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count), learned: \(dictionaryModel.vocabulary[indexPath.row].learned) %"
         
         return cell
     }

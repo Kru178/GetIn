@@ -30,9 +30,6 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         configureTableView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-    }
     
     @objc func start() {
         let vc = GIStartTestVC()

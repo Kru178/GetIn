@@ -24,10 +24,6 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         configureTableview()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-    }
-    
 
     func configureTableview() {
         tableView.frame = view.bounds

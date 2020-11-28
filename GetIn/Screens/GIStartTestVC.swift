@@ -16,6 +16,8 @@ class GIStartTestVC: UIViewController {
     let questionLabel = UILabel()
     let wordLabel = UILabel()
     let counterLabel = UILabel()
+    var correctAnswerCounter = 0
+    var wrongAnswerCounter = 0
 
     let button1 = UIButton()
     let button2 = UIButton()
@@ -24,7 +26,7 @@ class GIStartTestVC: UIViewController {
     
     var questionArray = [WordModel]() {
         didSet {
-            counterLabel.text = "question: \(answersArray.count)/\(currentQuestion)"
+            counterLabel.text = "\(currentQuestion) of \(answersArray.count)"
             currentQuestion += 1
         }
     }
@@ -87,6 +89,7 @@ class GIStartTestVC: UIViewController {
         
         for (index, button) in buttons.enumerated() {
             button.setTitle(answers[index].translation, for: .normal)
+            button.isEnabled = true
         }
         
     }
@@ -225,7 +228,11 @@ class GIStartTestVC: UIViewController {
     @objc func buttonPressed(sender: UIButton) {
         
         if sender.titleLabel?.text == correctAnswer {
-
+            button1.isEnabled = false
+            button2.isEnabled = false
+            button3.isEnabled = false
+            button4.isEnabled = false
+            correctAnswerCounter += 1
             sender.backgroundColor = .systemGreen
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 sender.backgroundColor = .systemYellow
@@ -233,12 +240,25 @@ class GIStartTestVC: UIViewController {
                     
                     self.testView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
                     self.testView.transform = .identity
+                    
+                    if self.questionArray.isEmpty {
+                        //TODO: change that dismiss to show some result view
+                        
+                        self.presentAlertController()
+                    } else {
+                        self.startConfig()
+                    }
                 }
             }
             
             currentWord.exp += 72
             
         } else {
+            button1.isEnabled = false
+            button2.isEnabled = false
+            button3.isEnabled = false
+            button4.isEnabled = false
+            wrongAnswerCounter += 1
             sender.backgroundColor = .systemRed
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 sender.backgroundColor = .systemYellow
@@ -246,17 +266,28 @@ class GIStartTestVC: UIViewController {
                     
                     self.testView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
                     self.testView.transform = .identity
+                    
+                    if self.questionArray.isEmpty {
+                        //TODO: change that dismiss to show some result view
+                        
+                        self.presentAlertController()
+                    } else {
+                        self.startConfig()
+                    }
                 }
             }
         }
-        
-        if questionArray.isEmpty {
-            //TODO: change that dismiss to show some result view
-            
-            navigationController?.popViewController(animated: true)
-            dismiss(animated: true, completion: nil)
-        } else {
-            startConfig()
-        }
+    }
+    
+    
+    func presentAlertController() {
+      
+    let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
+        let ac = UIAlertController(title: "Test Finished", message: message , preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
+        }))
+        present(ac, animated: true, completion: nil)
     }
 }

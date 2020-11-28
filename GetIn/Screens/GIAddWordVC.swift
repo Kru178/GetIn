@@ -17,7 +17,7 @@ class GIAddWordVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemGreen
-        title = "Add Word"
+//        title = "Add Word"
         
         view.addSubview(label)
         

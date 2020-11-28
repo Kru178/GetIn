@@ -46,7 +46,7 @@ class GIListVC: UIViewController {
             }
             
             let newList = List(title: listTitle)
-            print(newList.title)
+//            print(newList.title)
             self.dictionaryModel.vocabulary.append(newList)
             self.tableView.reloadData()
         }
@@ -66,34 +66,34 @@ class GIListVC: UIViewController {
         view.addSubview(tableView)
         
         //Add learn button
-        let learnButton = UIButton(type: .system)
-        learnButton.layer.cornerRadius = 12
-        learnButton.backgroundColor = .gray
-        learnButton.tintColor = .white
-        learnButton.translatesAutoresizingMaskIntoConstraints = false
-        learnButton.setTitle("LEARN WORDS", for: .normal)
-        learnButton.addTarget(self, action: #selector(learnButtonTapped), for: .touchUpInside)
-        view.addSubview(learnButton)
+//        let learnButton = UIButton(type: .system)
+//        learnButton.layer.cornerRadius = 12
+//        learnButton.backgroundColor = .gray
+//        learnButton.tintColor = .white
+//        learnButton.translatesAutoresizingMaskIntoConstraints = false
+//        learnButton.setTitle("LEARN WORDS", for: .normal)
+//        learnButton.addTarget(self, action: #selector(learnButtonTapped), for: .touchUpInside)
+//        view.addSubview(learnButton)
         view.backgroundColor = .systemBackground
         
         NSLayoutConstraint.activate([
             
-            learnButton.heightAnchor.constraint(equalToConstant: 50),
-            learnButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20),
-            learnButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            learnButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -5),
-            
+//            learnButton.heightAnchor.constraint(equalToConstant: 50),
+//            learnButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20),
+//            learnButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            learnButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -5),
+//
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: learnButton.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
     // learnButton tapped
-    @objc func learnButtonTapped() {
-        
-    }
+//    @objc func learnButtonTapped() {
+//
+//    }
 }
 
 extension GIListVC: UITableViewDataSource, UITableViewDelegate {
@@ -118,7 +118,7 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let vc = GIWordsVC()
-        vc.listName = dictionaryModel.vocabulary[indexPath.row].title
+        vc.listName = dictionaryModel.vocabulary[indexPath.row].title!
         vc.words = dictionaryModel.vocabulary[indexPath.row].words
         vc.delegate = self
         vc.index = indexPath.row

@@ -35,10 +35,10 @@ class GITabBarController: UITabBarController {
     
     func createAddWordVC() -> UINavigationController {
         let addWordVC = GIAddWordVC()
-        addWordVC.title = "Add Word"
+        addWordVC.title = "Translate"
         addWordVC.dictionaryModel = inputData
         
-        addWordVC.tabBarItem = UITabBarItem(title: "Add Word", image: UIImage(systemName: "square.and.pencil"), selectedImage: UIImage(systemName: "square.and.pencil"))
+        addWordVC.tabBarItem = UITabBarItem(title: "Translate", image: UIImage(systemName: "globe"), selectedImage: UIImage(systemName: "globe"))
         
         return UINavigationController(rootViewController: addWordVC)
     }

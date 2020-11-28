@@ -50,7 +50,7 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             guard let word = textField1.text else { return }
             guard let translation = textField2.text else { return }
             
-            let newWord = WordModel(word: word, translation: translation)
+            let newWord = WordModel(word: word.lowercased(), translation: translation.lowercased())
             
             self.delegate?.addWord(listIndex: self.index, word: newWord)
             self.words.append(newWord)

@@ -15,15 +15,16 @@ class GIStartTestVC: UIViewController {
     let questionView = UIView()
     let questionLabel = UILabel()
     let wordLabel = UILabel()
+    let counterLabel = UILabel()
+
     let button1 = UIButton()
     let button2 = UIButton()
     let button3 = UIButton()
     let button4 = UIButton()
-    let counter = UILabel()
     
     var questionArray = [WordModel]() {
         didSet {
-            counter.text = "question: \(answersArray.count)/\(currentQuestion)"
+            counterLabel.text = "question: \(answersArray.count)/\(currentQuestion)"
             currentQuestion += 1
         }
     }
@@ -92,7 +93,6 @@ class GIStartTestVC: UIViewController {
 
     func configureView() {
         view.addSubview(testView)
-        view.addSubview(counter)
         
         testView.backgroundColor = .systemGray3
         testView.layer.cornerRadius = 10
@@ -106,10 +106,12 @@ class GIStartTestVC: UIViewController {
         questionView.backgroundColor = .systemYellow
         questionView.layer.cornerRadius = 10
 //        labelView.layer.masksToBounds = true
+
         questionView.layer.borderWidth = 2
         questionView.layer.borderColor = UIColor.black.cgColor
         questionView.addSubview(questionLabel)
         questionView.addSubview(wordLabel)
+        questionView.addSubview(counterLabel)
         questionView.translatesAutoresizingMaskIntoConstraints = false
         
         questionLabel.text = "How would you translate:"
@@ -127,6 +129,14 @@ class GIStartTestVC: UIViewController {
         wordLabel.font = .boldSystemFont(ofSize: 23)
         wordLabel.textAlignment = .center
         wordLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        counterLabel.text = "-/-"
+        counterLabel.textColor = .black
+//        counterLabel.backgroundColor = .green
+        counterLabel.numberOfLines = 0
+        counterLabel.font = .boldSystemFont(ofSize: 23)
+        counterLabel.textAlignment = .center
+        counterLabel.translatesAutoresizingMaskIntoConstraints = false
         
         button1.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button1.backgroundColor = .systemYellow
@@ -163,13 +173,6 @@ class GIStartTestVC: UIViewController {
         button4.layer.borderColor = UIColor.black.cgColor
         button4.translatesAutoresizingMaskIntoConstraints = false
         button4.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        
-        counter.text = "-/-"
-        counter.textColor = .black
-        counter.numberOfLines = 0
-        counter.font = .boldSystemFont(ofSize: 18)
-        counter.textAlignment = .center
-        counter.translatesAutoresizingMaskIntoConstraints = false
     
         NSLayoutConstraint.activate([
             testView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -192,12 +195,12 @@ class GIStartTestVC: UIViewController {
             wordLabel.trailingAnchor.constraint(equalTo: questionView.trailingAnchor, constant: -40),
             wordLabel.bottomAnchor.constraint(equalTo: questionView.bottomAnchor, constant: -40),
             
-            button1.topAnchor.constraint(equalTo: questionView.bottomAnchor, constant: 100),
+            button1.topAnchor.constraint(equalTo: questionView.bottomAnchor, constant: 60),
             button1.leadingAnchor.constraint(equalTo: questionView.leadingAnchor),
             button1.widthAnchor.constraint(equalToConstant: 140),
             button1.heightAnchor.constraint(equalToConstant: 50),
             
-            button2.topAnchor.constraint(equalTo: questionView.bottomAnchor, constant: 100),
+            button2.topAnchor.constraint(equalTo: questionView.bottomAnchor, constant: 60),
             button2.leadingAnchor.constraint(equalTo: button1.trailingAnchor, constant: 20),
             button2.widthAnchor.constraint(equalToConstant: 140),
             button2.heightAnchor.constraint(equalToConstant: 50),
@@ -212,22 +215,39 @@ class GIStartTestVC: UIViewController {
             button4.widthAnchor.constraint(equalToConstant: 140),
             button4.heightAnchor.constraint(equalToConstant: 50),
             
-            counter.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            counter.topAnchor.constraint(equalTo: button4.bottomAnchor, constant: 20)
+            counterLabel.topAnchor.constraint(equalTo: button4.bottomAnchor, constant: 10),
+            counterLabel.leadingAnchor.constraint(equalTo: questionView.leadingAnchor),
+            counterLabel.trailingAnchor.constraint(equalTo: questionView.trailingAnchor),
+            counterLabel.bottomAnchor.constraint(equalTo: testView.bottomAnchor)
         ])
     }
     
     @objc func buttonPressed(sender: UIButton) {
         
         if sender.titleLabel?.text == correctAnswer {
+
             sender.backgroundColor = .systemGreen
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sender.backgroundColor = .systemYellow }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                sender.backgroundColor = .systemYellow
+                UIView.animate(withDuration: 0.5) {
+                    
+                    self.testView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                    self.testView.transform = .identity
+                }
+            }
             
             currentWord.exp += 72
             
         } else {
             sender.backgroundColor = .systemRed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sender.backgroundColor = .systemYellow }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                sender.backgroundColor = .systemYellow
+                UIView.animate(withDuration: 0.5) {
+                    
+                    self.testView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                    self.testView.transform = .identity
+                }
+            }
         }
         
         if questionArray.isEmpty {

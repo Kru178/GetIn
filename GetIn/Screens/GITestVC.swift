@@ -19,7 +19,13 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         view.backgroundColor = .systemPink
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.tintColor = .black
         configureTableview()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
     }
     
 

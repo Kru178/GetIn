@@ -24,11 +24,15 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         title = "Pick Lists"
         navigationController?.navigationBar.tintColor = .black
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         view.backgroundColor = .systemGray2
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start Test", style: .plain, target: self, action: #selector(start))
         configureTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
     
     @objc func start() {
         let vc = GIStartTestVC()

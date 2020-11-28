@@ -11,8 +11,10 @@ class GIStartTestVC: UIViewController {
 
     var dictionaryModel = DictionaryModel()
     
+    let testView = UIView()
     let labelView = UIView()
-    let label = UILabel()
+    let questionLabel = UILabel()
+    let wordLabel = UILabel()
     let button1 = UIButton()
     let button2 = UIButton()
     let button3 = UIButton()
@@ -25,7 +27,7 @@ class GIStartTestVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .systemBackground
         tabBarController?.tabBar.isHidden = true
         
@@ -46,26 +48,42 @@ class GIStartTestVC: UIViewController {
     
 
     func configureView() {
-        view.addSubview(labelView)
+        view.addSubview(testView)
         
-        labelView.backgroundColor = .systemGray3
+        testView.backgroundColor = .systemGray3
+        testView.layer.cornerRadius = 10
+        testView.addSubview(labelView)
+        testView.addSubview(button1)
+        testView.addSubview(button2)
+        testView.addSubview(button3)
+        testView.addSubview(button4)
+        testView.translatesAutoresizingMaskIntoConstraints = false
+        
+        labelView.backgroundColor = .systemYellow
         labelView.layer.cornerRadius = 10
-        labelView.addSubview(label)
+//        labelView.layer.masksToBounds = true
+        labelView.layer.borderWidth = 2
+        labelView.layer.borderColor = UIColor.black.cgColor
+        labelView.addSubview(questionLabel)
+        labelView.addSubview(wordLabel)
         labelView.translatesAutoresizingMaskIntoConstraints = false
         
-        label.text = "How would you translate: \n\n\(questionArray.randomElement()?.word.uppercased() ?? "nil")"
-        label.backgroundColor = .systemYellow
-        label.textColor = .black
-        label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 23)
-        label.textAlignment = .center
-        label.layer.cornerRadius = 10
-        label.layer.masksToBounds = true
-        label.layer.borderWidth = 2
-        label.layer.borderColor = UIColor.black.cgColor
-        label.translatesAutoresizingMaskIntoConstraints = false
+        questionLabel.text = "How would you translate:"
+        questionLabel.textColor = .black
+//        questionLabel.backgroundColor = .green
+        questionLabel.numberOfLines = 0
+        questionLabel.font = .boldSystemFont(ofSize: 23)
+        questionLabel.textAlignment = .center
+        questionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        labelView.addSubview(button1)
+        wordLabel.text = "\(questionArray.randomElement()?.word.uppercased() ?? "nil")"
+        wordLabel.textColor = .black
+//        wordLabel.backgroundColor = .green
+        wordLabel.numberOfLines = 0
+        wordLabel.font = .boldSystemFont(ofSize: 23)
+        wordLabel.textAlignment = .center
+        wordLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         button1.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button1.backgroundColor = .systemYellow
         button1.setTitleColor(.black, for: .normal)
@@ -75,7 +93,6 @@ class GIStartTestVC: UIViewController {
         button1.translatesAutoresizingMaskIntoConstraints = false
         button1.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        labelView.addSubview(button2)
         button2.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button2.backgroundColor = .systemYellow
         button2.setTitleColor(.black, for: .normal)
@@ -85,7 +102,6 @@ class GIStartTestVC: UIViewController {
         button2.translatesAutoresizingMaskIntoConstraints = false
         button2.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        labelView.addSubview(button3)
         button3.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button3.backgroundColor = .systemYellow
         button3.setTitleColor(.black, for: .normal)
@@ -95,7 +111,6 @@ class GIStartTestVC: UIViewController {
         button3.translatesAutoresizingMaskIntoConstraints = false
         button3.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        labelView.addSubview(button4)
         button4.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button4.backgroundColor = .systemYellow
         button4.setTitleColor(.black, for: .normal)
@@ -106,28 +121,38 @@ class GIStartTestVC: UIViewController {
         button4.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            labelView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            labelView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            labelView.heightAnchor.constraint(equalToConstant: 500),
-            labelView.widthAnchor.constraint(equalToConstant: 350),
+            testView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            testView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            testView.heightAnchor.constraint(equalToConstant: 500),
+            testView.widthAnchor.constraint(equalToConstant: 350),
         
-            label.centerXAnchor.constraint(equalTo: labelView.centerXAnchor),
-            label.topAnchor.constraint(equalTo: labelView.topAnchor, constant: 50),
-            label.widthAnchor.constraint(equalToConstant: 300),
-            label.heightAnchor.constraint(equalToConstant: 200),
+            labelView.centerXAnchor.constraint(equalTo: testView.centerXAnchor),
+            labelView.topAnchor.constraint(equalTo: testView.topAnchor, constant: 50),
+            labelView.widthAnchor.constraint(equalToConstant: 300),
+            labelView.heightAnchor.constraint(equalToConstant: 200),
             
-            button1.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 100),
-            button1.leadingAnchor.constraint(equalTo: label.leadingAnchor),
+            questionLabel.topAnchor.constraint(equalTo: labelView.topAnchor, constant: 40),
+            questionLabel.leadingAnchor.constraint(equalTo: labelView.leadingAnchor, constant: 10),
+            questionLabel.trailingAnchor.constraint(equalTo: labelView.trailingAnchor, constant: -10),
+            questionLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            wordLabel.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 40),
+            wordLabel.leadingAnchor.constraint(equalTo: labelView.leadingAnchor, constant: 40),
+            wordLabel.trailingAnchor.constraint(equalTo: labelView.trailingAnchor, constant: -40),
+            wordLabel.bottomAnchor.constraint(equalTo: labelView.bottomAnchor, constant: -40),
+            
+            button1.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 100),
+            button1.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
             button1.widthAnchor.constraint(equalToConstant: 140),
             button1.heightAnchor.constraint(equalToConstant: 50),
             
-            button2.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 100),
+            button2.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 100),
             button2.leadingAnchor.constraint(equalTo: button1.trailingAnchor, constant: 20),
             button2.widthAnchor.constraint(equalToConstant: 140),
             button2.heightAnchor.constraint(equalToConstant: 50),
             
             button3.topAnchor.constraint(equalTo: button1.bottomAnchor, constant: 25),
-            button3.leadingAnchor.constraint(equalTo: label.leadingAnchor),
+            button3.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
             button3.widthAnchor.constraint(equalToConstant: 140),
             button3.heightAnchor.constraint(equalToConstant: 50),
             

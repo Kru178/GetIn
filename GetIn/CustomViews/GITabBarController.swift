@@ -79,6 +79,19 @@ class GITabBarController: UITabBarController {
         let word12 = WordModel(word: "ahead", translation: "впереди")
         let word13 = WordModel(word: "head", translation: "голова")
         
+        word1.exp = 10
+        word2.exp = 20
+        word3.exp = 30
+        word4.exp = 40
+        word5.exp = 50
+        word6.exp = 60
+        word7.exp = 130
+        word8.exp = 120
+        word9.exp = 110
+        word10.exp = 100
+        word11.exp = 90
+        word12.exp = 80
+        word13.exp = 70
         
         let list = List(title: "Default list")
         let list2 = List(title: "Second")

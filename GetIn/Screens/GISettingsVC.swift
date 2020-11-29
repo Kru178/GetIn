@@ -7,6 +7,8 @@
 
 import UIKit
 
+//TODO: Add functionality to change default quantity of words property (dictionaryModel.wordsInTest)
+
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
    
     let tableView = UITableView()

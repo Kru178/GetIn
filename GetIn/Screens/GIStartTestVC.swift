@@ -73,7 +73,8 @@ class GIStartTestVC: UIViewController {
         wordLabel.text = currentWord.word.uppercased()
         
         var allAnswers = answersArray
-        allAnswers.remove(at: randomCurrentIndex)
+        let ind = allAnswers.firstIndex(where: {$0.translation == correctAnswer})
+        allAnswers.remove(at: ind!)
         var answers = [WordModel]()
         
         for _ in 1...3 {

@@ -10,5 +10,6 @@ import Foundation
 class DictionaryModel: Codable {
     
     var vocabulary = [List]()
+    var wordsInTest = 10
     
 }

@@ -118,7 +118,7 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let vc = GIWordsVC()
-        vc.listName = dictionaryModel.vocabulary[indexPath.row].title!
+        vc.listName = dictionaryModel.vocabulary[indexPath.row].title ?? "default"
         vc.words = dictionaryModel.vocabulary[indexPath.row].words
         vc.delegate = self
         vc.index = indexPath.row

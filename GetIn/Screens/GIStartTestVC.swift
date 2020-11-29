@@ -39,7 +39,6 @@ class GIStartTestVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .systemBackground
         tabBarController?.tabBar.isHidden = true
         
@@ -50,9 +49,8 @@ class GIStartTestVC: UIViewController {
             learningList.append(contentsOf: list.words)
         }
         
-        //add sort method by exp property
+        selectWords(words: learningList)
         
-        questionArray = learningList
         answersArray = questionArray
         
         configureView()
@@ -62,6 +60,19 @@ class GIStartTestVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    func selectWords(words: [WordModel]) {
+        
+        let sortedByExp = words.sorted(by: { (current, next) -> Bool in
+            if current.exp > next.exp {
+                return true
+            } else {
+                return false
+            }
+        })
+        
+        questionArray = Array(sortedByExp.prefix(dictionaryModel.wordsInTest))
     }
     
     func startConfig() {
@@ -109,7 +120,6 @@ class GIStartTestVC: UIViewController {
         
         questionView.backgroundColor = .systemYellow
         questionView.layer.cornerRadius = 10
-//        labelView.layer.masksToBounds = true
 
         questionView.layer.borderWidth = 2
         questionView.layer.borderColor = UIColor.black.cgColor
@@ -120,15 +130,12 @@ class GIStartTestVC: UIViewController {
         
         questionLabel.text = "How would you translate:"
         questionLabel.textColor = .black
-//        questionLabel.backgroundColor = .green
         questionLabel.numberOfLines = 0
         questionLabel.font = .boldSystemFont(ofSize: 23)
         questionLabel.textAlignment = .center
         questionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-//        wordLabel.text = "\(questionArray.randomElement()?.word.uppercased() ?? "nil")"
         wordLabel.textColor = .black
-//        wordLabel.backgroundColor = .green
         wordLabel.numberOfLines = 0
         wordLabel.font = .boldSystemFont(ofSize: 23)
         wordLabel.textAlignment = .center
@@ -136,7 +143,6 @@ class GIStartTestVC: UIViewController {
         
         counterLabel.text = "-/-"
         counterLabel.textColor = .black
-//        counterLabel.backgroundColor = .green
         counterLabel.numberOfLines = 0
         counterLabel.font = .boldSystemFont(ofSize: 23)
         counterLabel.textAlignment = .center
@@ -243,7 +249,6 @@ class GIStartTestVC: UIViewController {
                     self.testView.transform = .identity
                     
                     if self.questionArray.isEmpty {
-                        //TODO: change that dismiss to show some result view
                         
                         self.presentAlertController()
                     } else {
@@ -269,7 +274,6 @@ class GIStartTestVC: UIViewController {
                     self.testView.transform = .identity
                     
                     if self.questionArray.isEmpty {
-                        //TODO: change that dismiss to show some result view
                         
                         self.presentAlertController()
                     } else {

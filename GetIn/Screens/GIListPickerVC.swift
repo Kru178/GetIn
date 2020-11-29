@@ -10,17 +10,12 @@ import UIKit
 class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var dictionaryModel = DictionaryModel()
+    private var customDict = DictionaryModel()
     
     let tableView = UITableView()
-    var lists: [List] = []
-    
-    var list1 = List(title: "list 1")
-    var list2 = List(title: "list 2")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        lists = [list1, list2]
         
         title = "Pick Lists"
         navigationController?.navigationBar.tintColor = .black
@@ -32,7 +27,21 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     @objc func start() {
+        
+        customDict.vocabulary = []
+        
+        for list in dictionaryModel.vocabulary {
+            if list.selected {
+                customDict.vocabulary.append(list)
+            }
+        }
+        //FIXME: turn on the start button when at least one list is selected
+        if customDict.vocabulary.isEmpty {
+           return
+        }
+        
         let vc = GIStartTestVC()
+        vc.dictionaryModel = customDict
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -49,16 +58,19 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lists.count
+        return dictionaryModel.vocabulary.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let listRowAt = dictionaryModel.vocabulary[indexPath.row]
+        
         let cell =
             tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = lists[indexPath.row].title
+        cell.textLabel?.text = listRowAt.title
         cell.tintColor = .black
-        if lists[indexPath.row].selected == true {
+        if listRowAt.selected == true {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -68,7 +80,7 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        lists[indexPath.row].selected.toggle()
+        dictionaryModel.vocabulary[indexPath.row].selected.toggle()
         tableView.reloadData()
     }
     

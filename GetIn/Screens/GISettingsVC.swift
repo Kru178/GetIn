@@ -14,12 +14,16 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     let tableView = UITableView()
     let sections = ["General", "Notifications", "Contacts"]
     let items = [["Number of words in test", "1B", "1C"], ["Notifications", "Sounds"], ["Contact Us", "3B", "3C"]]
+    let notificationSwitch = UISwitch(frame: CGRect(x: 1, y: 1, width: 20, height: 20))
+    
+    let soundSwitch = UISwitch()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemTeal
         title = "Settings"
+        notificationSwitch.isOn = false
         
         configureTebleView()
     }

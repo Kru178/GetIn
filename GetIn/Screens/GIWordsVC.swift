@@ -25,7 +25,7 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         view.backgroundColor = .systemTeal
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addWord))
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+        navigationController?.navigationBar.tintColor = .systemGreen
         configureTableView()
     }
     

@@ -15,8 +15,8 @@ class GIListVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     var collectionView: UICollectionView!
     
-    var list1 = List(title: "list 1", words: nil)
-    var list2 = List(title: "list 2", words: nil)
+    var list1 = List(title: "English", words: nil)
+    var list2 = List(title: "French", words: nil)
     
     var word1 = Word(title: "hello", translation: "privet")
     var word2 = Word(title: "bye-bye", translation: "poka")
@@ -41,8 +41,8 @@ class GIListVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         title = "Your Lists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
         navigationController?.navigationBar.prefersLargeTitles = true
-       
         
+        view.backgroundColor = .systemBlue
 //        configureTableView()
         configureCollectionView()
     }
@@ -72,7 +72,7 @@ class GIListVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             let newList = List(title: listTitle, words: [])
             print(newList.title)
             self.lists.append(newList)
-//            self.tableView.reloadData()
+            self.collectionView.reloadData()
         }
         
         alert.addAction(action)
@@ -97,6 +97,9 @@ class GIListVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createLayout(in: view))
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundView = UIView(frame: CGRect.zero)
+        collectionView.backgroundView?.backgroundColor = .secondarySystemBackground
+        
         
         collectionView.frame = view.bounds
         collectionView.dataSource = self
@@ -141,13 +144,18 @@ class GIListVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listCell", for: indexPath) as! ListViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListViewCell.reuseID, for: indexPath) as! ListViewCell
         
-        cell.backgroundColor = .systemRed
         
         cell.listTitleLabel.text = lists[indexPath.row].title
-        cell.listTitleLabel.textColor = .systemBlue
         cell.wordsCountLabel.text = "Words: \(lists[indexPath.row].words?.count ?? 0)"
+        if lists[indexPath.row].title == "English" {
+        cell.learnedLabel.text = "Learned: 100%"
+           
+        } else {
+            cell.learnedLabel.text = "Learned: 0%"
+            cell.learnedLabel.backgroundColor = .lightGray
+        }
         
         return cell
     }

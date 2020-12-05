@@ -58,11 +58,15 @@ class GIListVC: UIViewController {
     
     func configureView() {
         
-        tableView.rowHeight = 80
+        tableView.estimatedRowHeight = 250
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .secondarySystemBackground
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseID)
         view.addSubview(tableView)
         
         //Add learn button
@@ -104,13 +108,27 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+//        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         
-        tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseID, for: indexPath) as! ListCell
+
+//        tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.accessoryType = .disclosureIndicator //?
-        cell.textLabel?.text = dictionaryModel.vocabulary[indexPath.row].title
-        cell.detailTextLabel?.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count), learned: \(dictionaryModel.vocabulary[indexPath.row].learned) %"
+//        cell.accessoryType = .disclosureIndicator
+        
+        let progress = dictionaryModel.vocabulary[indexPath.row].learned
+        cell.nameLabel.text = dictionaryModel.vocabulary[indexPath.row].title
+        cell.wordsLabel.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count)"
+        cell.progressLabel.text = "learned: \(progress) %"
+        
+        switch progress {
+        case 0...30:
+            cell.progressLabel.backgroundColor = .systemGray
+        case 31...70:
+            cell.progressLabel.backgroundColor = .systemYellow
+        default:
+            cell.progressLabel.backgroundColor = .systemGreen
+        }
         
         return cell
     }

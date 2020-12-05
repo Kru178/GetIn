@@ -22,6 +22,7 @@
 		7828E8B7256D7505005C02B3 /* GITestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8B6256D7505005C02B3 /* GITestVC.swift */; };
 		7828E8BE256D7F2D005C02B3 /* GIListPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */; };
 		7828E8C1256EBA4F005C02B3 /* GIStartTestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8C0256EBA4F005C02B3 /* GIStartTestVC.swift */; };
+		783657F7257B9CBF00CC4FF3 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657F6257B9CBF00CC4FF3 /* ListCell.swift */; };
 		889475412570B79C00AE248F /* DictionaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889475402570B79C00AE248F /* DictionaryModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		7828E8B6256D7505005C02B3 /* GITestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GITestVC.swift; sourceTree = "<group>"; };
 		7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIListPickerVC.swift; sourceTree = "<group>"; };
 		7828E8C0256EBA4F005C02B3 /* GIStartTestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIStartTestVC.swift; sourceTree = "<group>"; };
+		783657F6257B9CBF00CC4FF3 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		889475402570B79C00AE248F /* DictionaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				7828E8752567AF31005C02B3 /* GITabBarController.swift */,
+				783657F6257B9CBF00CC4FF3 /* ListCell.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */,
 				889475412570B79C00AE248F /* DictionaryModel.swift in Sources */,
 				7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */,
+				783657F7257B9CBF00CC4FF3 /* ListCell.swift in Sources */,
 				7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */,
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
 				7828E8912567E356005C02B3 /* List.swift in Sources */,

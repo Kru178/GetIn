@@ -8,7 +8,7 @@
 import UIKit
 
 class GIStartTestVC: UIViewController {
-
+    
     var dictionaryModel = DictionaryModel()
     
     let testView = UIView()
@@ -18,7 +18,7 @@ class GIStartTestVC: UIViewController {
     let counterLabel = UILabel()
     var correctAnswerCounter = 0
     var wrongAnswerCounter = 0
-
+    
     let button1 = UIButton()
     let button2 = UIButton()
     let button3 = UIButton()
@@ -31,14 +31,14 @@ class GIStartTestVC: UIViewController {
         }
     }
     var answersArray = [WordModel]()
-
+    
     var currentWord = WordModel(word: "", translation: "")
     var correctAnswer = ""
     var currentQuestion = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .systemBackground
         tabBarController?.tabBar.isHidden = true
         
@@ -105,7 +105,7 @@ class GIStartTestVC: UIViewController {
         }
         
     }
-
+    
     func configureView() {
         view.addSubview(testView)
         
@@ -120,7 +120,7 @@ class GIStartTestVC: UIViewController {
         
         questionView.backgroundColor = .systemYellow
         questionView.layer.cornerRadius = 10
-
+        
         questionView.layer.borderWidth = 2
         questionView.layer.borderColor = UIColor.black.cgColor
         questionView.addSubview(questionLabel)
@@ -183,13 +183,13 @@ class GIStartTestVC: UIViewController {
         button4.layer.borderColor = UIColor.black.cgColor
         button4.translatesAutoresizingMaskIntoConstraints = false
         button4.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-    
+        
         NSLayoutConstraint.activate([
             testView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             testView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             testView.heightAnchor.constraint(equalToConstant: 500),
             testView.widthAnchor.constraint(equalToConstant: 350),
-        
+            
             questionView.centerXAnchor.constraint(equalTo: testView.centerXAnchor),
             questionView.topAnchor.constraint(equalTo: testView.topAnchor, constant: 50),
             questionView.widthAnchor.constraint(equalToConstant: 300),
@@ -245,14 +245,14 @@ class GIStartTestVC: UIViewController {
                 sender.backgroundColor = .systemYellow
                 UIView.animate(withDuration: 0.5) {
                     
-                    self.testView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
                     self.testView.transform = .identity
                     
                     if self.questionArray.isEmpty {
                         
                         self.presentAlertController()
                     } else {
-                        self.startConfig()
+                            self.startConfig()
                     }
                 }
             }
@@ -270,14 +270,14 @@ class GIStartTestVC: UIViewController {
                 sender.backgroundColor = .systemYellow
                 UIView.animate(withDuration: 0.5) {
                     
-                    self.testView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
                     self.testView.transform = .identity
                     
                     if self.questionArray.isEmpty {
                         
                         self.presentAlertController()
                     } else {
-                        self.startConfig()
+                            self.startConfig()
                     }
                 }
             }
@@ -286,8 +286,8 @@ class GIStartTestVC: UIViewController {
     
     
     func presentAlertController() {
-      
-    let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
+        
+        let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
         let ac = UIAlertController(title: "Test Finished", message: message , preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             self.navigationController?.popViewController(animated: true)

@@ -115,8 +115,11 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.rowHeight = 80
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .secondarySystemBackground
+        tableView.separatorStyle = .none
+        tableView.separatorInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "wordCell")
+        tableView.register(WordCell.self, forCellReuseIdentifier: WordCell.reuseID)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -125,16 +128,18 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: "wordCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: WordCell.reuseID, for: indexPath) as! WordCell
         
-        tableView.dequeueReusableCell(withIdentifier: "wordCell", for: indexPath)
-        
-        cell.textLabel?.text = words[indexPath.row].word
+        cell.wordLabel.text = words[indexPath.row].word
         if words[indexPath.row].translation == "" {
-            cell.detailTextLabel?.text = "Add translation here"
+            cell.translationLabel.text = "Add translation here"
         } else {
-        cell.detailTextLabel?.text = words[indexPath.row].translation
+        cell.translationLabel.text = words[indexPath.row].translation
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

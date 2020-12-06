@@ -8,26 +8,29 @@
 import UIKit
 
 class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
     var dictionaryModel = DictionaryModel()
     
     let tableView = UITableView()
     let options = ["Test Over All Lists", "Pick A List"]
     let allButton = GIButton(backgroundColor: .systemGreen, title: "Test Over All Lists")
     let pickButton = GIButton(backgroundColor: .systemGreen, title: "Pick A List")
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .secondarySystemBackground
-        navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         navigationController?.navigationBar.tintColor = .systemGreen
-//        configureTableview()
+        //        configureTableview()
         configureButtons()
     }
     
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//    }
     
     func configureButtons() {
         view.addSubview(allButton)
@@ -57,9 +60,9 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         
         if count > 9 {
-        let vc = GIStartTestVC()
-        vc.dictionaryModel = dictionaryModel
-        navigationController?.pushViewController(vc, animated: true)
+            let vc = GIStartTestVC()
+            vc.dictionaryModel = dictionaryModel
+            navigationController?.pushViewController(vc, animated: true)
         } else {
             let ac = UIAlertController(title: "Add some words first", message: "You need to add at least 10 words to your lists to start test", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -74,7 +77,7 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         choiceVC.dictionaryModel = dictionaryModel
     }
     
-
+    
     func configureTableview() {
         tableView.frame = view.bounds
         tableView.rowHeight = 80
@@ -83,7 +86,7 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
     }
-
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return options.count
@@ -105,7 +108,7 @@ class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             let vc = GIStartTestVC()
             vc.dictionaryModel = dictionaryModel
             navigationController?.pushViewController(vc, animated: true)
-
+            
         } else {
             let choiceVC = GIListPickerVC()
             navigationController?.pushViewController(choiceVC, animated: true)

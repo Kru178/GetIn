@@ -112,7 +112,7 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         view.addSubview(tableView)
         
         tableView.frame = view.bounds
-        tableView.rowHeight = 80
+        tableView.rowHeight = 60
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .secondarySystemBackground

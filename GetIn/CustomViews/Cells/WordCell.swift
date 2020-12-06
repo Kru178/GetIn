@@ -44,7 +44,7 @@ class WordCell: UITableViewCell {
         wordLabel.textAlignment = .center
         wordLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        separatorLabel.text = "|"
+        separatorLabel.text = "-"
         separatorLabel.translatesAutoresizingMaskIntoConstraints = false
         
         translationLabel.textAlignment = .center
@@ -52,10 +52,10 @@ class WordCell: UITableViewCell {
         
         
         NSLayoutConstraint.activate([
-            cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             cellView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
             
             separatorLabel.centerXAnchor.constraint(equalTo: cellView.centerXAnchor),
             separatorLabel.topAnchor.constraint(equalTo: cellView.topAnchor),

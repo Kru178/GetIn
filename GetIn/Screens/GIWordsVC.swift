@@ -26,7 +26,12 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addWord))
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
-        configureTableView()
+        
+        if words.isEmpty {
+        configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+        } else {
+            configureTableView()
+        }
     }
     
     
@@ -57,8 +62,24 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.tableView.reloadData()
         }
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {_ in
+//            self.configureEmptyStateView(with: "No words here.\nAdd some :)", in: self.view)
+        })
+        
         alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: {
+            if !self.words.isEmpty {
+            self.configureTableView()
+            }
+        })
+    }
+    
+    
+    func configureEmptyStateView(with message: String, in view: UIView) {
+        let emptyStateView = GIEmptyStateView(message: message)
+        emptyStateView.frame = view.bounds
+        view.addSubview(emptyStateView)
     }
     
     

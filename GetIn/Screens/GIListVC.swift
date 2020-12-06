@@ -23,7 +23,12 @@ class GIListVC: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
-        configureView()
+        
+        if dictionaryModel.vocabulary.isEmpty {
+        configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: view)
+        } else {
+            configureView()
+        }
     }
     
     
@@ -52,7 +57,9 @@ class GIListVC: UIViewController {
         }
         
         alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: {
+            self.configureView()
+        })
     }
     
     
@@ -94,10 +101,11 @@ class GIListVC: UIViewController {
         ])
     }
     
-    // learnButton tapped
-//    @objc func learnButtonTapped() {
-//
-//    }
+    func configureEmptyStateView(with message: String, in view: UIView) {
+        let emptyStateView = GIEmptyStateView(message: message)
+        emptyStateView.frame = view.bounds
+        view.addSubview(emptyStateView)
+    }
 }
 
 extension GIListVC: UITableViewDataSource, UITableViewDelegate {

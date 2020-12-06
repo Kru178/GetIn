@@ -36,30 +36,47 @@ class GIListVC: UIViewController {
         var listTitle: String = ""
         
         let alert = UIAlertController(title: "Add New List", message: "", preferredStyle: .alert)
-        alert.addTextField { textField in
-            textField.placeholder = "list"
-        }
+        
         
         let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField = alert.textFields![0] as UITextField
             guard let text = textField.text else {return}
-            if textField.text != "" {
-                listTitle = text
-            } else {
-                print("TF is Empty...")
-                return
-            }
             
-            let newList = List(title: listTitle)
-//            print(newList.title)
-            self.dictionaryModel.vocabulary.append(newList)
-            self.tableView.reloadData()
+            if !self.dictionaryModel.vocabulary.contains(where: {$0.title == text}) {
+                listTitle = text
+                let newList = List(title: listTitle)
+                self.dictionaryModel.vocabulary.append(newList)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.configureView()
+                }
+            } else {
+                let ac = UIAlertController(title: "Name Already Exists", message: "Please choose another name for your new list", preferredStyle: .alert)
+                let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
+                    self.present(alert, animated: true, completion: nil)
+                })
+                ac.addAction(acAction)
+                self.present(ac, animated: true, completion: nil)
+            }
         }
         
+        alert.addTextField { textField in
+            textField.placeholder = "List name"
+            action.isEnabled = false
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
+                   {_ in
+                       // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                       let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                       let textIsNotEmpty = textCount > 0
+                       action.isEnabled = textIsNotEmpty
+               })
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
         alert.addAction(action)
-        present(alert, animated: true, completion: {
-            self.configureView()
-        })
+        present(alert, animated: true, completion: nil)
     }
     
     
@@ -72,28 +89,14 @@ class GIListVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseID)
         view.addSubview(tableView)
         
-        //Add learn button
-//        let learnButton = UIButton(type: .system)
-//        learnButton.layer.cornerRadius = 12
-//        learnButton.backgroundColor = .gray
-//        learnButton.tintColor = .white
-//        learnButton.translatesAutoresizingMaskIntoConstraints = false
-//        learnButton.setTitle("LEARN WORDS", for: .normal)
-//        learnButton.addTarget(self, action: #selector(learnButtonTapped), for: .touchUpInside)
-//        view.addSubview(learnButton)
+
         view.backgroundColor = .systemBackground
         
         NSLayoutConstraint.activate([
             
-//            learnButton.heightAnchor.constraint(equalToConstant: 50),
-//            learnButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -20),
-//            learnButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            learnButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -5),
-//
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -116,18 +119,12 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseID, for: indexPath) as! ListCell
-
-//        tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-//        cell.accessoryType = .disclosureIndicator
         
         let progress = dictionaryModel.vocabulary[indexPath.row].learned
         cell.nameLabel.text = dictionaryModel.vocabulary[indexPath.row].title
         cell.wordsLabel.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count)"
-        cell.progressLabel.text = "learned: \(progress) %"
+        cell.progressLabel.text = "Learned: \(progress) %"
         
         switch progress {
         case 0...30:

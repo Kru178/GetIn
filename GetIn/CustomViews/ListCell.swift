@@ -82,7 +82,7 @@ class ListCell: UITableViewCell {
             
             progressLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -padding),
             progressLabel.heightAnchor.constraint(equalToConstant: 30),
-            progressLabel.widthAnchor.constraint(equalToConstant: 100),
+            progressLabel.widthAnchor.constraint(equalToConstant: 110),
             progressLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -padding)
         ])
     }

@@ -38,41 +38,66 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @objc func addWord() {
         
         let alert = UIAlertController(title: "Add New Word", message: "and translation :)", preferredStyle: .alert)
-        alert.addTextField { textField in
-            textField.placeholder = "word"
-        }
         
-        alert.addTextField { (textField) in
-            textField.placeholder = "translation"
-        }
         
         let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField1 = alert.textFields![0] as UITextField
             let textField2 = alert.textFields![1] as UITextField
             
-// MARK: FIX it later: activate "done" button if textFields is not empty
-            
             guard let word = textField1.text else { return }
             guard let translation = textField2.text else { return }
             
+            if !self.words.contains(where: {$0.word == word}) {
             let newWord = WordModel(word: word.lowercased(), translation: translation.lowercased())
             
             self.delegate?.addWord(listIndex: self.index, word: newWord)
             self.words.append(newWord)
-            self.tableView.reloadData()
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if !self.words.isEmpty {
+                    self.configureTableView()
+                    }
+            }
+            } else {
+                let ac = UIAlertController(title: "Word Already Exists", message: "You already have this word on your list.\nMaybe you should test yourself more often? 👀", preferredStyle: .alert)
+                let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
+                    self.present(alert, animated: true, completion: nil)
+                })
+                ac.addAction(acAction)
+                self.present(ac, animated: true, completion: nil)
+            }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {_ in
-//            self.configureEmptyStateView(with: "No words here.\nAdd some :)", in: self.view)
-        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        alert.addAction(action)
+        alert.addTextField { (textField) in
+            textField.placeholder = "Word"
+            action.isEnabled = false
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
+                   {_ in
+                       // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                       let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                       let textIsNotEmpty = textCount > 0
+                       action.isEnabled = textIsNotEmpty
+               })
+        }
+        
+        alert.addTextField { (textField) in
+            textField.placeholder = "Translation"
+            action.isEnabled = false
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
+                   {_ in
+                       // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                       let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                       let textIsNotEmpty = textCount > 0
+                       action.isEnabled = textIsNotEmpty
+               })
+        }
+        
         alert.addAction(cancelAction)
-        present(alert, animated: true, completion: {
-            if !self.words.isEmpty {
-            self.configureTableView()
-            }
-        })
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     
@@ -105,8 +130,11 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dequeueReusableCell(withIdentifier: "wordCell", for: indexPath)
         
         cell.textLabel?.text = words[indexPath.row].word
+        if words[indexPath.row].translation == "" {
+            cell.detailTextLabel?.text = "Add translation here"
+        } else {
         cell.detailTextLabel?.text = words[indexPath.row].translation
-
+        }
         return cell
     }
 }

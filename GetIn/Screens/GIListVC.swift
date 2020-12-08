@@ -149,6 +149,16 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completed) in
+            self!.dictionaryModel.vocabulary.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            completed(true)
+        }
+        action.backgroundColor = .systemRed
+        return UISwipeActionsConfiguration(actions: [action])
+    }
 }
 
 extension GIListVC: GIWordsVCDelegate {

@@ -17,8 +17,8 @@ class GITabBarController: UITabBarController {
         fillDictionary()
         
         UITabBar.appearance().tintColor = .systemGreen
-        viewControllers = [createListVC(), createAddWordVC(), createTestVC(), createSettingsVC()]
-        selectedIndex = 2
+        viewControllers = [createListVC(), createTestVC(), createSettingsVC()]
+        selectedIndex = 0
     }
     
     
@@ -64,7 +64,7 @@ class GITabBarController: UITabBarController {
     }
     
     func fillDictionary() {
-        //test initital default vacabulary
+        //test initital default vocabulary
         let word1 = WordModel(word: "hello", translation: "Привет")
         let word2 = WordModel(word: "default", translation: "По умолчанию")
         let word3 = WordModel(word: "yellow", translation: "желтый")
@@ -78,7 +78,7 @@ class GITabBarController: UITabBarController {
         let word11 = WordModel(word: "back", translation: "назад")
         let word12 = WordModel(word: "ahead", translation: "впереди")
         let word13 = WordModel(word: "head", translation: "голова")
-        
+
         word1.exp = 10
         word2.exp = 20
         word3.exp = 30
@@ -92,10 +92,10 @@ class GITabBarController: UITabBarController {
         word11.exp = 90
         word12.exp = 80
         word13.exp = 70
-        
+
         let list = List(title: "Default list")
         let list2 = List(title: "Second")
-        
+
         list.words.append(word1)
         list.words.append(word2)
         list.words.append(word3)
@@ -110,7 +110,7 @@ class GITabBarController: UITabBarController {
         list2.words.append(word11)
         list2.words.append(word12)
         list2.words.append(word13)
-        
+
         inputData.vocabulary.append(list)
         inputData.vocabulary.append(list2)
     }

@@ -18,11 +18,17 @@ class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         
         title = "Pick Lists"
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .systemGreen
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         view.backgroundColor = .systemGray2
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start Test", style: .plain, target: self, action: #selector(start))
         configureTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+
     }
     
     

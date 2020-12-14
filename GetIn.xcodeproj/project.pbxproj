@@ -84,7 +84,6 @@
 		7828E85A25629495005C02B3 /* GetIn */ = {
 			isa = PBXGroup;
 			children = (
-				7828E8CE2573C380005C02B3 /* Managers */,
 				7828E88F2567E33B005C02B3 /* Model */,
 				7828E8812567B418005C02B3 /* CustomViews */,
 				7828E8802567B3E7005C02B3 /* Screens */,
@@ -138,13 +137,6 @@
 				889475402570B79C00AE248F /* DictionaryModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		7828E8CE2573C380005C02B3 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		78365805257D30EE00CC4FF3 /* Cells */ = {

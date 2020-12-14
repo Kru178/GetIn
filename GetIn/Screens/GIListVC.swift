@@ -15,9 +15,13 @@ class GIListVC: UIViewController {
     
     let tableView = UITableView()
     var dictionaryModel = DictionaryModel()
+    
+    let center = UNUserNotificationCenter.current()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       
         
         title = "Your Lists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
@@ -29,6 +33,39 @@ class GIListVC: UIViewController {
         } else {
             configureView()
         }
+        
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if granted {
+                print("Yay!")
+            } else {
+                print("D'oh")
+            }
+        }
+        scheduleNotification()
+    }
+
+    
+    func scheduleNotification() {
+        let center = UNUserNotificationCenter.current()
+
+        let content = UNMutableNotificationContent()
+        content.title = "Repetition Time!"
+        content.body = "Hey! It's time to repeat something, don't you think?!"
+        content.badge = NSNumber(value: 3)
+        content.categoryIdentifier = "alarm"
+        content.userInfo = ["customData": "fizzbuzz"]
+        content.sound = UNNotificationSound.default
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = 11
+        dateComponents.minute = 26
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
     }
     
     
@@ -157,6 +194,25 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
             completed(true)
         }
         action.backgroundColor = .systemRed
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+    
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completed) in
+            
+            let ac = UIAlertController(title: "Edit Title", message: "Please enter the new title" , preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Save", style: .default, handler: { (action) in
+                
+//                self.dictionaryModel.vocabulary[indexPath.row].title = textf
+            }))
+            ac.addTextField { (textField) in
+                textField.placeholder = "title"
+                
+            }
+            self.present(ac, animated: true, completion: nil)
+        }
+        
         return UISwipeActionsConfiguration(actions: [action])
     }
 }

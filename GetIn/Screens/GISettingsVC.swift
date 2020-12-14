@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 //TODO: Add functionality to change default quantity of words property (dictionaryModel.wordsInTest)
 
@@ -18,6 +19,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     let soundSwitch = UISwitch()
     
+    
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,6 +31,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         notificationSwitch.isOn = false
         
         configureTebleView()
+        
+        
+        
+        
     }
     
     func configureTebleView() {
@@ -101,5 +110,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 //        }
 //        }
 
+    
+    
 }
     

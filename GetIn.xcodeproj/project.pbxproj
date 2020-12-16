@@ -26,6 +26,7 @@
 		783657FB257BC9F800CC4FF3 /* GIEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */; };
 		783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FE257CE3C100CC4FF3 /* GIButton.swift */; };
 		78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78365801257D2B8E00CC4FF3 /* WordCell.swift */; };
+		7836580B258A89D300CC4FF3 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7836580A258A89D300CC4FF3 /* Settings.swift */; };
 		889475412570B79C00AE248F /* DictionaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889475402570B79C00AE248F /* DictionaryModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIEmptyStateView.swift; sourceTree = "<group>"; };
 		783657FE257CE3C100CC4FF3 /* GIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIButton.swift; sourceTree = "<group>"; };
 		78365801257D2B8E00CC4FF3 /* WordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCell.swift; sourceTree = "<group>"; };
+		7836580A258A89D300CC4FF3 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		889475402570B79C00AE248F /* DictionaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,6 +138,7 @@
 				7828E8902567E356005C02B3 /* List.swift */,
 				7828E8942567E38B005C02B3 /* WordModel.swift */,
 				889475402570B79C00AE248F /* DictionaryModel.swift */,
+				7836580A258A89D300CC4FF3 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				7828E8792567B06C005C02B3 /* GIListVC.swift in Sources */,
 				7828E85E25629495005C02B3 /* SceneDelegate.swift in Sources */,
 				783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */,
+				7836580B258A89D300CC4FF3 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

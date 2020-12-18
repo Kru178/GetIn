@@ -49,13 +49,13 @@ enum Notifications: Int, CaseIterable, CustomStringConvertible {
 
 enum Feedback: Int, CaseIterable, CustomStringConvertible {
     case Email
-    case Phone
+//    case Phone
     
     var description: String {
         
         switch self {
-        case .Email: return "Email"
-        case .Phone: return "Phone"
+        case .Email: return "Send email"
+//        case .Phone: return "Phone"
         }
     }
 }

@@ -60,7 +60,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 print("min: \(minHeight)")
                 print("current: \(currentFooterHeight)")
                 
-                let fitHeight = tableView.frame.height - tableView.adjustedContentInset.top - tableView.contentSize.height  + currentFooterHeight
+                let fitHeight = tableView.frame.height - 320 - 92
+//                    tableView.adjustedContentInset.top - tableView.contentSize.height  + currentFooterHeight
                 let nextHeight = (fitHeight > minHeight) ? fitHeight : minHeight
                 
                 print("table: \(tableView.frame.height)")
@@ -70,7 +71,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 print("view: \(view.frame.height)")
                 if (round(nextHeight) != round(currentFooterHeight)) {
                     var frame = tableFooterView.frame
-                    frame.size.height = nextHeight
+                    frame.size.height = 10
+//                        nextHeight
                     tableFooterView.frame = frame
                     tableView.tableFooterView = tableFooterView
                 }

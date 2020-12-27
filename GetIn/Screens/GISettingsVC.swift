@@ -7,7 +7,7 @@
 
 import UIKit
 
-//TODO: Add functionality to change default quantity of words property (dictionaryModel.wordsInTest)
+//TODO: Add functionality to change default quantity of words property (dictionary.wordsInTest)
 
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
    

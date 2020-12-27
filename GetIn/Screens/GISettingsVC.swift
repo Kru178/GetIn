@@ -8,17 +8,16 @@
 import UIKit
 import UserNotifications
 
-//TODO: Add functionality to change default quantity of words property (dictionaryModel.wordsInTest)
 
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()
+    let defaults = UserDefaults.standard
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        view.backgroundColor = .systemGroupedBackground
+
         title = "Settings"
         configureTebleView()
         tableView.backgroundColor = .systemGroupedBackground
@@ -32,52 +31,12 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GISettingsCell.self, forCellReuseIdentifier: "cell")
-                let footerView = UIView()
-//                    UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIView.layoutFittingCompressedSize.height))
+                let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIView.layoutFittingCompressedSize.height))
                 footerView.backgroundColor = .systemGroupedBackground
                 tableView.tableFooterView = footerView
         
         
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        adjustFooterViewHeightToFillTableView()
-        
-    }
-    
-    func adjustFooterViewHeightToFillTableView() {
-            
-            // Invoke from UITableViewController.viewDidLayoutSubviews()
-            
-            if let tableFooterView = tableView.tableFooterView {
-                
-                let minHeight = tableFooterView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-                
-                let currentFooterHeight = tableFooterView.frame.height
-                
-                print("min: \(minHeight)")
-                print("current: \(currentFooterHeight)")
-                
-                let fitHeight = tableView.frame.height - 320 - 92
-//                    tableView.adjustedContentInset.top - tableView.contentSize.height  + currentFooterHeight
-                let nextHeight = (fitHeight > minHeight) ? fitHeight : minHeight
-                
-                print("table: \(tableView.frame.height)")
-                print("tableAdj: \(tableView.adjustedContentInset.top)")
-                print("tableCont: \(tableView.contentSize.height)")
-                print("fit: \(fitHeight)")
-                print("view: \(view.frame.height)")
-                if (round(nextHeight) != round(currentFooterHeight)) {
-                    var frame = tableFooterView.frame
-                    frame.size.height = 10
-//                        nextHeight
-                    tableFooterView.frame = frame
-                    tableView.tableFooterView = tableFooterView
-                }
-            }
-        }
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -119,7 +78,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.stepper.isHidden = true
-        cell.switchControl.isHidden = true
+//        cell.switchControlNotif.isHidden = true
         cell.wordsNumberLabel.isHidden = true
         
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
@@ -132,16 +91,15 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             cell.stepper.isHidden = false
             cell.wordsNumberLabel.isHidden = false
             cell.selectionStyle = .none
-//            cell.accessoryType = .disclosureIndicator
         case .Notifications:
             let notification = Notifications(rawValue: indexPath.row)
             cell.textLabel?.text = notification?.description
             cell.selectionStyle = .none
-            cell.switchControl.isHidden = false
+//            cell.switchControlNotif.isHidden = false
+            cell.setTag()
         case .Feedback:
             let feedback = Feedback(rawValue: indexPath.row)
             cell.textLabel?.text = feedback?.description
-//            cell.accessoryType = .detailButton
         }
         
         
@@ -169,5 +127,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
             tableView.deselectRow(at: indexPath, animated: true)
         }
+  
 }
 

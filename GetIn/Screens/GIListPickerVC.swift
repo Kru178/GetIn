@@ -7,14 +7,12 @@
 
 import UIKit
 
-class GIListPickerVC: UIViewController {
+class GIListPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var dictionary = [ListModel]()
-    private var customDict = [ListModel]()
+    var dictionaryModel = DictionaryModel()
+    private var customDict = DictionaryModel()
     
-    private let tableView = UITableView()
-    
-    //MARK: - Methods
+    let tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,41 +23,36 @@ class GIListPickerVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         view.backgroundColor = .systemGray2
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start Test", style: .plain, target: self, action: #selector(start))
-        
         configureTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         navigationController?.navigationBar.isHidden = false
 
     }
     
-    @objc private func start() {
+    
+    @objc func start() {
         
-        //FIXME: check words count. If count less than 10 do not start the test
+        customDict.vocabulary = []
         
-        customDict = []
-
-        for list in dictionary {
+        for list in dictionaryModel.vocabulary {
             if list.selected {
-                customDict.append(list)
+                customDict.vocabulary.append(list)
             }
         }
         //FIXME: turn on the start button when at least one list is selected
-        if customDict.isEmpty {
+        if customDict.vocabulary.isEmpty {
            return
         }
-
-        let vc = GIStartTestVC()
-        vc.dictionary = customDict
-        navigationController?.pushViewController(vc, animated: true)
         
-        //FIXME: uncheck lists when test have started
+        let vc = GIStartTestVC()
+        vc.dictionaryModel = customDict
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     
-    private func configureTableView() {
+    func configureTableView() {
         tableView.frame = view.bounds
         tableView.rowHeight = 80
         tableView.delegate = self
@@ -69,33 +62,32 @@ class GIListPickerVC: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
-}
-
-extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dictionary.count
+        return dictionaryModel.vocabulary.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let listRowAt = dictionary[indexPath.row]
+        let listRowAt = dictionaryModel.vocabulary[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = listRowAt.title
         cell.tintColor = .black
-        
         if listRowAt.selected == true {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
         }
-        
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dictionary[indexPath.row].selected.toggle()
+        dictionaryModel.vocabulary[indexPath.row].selected.toggle()
         tableView.reloadData()
     }
+    
 }

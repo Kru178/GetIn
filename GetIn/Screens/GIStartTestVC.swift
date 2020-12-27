@@ -6,39 +6,35 @@
 //
 
 import UIKit
-import CoreData
 
 class GIStartTestVC: UIViewController {
     
-    var dictionary = [ListModel]()
-    var container : NSPersistentContainer?
+    var dictionaryModel = DictionaryModel()
     
-    private let testView = UIView()
-    private let questionView = UIView()
-    private let questionLabel = UILabel()
-    private let wordLabel = UILabel()
-    private let counterLabel = UILabel()
-    private var correctAnswerCounter = 0
-    private var wrongAnswerCounter = 0
+    let testView = UIView()
+    let questionView = UIView()
+    let questionLabel = UILabel()
+    let wordLabel = UILabel()
+    let counterLabel = UILabel()
+    var correctAnswerCounter = 0
+    var wrongAnswerCounter = 0
     
-    private let button1 = UIButton()
-    private let button2 = UIButton()
-    private let button3 = UIButton()
-    private let button4 = UIButton()
+    let button1 = UIButton()
+    let button2 = UIButton()
+    let button3 = UIButton()
+    let button4 = UIButton()
     
-    private var questionArray = [WordModel]() {
+    var questionArray = [WordModel]() {
         didSet {
             counterLabel.text = "\(currentQuestion) of \(answersArray.count)"
             currentQuestion += 1
         }
     }
-    private var answersArray = [WordModel]()
+    var answersArray = [WordModel]()
     
-    private var currentWord = WordModel()
-    private var correctAnswer = ""
-    private var currentQuestion = 0
-    
-    //MARK: - methods
+    var currentWord = WordModel(word: "", translation: "")
+    var correctAnswer = ""
+    var currentQuestion = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,13 +42,11 @@ class GIStartTestVC: UIViewController {
         view.backgroundColor = .systemBackground
         tabBarController?.tabBar.isHidden = true
         
+        let dictionary = dictionaryModel.vocabulary
         var learningList = [WordModel]()
         
         for list in dictionary {
-            
-            guard let words = list.words?.allObjects as? [WordModel] else { continue }
-            
-            learningList.append(contentsOf: words)
+            learningList.append(contentsOf: list.words)
         }
         
         selectWords(words: learningList)
@@ -68,7 +62,7 @@ class GIStartTestVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    private func selectWords(words: [WordModel]) {
+    func selectWords(words: [WordModel]) {
         
         let sortedByExp = words.sorted(by: { (current, next) -> Bool in
             if current.exp > next.exp {
@@ -77,42 +71,23 @@ class GIStartTestVC: UIViewController {
                 return false
             }
         })
-
-        questionArray = sortedByExp
         
-        //TODO: add a line below after adding settings property of words in test
-        //questionArray = Array(sortedByExp.prefix(dictionaryModel.wordsInTest))
-        
+        questionArray = Array(sortedByExp.prefix(dictionaryModel.wordsInTest))
     }
     
-    private func startConfig() {
+    func startConfig() {
         
         let randomCurrentIndex = Int.random(in: 0..<questionArray.count)
         currentWord = questionArray[randomCurrentIndex]
         questionArray.remove(at: randomCurrentIndex)
+        correctAnswer = currentWord.translation
+        wordLabel.text = currentWord.word.uppercased()
         
-        guard let translation = currentWord.translation else {
-            print("\(currentWord) have no translation")
-            return
-        }
-        correctAnswer = translation
-        
-        guard let word = currentWord.word?.uppercased() else {
-            print("\(currentWord) have no word")
-            return
-        }
-        wordLabel.text = word
-
         var allAnswers = answersArray
-        
-        guard let ind = allAnswers.firstIndex(where: {$0.translation == correctAnswer}) else {
-            print("ind error")
-            return
-        }
-        allAnswers.remove(at: ind)
-        
+        let ind = allAnswers.firstIndex(where: {$0.translation == correctAnswer})
+        allAnswers.remove(at: ind!)
         var answers = [WordModel]()
-
+        
         for _ in 1...3 {
             let randomIndex = Int.random(in: 0..<allAnswers.count)
             let answerOption = allAnswers[randomIndex]
@@ -128,9 +103,10 @@ class GIStartTestVC: UIViewController {
             button.setTitle(answers[index].translation, for: .normal)
             button.isEnabled = true
         }
+        
     }
     
-    private func configureView() {
+    func configureView() {
         view.addSubview(testView)
         
         testView.backgroundColor = .systemGray3
@@ -256,7 +232,7 @@ class GIStartTestVC: UIViewController {
         ])
     }
     
-    @objc private func buttonPressed(sender: UIButton) {
+    @objc func buttonPressed(sender: UIButton) {
         
         if sender.titleLabel?.text == correctAnswer {
             button1.isEnabled = false
@@ -305,21 +281,11 @@ class GIStartTestVC: UIViewController {
                     }
                 }
             }
-            currentWord.exp -= 30
-        }
-        DispatchQueue.main.async {
-            
-            guard let cont = self.container else { return }
-            
-            do {
-                try cont.viewContext.save()
-            } catch {
-                print("saving container error - StartTestVC")
-            }
         }
     }
     
-    private func presentAlertController() {
+    
+    func presentAlertController() {
         
         let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
         let ac = UIAlertController(title: "Test Finished", message: message , preferredStyle: .alert)

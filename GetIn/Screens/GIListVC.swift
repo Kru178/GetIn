@@ -6,16 +6,17 @@
 //
 
 import UIKit
-import CoreData
+
+protocol GIWordsVCDelegate: class {
+    func addWord(listIndex: Int, word: WordModel)
+}
 
 class GIListVC: UIViewController {
     
     let tableView = UITableView()
-
+    var dictionaryModel = DictionaryModel()
     
-    var container: NSPersistentContainer?
-    var dictionary = [ListModel]()
-
+    let center = UNUserNotificationCenter.current()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,20 +28,13 @@ class GIListVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
         
-
-//        if dictionary.isEmpty {
-//        configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: view)
-//        } else {
-//            configureView()
-//        }
+        if dictionaryModel.vocabulary.isEmpty {
+        configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: view)
+        } else {
+            configureView()
+        }
         
-        configureView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchData()
-      
-
+        
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
             if granted {
                 print("Yay!")
@@ -72,7 +66,6 @@ class GIListVC: UIViewController {
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
-
     }
     
     
@@ -81,42 +74,26 @@ class GIListVC: UIViewController {
         
         let alert = UIAlertController(title: "Add New List", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Done", style: .default) { [weak self] (_) in
-            
-            guard let vc = self else { return }
-            
+        
+        let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField = alert.textFields![0] as UITextField
             guard let text = textField.text else {return}
             
-            if !vc.dictionary.contains(where: {$0.title == text}) {
+            if !self.dictionaryModel.vocabulary.contains(where: {$0.title == text}) {
                 listTitle = text
-                
-                guard let container = vc.container else { return }
-                
-                let newList = ListModel(context: container.viewContext)
-                newList.title = listTitle
-                vc.dictionary.append(newList)
-                
+                let newList = List(title: listTitle)
+                self.dictionaryModel.vocabulary.append(newList)
                 DispatchQueue.main.async {
-                    
-                    do {
-                        try container.viewContext.save()
-                        
-                        
-                    } catch {
-                        print("cannot save context: addList")
-                    }
-
-                    vc.fetchData()
+                    self.tableView.reloadData()
+                    self.configureView()
                 }
-                
             } else {
                 let ac = UIAlertController(title: "Name Already Exists", message: "Please choose another name for your new list", preferredStyle: .alert)
                 let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
-                    vc.present(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil)
                 })
                 ac.addAction(acAction)
-                vc.present(ac, animated: true, completion: nil)
+                self.present(ac, animated: true, completion: nil)
             }
         }
         
@@ -140,7 +117,7 @@ class GIListVC: UIViewController {
     }
     
     
-    private func configureView() {
+    func configureView() {
         
         tableView.estimatedRowHeight = 250
         tableView.rowHeight = UITableView.automaticDimension
@@ -164,24 +141,10 @@ class GIListVC: UIViewController {
         ])
     }
     
-    private func configureEmptyStateView(with message: String, in view: UIView) {
+    func configureEmptyStateView(with message: String, in view: UIView) {
         let emptyStateView = GIEmptyStateView(message: message)
         emptyStateView.frame = view.bounds
         view.addSubview(emptyStateView)
-    }
-    
-    private func fetchData() {
-        guard let container = self.container else {
-            return
-        }
-        do {
-            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        } catch {
-            print("fetchData fail: GIListVC")
-        }
     }
 }
 
@@ -189,19 +152,15 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     //MARK: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dictionary.count
+        return dictionaryModel.vocabulary.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseID, for: indexPath) as! ListCell
         
-        let list = dictionary[indexPath.row]
-        
-        cell.nameLabel.text = list.title
-        cell.wordsLabel.text = "Words: \(list.words?.count ?? 0)"
-        
-        let progress = list.learned
-        
+        let progress = dictionaryModel.vocabulary[indexPath.row].learned
+        cell.nameLabel.text = dictionaryModel.vocabulary[indexPath.row].title
+        cell.wordsLabel.text = "Words: \(dictionaryModel.vocabulary[indexPath.row].words.count)"
         cell.progressLabel.text = "Learned: \(progress) %"
         
         switch progress {
@@ -219,10 +178,10 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let vc = GIWordsVC()
-        
-        vc.listName = dictionary[indexPath.row].title ?? "default"
-        vc.list = dictionary[indexPath.row]
-        vc.container = container
+        vc.listName = dictionaryModel.vocabulary[indexPath.row].title ?? "default"
+        vc.words = dictionaryModel.vocabulary[indexPath.row].words
+        vc.delegate = self
+        vc.index = indexPath.row
         
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
@@ -230,19 +189,8 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completed) in
-            
-            guard let listToRemove = self?.dictionary[indexPath.row] else { return }
-            self?.container?.viewContext.delete(listToRemove)
-            
-            do {
-                try self?.container?.viewContext.save()
-            } catch {
-                print("save when delete error")
-            }
-            
-            self?.dictionary.remove(at: indexPath.row)
+            self!.dictionaryModel.vocabulary.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            
             completed(true)
         }
         action.backgroundColor = .systemRed
@@ -266,5 +214,13 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         }
         
         return UISwipeActionsConfiguration(actions: [action])
+    }
+}
+
+extension GIListVC: GIWordsVCDelegate {
+    
+    func addWord(listIndex: Int, word: WordModel) {
+        dictionaryModel.vocabulary[listIndex].words.append(word)
+        tableView.reloadData()
     }
 }

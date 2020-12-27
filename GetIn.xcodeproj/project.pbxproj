@@ -14,8 +14,11 @@
 		7828E86B25629497005C02B3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7828E86925629497005C02B3 /* LaunchScreen.storyboard */; };
 		7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8752567AF31005C02B3 /* GITabBarController.swift */; };
 		7828E8792567B06C005C02B3 /* GIListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8782567B06C005C02B3 /* GIListVC.swift */; };
+		7828E8912567E356005C02B3 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8902567E356005C02B3 /* List.swift */; };
+		7828E8952567E38B005C02B3 /* WordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8942567E38B005C02B3 /* WordModel.swift */; };
 		7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8982567E7B1005C02B3 /* GIWordsVC.swift */; };
 		7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E89C256A8F19005C02B3 /* GISettingsVC.swift */; };
+		7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */; };
 		7828E8B7256D7505005C02B3 /* GITestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8B6256D7505005C02B3 /* GITestVC.swift */; };
 		7828E8BE256D7F2D005C02B3 /* GIListPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */; };
 		7828E8C1256EBA4F005C02B3 /* GIStartTestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7828E8C0256EBA4F005C02B3 /* GIStartTestVC.swift */; };
@@ -23,12 +26,9 @@
 		783657FB257BC9F800CC4FF3 /* GIEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */; };
 		783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FE257CE3C100CC4FF3 /* GIButton.swift */; };
 		78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78365801257D2B8E00CC4FF3 /* WordCell.swift */; };
-
-		8854982125878C8800CAF135 /* ListModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */; };
-		8854982225878C8800CAF135 /* ListModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981C25878C8800CAF135 /* ListModel+CoreDataProperties.swift */; };
-		8854982325878C8800CAF135 /* WordModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981D25878C8800CAF135 /* WordModel+CoreDataClass.swift */; };
-		8854982425878C8800CAF135 /* WordModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981E25878C8800CAF135 /* WordModel+CoreDataProperties.swift */; };
-
+		7836580B258A89D300CC4FF3 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7836580A258A89D300CC4FF3 /* Settings.swift */; };
+		7836580F258BB60100CC4FF3 /* GISettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7836580E258BB60100CC4FF3 /* GISettingsCell.swift */; };
+		889475412570B79C00AE248F /* DictionaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889475402570B79C00AE248F /* DictionaryModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,8 +41,11 @@
 		7828E86C25629497005C02B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7828E8752567AF31005C02B3 /* GITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GITabBarController.swift; sourceTree = "<group>"; };
 		7828E8782567B06C005C02B3 /* GIListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIListVC.swift; sourceTree = "<group>"; };
+		7828E8902567E356005C02B3 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		7828E8942567E38B005C02B3 /* WordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordModel.swift; sourceTree = "<group>"; };
 		7828E8982567E7B1005C02B3 /* GIWordsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIWordsVC.swift; sourceTree = "<group>"; };
 		7828E89C256A8F19005C02B3 /* GISettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GISettingsVC.swift; sourceTree = "<group>"; };
+		7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIAddWordVC.swift; sourceTree = "<group>"; };
 		7828E8B6256D7505005C02B3 /* GITestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GITestVC.swift; sourceTree = "<group>"; };
 		7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIListPickerVC.swift; sourceTree = "<group>"; };
 		7828E8C0256EBA4F005C02B3 /* GIStartTestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIStartTestVC.swift; sourceTree = "<group>"; };
@@ -50,12 +53,9 @@
 		783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIEmptyStateView.swift; sourceTree = "<group>"; };
 		783657FE257CE3C100CC4FF3 /* GIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIButton.swift; sourceTree = "<group>"; };
 		78365801257D2B8E00CC4FF3 /* WordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCell.swift; sourceTree = "<group>"; };
-
-		8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListModel+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8854981C25878C8800CAF135 /* ListModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8854981D25878C8800CAF135 /* WordModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordModel+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8854981E25878C8800CAF135 /* WordModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
-
+		7836580A258A89D300CC4FF3 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		7836580E258BB60100CC4FF3 /* GISettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GISettingsCell.swift; sourceTree = "<group>"; };
+		889475402570B79C00AE248F /* DictionaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +88,7 @@
 		7828E85A25629495005C02B3 /* GetIn */ = {
 			isa = PBXGroup;
 			children = (
+				7828E8CE2573C380005C02B3 /* Managers */,
 				7828E88F2567E33B005C02B3 /* Model */,
 				7828E8812567B418005C02B3 /* CustomViews */,
 				7828E8802567B3E7005C02B3 /* Screens */,
@@ -101,8 +102,9 @@
 			children = (
 				7828E8782567B06C005C02B3 /* GIListVC.swift */,
 				7828E8982567E7B1005C02B3 /* GIWordsVC.swift */,
-				7828E8B6256D7505005C02B3 /* GITestVC.swift */,
+				7828E8A2256A8FE5005C02B3 /* GIAddWordVC.swift */,
 				7828E89C256A8F19005C02B3 /* GISettingsVC.swift */,
+				7828E8B6256D7505005C02B3 /* GITestVC.swift */,
 				7828E8BD256D7F2D005C02B3 /* GIListPickerVC.swift */,
 				7828E8C0256EBA4F005C02B3 /* GIStartTestVC.swift */,
 			);
@@ -135,14 +137,19 @@
 		7828E88F2567E33B005C02B3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-
-				8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */,
-				8854981C25878C8800CAF135 /* ListModel+CoreDataProperties.swift */,
-				8854981D25878C8800CAF135 /* WordModel+CoreDataClass.swift */,
-				8854981E25878C8800CAF135 /* WordModel+CoreDataProperties.swift */,
-
+				7828E8902567E356005C02B3 /* List.swift */,
+				7828E8942567E38B005C02B3 /* WordModel.swift */,
+				889475402570B79C00AE248F /* DictionaryModel.swift */,
+				7836580A258A89D300CC4FF3 /* Settings.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		7828E8CE2573C380005C02B3 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		78365805257D30EE00CC4FF3 /* Cells */ = {
@@ -242,13 +249,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */,
-				8854982325878C8800CAF135 /* WordModel+CoreDataClass.swift in Sources */,
+				889475412570B79C00AE248F /* DictionaryModel.swift in Sources */,
 				7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */,
 				78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */,
 				7836580F258BB60100CC4FF3 /* GISettingsCell.swift in Sources */,
 				783657F7257B9CBF00CC4FF3 /* ListCell.swift in Sources */,
-				8854982125878C8800CAF135 /* ListModel+CoreDataClass.swift in Sources */,
+				7828E8A3256A8FE5005C02B3 /* GIAddWordVC.swift in Sources */,
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
+				7828E8912567E356005C02B3 /* List.swift in Sources */,
+				7828E8952567E38B005C02B3 /* WordModel.swift in Sources */,
 				7828E8C1256EBA4F005C02B3 /* GIStartTestVC.swift in Sources */,
 				7828E8BE256D7F2D005C02B3 /* GIListPickerVC.swift in Sources */,
 				7828E86625629495005C02B3 /* GetIn.xcdatamodeld in Sources */,
@@ -256,8 +265,6 @@
 				783657FB257BC9F800CC4FF3 /* GIEmptyStateView.swift in Sources */,
 				7828E8B7256D7505005C02B3 /* GITestVC.swift in Sources */,
 				7828E8792567B06C005C02B3 /* GIListVC.swift in Sources */,
-				8854982225878C8800CAF135 /* ListModel+CoreDataProperties.swift in Sources */,
-				8854982425878C8800CAF135 /* WordModel+CoreDataProperties.swift in Sources */,
 				7828E85E25629495005C02B3 /* SceneDelegate.swift in Sources */,
 				783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */,
 				7836580B258A89D300CC4FF3 /* Settings.swift in Sources */,

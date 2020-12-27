@@ -9,9 +9,6 @@ import UIKit
 import UserNotifications
 
 
-//TODO: Add functionality to change default quantity of words property (dictionary.wordsInTest)
-
-
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()

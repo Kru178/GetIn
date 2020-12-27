@@ -6,33 +6,31 @@
 //
 
 import UIKit
-import CoreData
 
-class GITestVC: UIViewController {
+class GITestVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var container : NSPersistentContainer?
-    private var dictionary = [ListModel]()
-
-    private let options = ["Test Over All Lists", "Pick A List"]
-    private let allButton = GIButton(backgroundColor: .systemGreen, title: "Test Over All Lists")
-    private let pickButton = GIButton(backgroundColor: .systemGreen, title: "Pick A List")
+    var dictionaryModel = DictionaryModel()
     
-//MARK: - Methods
+    let tableView = UITableView()
+    let options = ["Test Over All Lists", "Pick A List"]
+    let allButton = GIButton(backgroundColor: .systemGreen, title: "Test Over All Lists")
+    let pickButton = GIButton(backgroundColor: .systemGreen, title: "Pick A List")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .secondarySystemBackground
         navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         navigationController?.navigationBar.tintColor = .systemGreen
-        
+        //        configureTableview()
         configureButtons()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        fetchData()
-    }
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//    }
     
     func configureButtons() {
         view.addSubview(allButton)
@@ -56,20 +54,14 @@ class GITestVC: UIViewController {
     
     
     @objc func startTest() {
-        
         var count = 0
-        
-        for index in 0..<dictionary.count {
-            
-            if let words = dictionary[index].words {
-                count += words.count
-            }
+        for i in 0...dictionaryModel.vocabulary.count - 1 {
+            count += dictionaryModel.vocabulary[i].words.count
         }
         
         if count > 9 {
             let vc = GIStartTestVC()
-            vc.dictionary = dictionary
-            vc.container = container
+            vc.dictionaryModel = dictionaryModel
             navigationController?.pushViewController(vc, animated: true)
         } else {
             let ac = UIAlertController(title: "Add some words first", message: "You need to add at least 10 words to your lists to start test", preferredStyle: .alert)
@@ -82,18 +74,47 @@ class GITestVC: UIViewController {
     @objc func pickList() {
         let choiceVC = GIListPickerVC()
         navigationController?.pushViewController(choiceVC, animated: true)
-        choiceVC.dictionary = dictionary
+        choiceVC.dictionaryModel = dictionaryModel
     }
     
-    private func fetchData() {
-        
-        guard let cont = container else { return }
-        
-        do {
-            self.dictionary = try cont.viewContext.fetch(ListModel.fetchRequest())
-            
-        } catch {
-            print("fetchData fail: GITestVC")
-        }
+    
+    func configureTableview() {
+        tableView.frame = view.bounds
+        tableView.rowHeight = 80
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.addSubview(tableView)
     }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return options.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = options[indexPath.row]
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if options[indexPath.row] == options[0] {
+            
+            let vc = GIStartTestVC()
+            vc.dictionaryModel = dictionaryModel
+            navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            let choiceVC = GIListPickerVC()
+            navigationController?.pushViewController(choiceVC, animated: true)
+            choiceVC.dictionaryModel = dictionaryModel
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
 }

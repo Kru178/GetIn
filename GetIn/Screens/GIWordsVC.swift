@@ -6,18 +6,19 @@
 //
 
 import UIKit
+import CoreData
 
-class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    weak var delegate: GIWordsVCDelegate?
+class GIWordsVC: UIViewController {
     
     var index = 0
     
     private let tableView = UITableView()
     
     var listName = "default"
-    var words = [WordModel]()
-    
+    var list = ListModel()
+    var container : NSPersistentContainer?
+    private var words : [WordModel]?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,11 +28,19 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
         
-        if words.isEmpty {
-        configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
-        } else {
-            configureTableView()
-        }
+        
+        
+        words = list.words?.allObjects as? [WordModel]
+        
+//        if let words = self.words {
+//            if words.count == 0 {
+//            configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+//            } else {
+//                configureTableView()
+//            }
+//        }
+        configureTableView()
+        
     }
     
     
@@ -39,26 +48,35 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let alert = UIAlertController(title: "Add New Word", message: "and translation :)", preferredStyle: .alert)
         
-        
         let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField1 = alert.textFields![0] as UITextField
             let textField2 = alert.textFields![1] as UITextField
-            
+
             guard let word = textField1.text else { return }
             guard let translation = textField2.text else { return }
             
-            if !self.words.contains(where: {$0.word == word}) {
-            let newWord = WordModel(word: word.lowercased(), translation: translation.lowercased())
+            guard let words = self.words else { return }
+            guard let container = self.container else { return }
             
-            self.delegate?.addWord(listIndex: self.index, word: newWord)
-            self.words.append(newWord)
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                if !self.words.isEmpty {
-                    self.configureTableView()
+            if !words.contains(where: {$0.word?.lowercased() == word.lowercased()}) {
+                let newWord = WordModel(context: container.viewContext)
+                newWord.word = word
+                newWord.translation = translation
+                newWord.inList = self.list
+                
+                self.words?.append(newWord)
+                
+                DispatchQueue.main.async {
+                    
+                    do {
+                        try container.viewContext.save()
+                        
+                    } catch {
+                        print("cannot save context: addWord")
                     }
-            }
+                    self.tableView.reloadData()
+                    
+                }
             } else {
                 let ac = UIAlertController(title: "Word Already Exists", message: "You already have this word on your list.\nMaybe you should test yourself more often? 👀", preferredStyle: .alert)
                 let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
@@ -100,13 +118,11 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         present(alert, animated: true, completion: nil)
     }
     
-    
     func configureEmptyStateView(with message: String, in view: UIView) {
         let emptyStateView = GIEmptyStateView(message: message)
         emptyStateView.frame = view.bounds
         view.addSubview(emptyStateView)
     }
-    
     
     func configureTableView() {
         view.addSubview(tableView)
@@ -122,20 +138,47 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.register(WordCell.self, forCellReuseIdentifier: WordCell.reuseID)
     }
     
+//    private func fetchData() {
+//
+//        guard let container = container else { return }
+//
+//        do {
+//            self.words = try container.viewContext.fetch(WordModel.fetchRequest())
+//
+//        } catch {
+//            print("cannot read context")
+//        }
+//
+//        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+//        }
+//    }
+}
+
+extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return words.count
+        
+        if let words = self.words {
+            return words.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WordCell.reuseID, for: indexPath) as! WordCell
         
-        cell.wordLabel.text = words[indexPath.row].word
-        if words[indexPath.row].translation == "" {
-            cell.translationLabel.text = "Add translation here"
-        } else {
-        cell.translationLabel.text = words[indexPath.row].translation
+        if let words = self.words {
+            cell.wordLabel.text = words[indexPath.row].word
+            if words[indexPath.row].translation == "" {
+                cell.translationLabel.text = "Add translation here"
+            } else {
+            cell.translationLabel.text = words[indexPath.row].translation
+            }
+            print(words[indexPath.row].exp)
         }
+        
         return cell
     }
     
@@ -143,13 +186,22 @@ class GIWordsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func deleteAction() {
-        print("delete")
-    }
-    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completed) in
-            self!.words.remove(at: indexPath.row)
+            
+            guard let vc = self else { return }
+            
+            guard let wordToRemove = vc.words?[indexPath.row] else { return }
+            vc.container?.viewContext.delete(wordToRemove)
+            
+            do {
+                try self?.container?.viewContext.save()
+            } catch {
+                print("save when delete error")
+            }
+            
+            vc.words?.remove(at: indexPath.row)
+            
             tableView.deleteRows(at: [indexPath], with: .fade)
             completed(true)
         }

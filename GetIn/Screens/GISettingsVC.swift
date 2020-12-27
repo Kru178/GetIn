@@ -17,28 +17,70 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     let tableView = UITableView()
     let defaults = UserDefaults.standard
     
+    let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
+    let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
+    let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
+    let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
+    
+    var wordsQty = Int()
+    var notifOn = Bool()
+    var soundsOn = Bool()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "Settings"
         configureTebleView()
-        tableView.backgroundColor = .systemGroupedBackground
+        configureCells()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        wordsQty = wordsQtyCell.counter
+        notifOn = notifCell.notifSwitchState
+        soundsOn = soundsCell.soundsSwitchState
+        defaults.set(wordsQty, forKey: "wordsQty")
+        defaults.set(notifOn, forKey: "notifOn")
+        defaults.set(soundsOn, forKey: "soundsOn")
+    }
+    
+    func configureCells() {
+        
+        wordsQtyCell.wordsNumberLabel.isHidden = false
+        wordsQtyCell.stepper.isHidden = false
+        wordsQtyCell.textLabel?.text = General.NumberOfWords.description
+        wordsQtyCell.detailTextLabel?.text = "10 to 25"
+        wordsQtyCell.stepper.value = Double(defaults.integer(forKey: "wordsQty"))
+        wordsQty = Int(wordsQtyCell.stepper.value)
+        wordsQtyCell.wordsNumberLabel.text = "\(wordsQty)"
+        
+        notifCell.switchControlNotif.isHidden = false
+        notifCell.switchControlNotif.isOn = defaults.bool(forKey: "notifOn")
+        notifOn = notifCell.switchControlNotif.isOn
+        notifCell.textLabel?.text = Notifications.Notifications.description
+        
+        soundsCell.switchControlSounds.isHidden = false
+        soundsCell.switchControlSounds.isOn = defaults.bool(forKey: "soundsOn")
+        soundsOn = soundsCell.switchControlSounds.isOn
+        soundsCell.textLabel?.text = Notifications.Sounds.description
+
+        emailCell.textLabel?.text = Feedback.Email.description
+        emailCell.selectionStyle = .default
     }
     
     
     func configureTebleView() {
+        
         view.addSubview(tableView)
         tableView.frame = view.bounds
+        tableView.backgroundColor = .systemGroupedBackground
         tableView.rowHeight = 50
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GISettingsCell.self, forCellReuseIdentifier: "cell")
-                let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIView.layoutFittingCompressedSize.height))
-                footerView.backgroundColor = .systemGroupedBackground
-                tableView.tableFooterView = footerView
-        
-        
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIView.layoutFittingCompressedSize.height))
+        footerView.backgroundColor = .systemGroupedBackground
+        tableView.tableFooterView = footerView
     }
     
     
@@ -77,59 +119,29 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = GISettingsCell(style: .subtitle, reuseIdentifier: "cell")
-        
-        tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.stepper.isHidden = true
-//        cell.switchControlNotif.isHidden = true
-        cell.wordsNumberLabel.isHidden = true
         
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
         case .General:
-            let general = General(rawValue: indexPath.row)
-            cell.textLabel?.text = general?.description
-            cell.detailTextLabel?.text = "10 to 25"
-            cell.stepper.isHidden = false
-            cell.wordsNumberLabel.isHidden = false
-            cell.selectionStyle = .none
+            return wordsQtyCell
         case .Notifications:
-            let notification = Notifications(rawValue: indexPath.row)
-            cell.textLabel?.text = notification?.description
-            cell.selectionStyle = .none
-//            cell.switchControlNotif.isHidden = false
-            cell.setTag()
+            switch indexPath.row {
+            case 0:
+                return notifCell
+            default:
+                return soundsCell
+            }
         case .Feedback:
-            let feedback = Feedback(rawValue: indexPath.row)
-            cell.textLabel?.text = feedback?.description
+            return emailCell
         }
-        
-        
-        
-        //
-        //        if let cellText = cell.textLabel?.text {
-        //            switch cellText {
-        //            case items[0][0]:
-        //                cell.detailTextLabel?.text = "25"
-        //            case items[1][0]:
-        //                cell.detailTextLabel?.text = "On"
-        //            case items[1][1]:
-        //                cell.detailTextLabel?.text = "On"
-        //            default:
-        //                cell.detailTextLabel?.text = ""
-        //            }
-        //        }
-        
-        
-        return cell
     }
     
     
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
-  
 }
 

@@ -12,5 +12,4 @@ import CoreData
 @objc(WordModel)
 public class WordModel: NSManagedObject {
 
-    var exp = 0
 }

@@ -67,6 +67,7 @@ class GISettingsCell: UITableViewCell {
     
     @objc func stepperValueChanged(sender: UIStepper) {
         wordsNumberLabel.text = String(Int(sender.value))
+        //TODO: save to user defaults
     }
     
     func setTag() {

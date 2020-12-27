@@ -15,7 +15,7 @@ import UserNotifications
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()
-    let defaults = UserDefaults.standard
+//    let defaults = UserDefaults.standard
     
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
@@ -39,9 +39,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         wordsQty = wordsQtyCell.counter
         notifOn = notifCell.notifSwitchState
         soundsOn = soundsCell.soundsSwitchState
-        defaults.set(wordsQty, forKey: "wordsQty")
-        defaults.set(notifOn, forKey: "notifOn")
-        defaults.set(soundsOn, forKey: "soundsOn")
+        UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
+        UserDefaults.standard.set(notifOn, forKey: "notifOn")
+        UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
     }
     
     func configureCells() {
@@ -50,17 +50,17 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         wordsQtyCell.stepper.isHidden = false
         wordsQtyCell.textLabel?.text = General.NumberOfWords.description
         wordsQtyCell.detailTextLabel?.text = "10 to 25"
-        wordsQtyCell.stepper.value = Double(defaults.integer(forKey: "wordsQty"))
+        wordsQtyCell.stepper.value = Double(UserDefaults.standard.integer(forKey: "wordsQty"))
         wordsQty = Int(wordsQtyCell.stepper.value)
         wordsQtyCell.wordsNumberLabel.text = "\(wordsQty)"
         
         notifCell.switchControlNotif.isHidden = false
-        notifCell.switchControlNotif.isOn = defaults.bool(forKey: "notifOn")
+        notifCell.switchControlNotif.isOn = UserDefaults.standard.bool(forKey: "notifOn")
         notifOn = notifCell.switchControlNotif.isOn
         notifCell.textLabel?.text = Notifications.Notifications.description
         
         soundsCell.switchControlSounds.isHidden = false
-        soundsCell.switchControlSounds.isOn = defaults.bool(forKey: "soundsOn")
+        soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
         soundsOn = soundsCell.switchControlSounds.isOn
         soundsCell.textLabel?.text = Notifications.Sounds.description
 

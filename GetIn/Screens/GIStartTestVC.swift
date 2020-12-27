@@ -12,6 +12,8 @@ class GIStartTestVC: UIViewController {
     
     var dictionary = [ListModel]()
     var container : NSPersistentContainer?
+//    let defaults = UserDefaults.standard
+    var wordsInTest = 10
     
     private let testView = UIView()
     private let questionView = UIView()
@@ -48,6 +50,9 @@ class GIStartTestVC: UIViewController {
         
         var learningList = [WordModel]()
         
+        wordsInTest = UserDefaults.standard.integer(forKey: "wordsQty")
+        print(wordsInTest)
+        
         for list in dictionary {
             
             guard let words = list.words?.allObjects as? [WordModel] else { continue }
@@ -79,7 +84,7 @@ class GIStartTestVC: UIViewController {
         })
         
         //TODO: add a line below after adding settings property of words in test
-        let wordsInTest = 10
+        
         questionArray = Array(sortedByExp.prefix(wordsInTest))
         
     }

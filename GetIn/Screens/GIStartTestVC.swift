@@ -77,15 +77,16 @@ class GIStartTestVC: UIViewController {
                 return false
             }
         })
-
-        questionArray = sortedByExp
         
         //TODO: add a line below after adding settings property of words in test
-        //questionArray = Array(sortedByExp.prefix(dictionaryModel.wordsInTest))
+        let wordsInTest = 10
+        questionArray = Array(sortedByExp.prefix(wordsInTest))
         
     }
     
     private func startConfig() {
+        
+        //FIXME: Words selection working wrong
         
         let randomCurrentIndex = Int.random(in: 0..<questionArray.count)
         currentWord = questionArray[randomCurrentIndex]
@@ -128,6 +129,80 @@ class GIStartTestVC: UIViewController {
             button.setTitle(answers[index].translation, for: .normal)
             button.isEnabled = true
         }
+    }
+    
+    @objc private func buttonPressed(sender: UIButton) {
+        
+        if sender.titleLabel?.text == correctAnswer {
+            button1.isEnabled = false
+            button2.isEnabled = false
+            button3.isEnabled = false
+            button4.isEnabled = false
+            correctAnswerCounter += 1
+            sender.backgroundColor = .systemGreen
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                sender.backgroundColor = .systemYellow
+                UIView.animate(withDuration: 0.5) {
+                    
+                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
+                    self.testView.transform = .identity
+                    
+                    if self.questionArray.isEmpty {
+                        
+                        self.presentAlertController()
+                    } else {
+                            self.startConfig()
+                    }
+                }
+            }
+            
+            currentWord.exp += 72
+            
+        } else {
+            button1.isEnabled = false
+            button2.isEnabled = false
+            button3.isEnabled = false
+            button4.isEnabled = false
+            wrongAnswerCounter += 1
+            sender.backgroundColor = .systemRed
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                sender.backgroundColor = .systemYellow
+                UIView.animate(withDuration: 0.5) {
+                    
+                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
+                    self.testView.transform = .identity
+                    
+                    if self.questionArray.isEmpty {
+                        
+                        self.presentAlertController()
+                    } else {
+                            self.startConfig()
+                    }
+                }
+            }
+            currentWord.exp -= 30
+        }
+        DispatchQueue.main.async {
+            
+            guard let cont = self.container else { return }
+            
+            do {
+                try cont.viewContext.save()
+            } catch {
+                print("saving container error - StartTestVC")
+            }
+        }
+    }
+    
+    private func presentAlertController() {
+        
+        let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
+        let ac = UIAlertController(title: "Test Finished", message: message , preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
+        }))
+        present(ac, animated: true, completion: nil)
     }
     
     private func configureView() {
@@ -254,79 +329,5 @@ class GIStartTestVC: UIViewController {
             counterLabel.trailingAnchor.constraint(equalTo: questionView.trailingAnchor),
             counterLabel.bottomAnchor.constraint(equalTo: testView.bottomAnchor)
         ])
-    }
-    
-    @objc private func buttonPressed(sender: UIButton) {
-        
-        if sender.titleLabel?.text == correctAnswer {
-            button1.isEnabled = false
-            button2.isEnabled = false
-            button3.isEnabled = false
-            button4.isEnabled = false
-            correctAnswerCounter += 1
-            sender.backgroundColor = .systemGreen
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                sender.backgroundColor = .systemYellow
-                UIView.animate(withDuration: 0.5) {
-                    
-                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
-                    self.testView.transform = .identity
-                    
-                    if self.questionArray.isEmpty {
-                        
-                        self.presentAlertController()
-                    } else {
-                            self.startConfig()
-                    }
-                }
-            }
-            
-            currentWord.exp += 72
-            
-        } else {
-            button1.isEnabled = false
-            button2.isEnabled = false
-            button3.isEnabled = false
-            button4.isEnabled = false
-            wrongAnswerCounter += 1
-            sender.backgroundColor = .systemRed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                sender.backgroundColor = .systemYellow
-                UIView.animate(withDuration: 0.5) {
-                    
-                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
-                    self.testView.transform = .identity
-                    
-                    if self.questionArray.isEmpty {
-                        
-                        self.presentAlertController()
-                    } else {
-                            self.startConfig()
-                    }
-                }
-            }
-            currentWord.exp -= 30
-        }
-        DispatchQueue.main.async {
-            
-            guard let cont = self.container else { return }
-            
-            do {
-                try cont.viewContext.save()
-            } catch {
-                print("saving container error - StartTestVC")
-            }
-        }
-    }
-    
-    private func presentAlertController() {
-        
-        let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
-        let ac = UIAlertController(title: "Test Finished", message: message , preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            self.navigationController?.popViewController(animated: true)
-            self.dismiss(animated: true, completion: nil)
-        }))
-        present(ac, animated: true, completion: nil)
     }
 }

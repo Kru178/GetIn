@@ -15,7 +15,7 @@ class GIListVC: UIViewController {
     
     var container: NSPersistentContainer?
     var dictionary = [ListModel]()
-
+    let center = UNUserNotificationCenter.current()
 
     override func viewDidLoad() {
         super.viewDidLoad()

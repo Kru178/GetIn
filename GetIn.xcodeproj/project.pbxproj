@@ -23,12 +23,12 @@
 		783657FB257BC9F800CC4FF3 /* GIEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */; };
 		783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FE257CE3C100CC4FF3 /* GIButton.swift */; };
 		78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78365801257D2B8E00CC4FF3 /* WordCell.swift */; };
-
+		885223F2259891480079794C /* GISettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885223F1259891480079794C /* GISettingsCell.swift */; };
+		885223F5259891720079794C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885223F4259891720079794C /* Settings.swift */; };
 		8854982125878C8800CAF135 /* ListModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */; };
 		8854982225878C8800CAF135 /* ListModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981C25878C8800CAF135 /* ListModel+CoreDataProperties.swift */; };
 		8854982325878C8800CAF135 /* WordModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981D25878C8800CAF135 /* WordModel+CoreDataClass.swift */; };
 		8854982425878C8800CAF135 /* WordModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981E25878C8800CAF135 /* WordModel+CoreDataProperties.swift */; };
-
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,12 +50,12 @@
 		783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIEmptyStateView.swift; sourceTree = "<group>"; };
 		783657FE257CE3C100CC4FF3 /* GIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIButton.swift; sourceTree = "<group>"; };
 		78365801257D2B8E00CC4FF3 /* WordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCell.swift; sourceTree = "<group>"; };
-
+		885223F1259891480079794C /* GISettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GISettingsCell.swift; sourceTree = "<group>"; };
+		885223F4259891720079794C /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8854981C25878C8800CAF135 /* ListModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8854981D25878C8800CAF135 /* WordModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8854981E25878C8800CAF135 /* WordModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,12 +135,11 @@
 		7828E88F2567E33B005C02B3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-
 				8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */,
 				8854981C25878C8800CAF135 /* ListModel+CoreDataProperties.swift */,
+				885223F4259891720079794C /* Settings.swift */,
 				8854981D25878C8800CAF135 /* WordModel+CoreDataClass.swift */,
 				8854981E25878C8800CAF135 /* WordModel+CoreDataProperties.swift */,
-
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -149,8 +148,8 @@
 			isa = PBXGroup;
 			children = (
 				78365801257D2B8E00CC4FF3 /* WordCell.swift */,
+				885223F1259891480079794C /* GISettingsCell.swift */,
 				783657F6257B9CBF00CC4FF3 /* ListCell.swift */,
-				7836580E258BB60100CC4FF3 /* GISettingsCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -245,7 +244,6 @@
 				8854982325878C8800CAF135 /* WordModel+CoreDataClass.swift in Sources */,
 				7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */,
 				78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */,
-				7836580F258BB60100CC4FF3 /* GISettingsCell.swift in Sources */,
 				783657F7257B9CBF00CC4FF3 /* ListCell.swift in Sources */,
 				8854982125878C8800CAF135 /* ListModel+CoreDataClass.swift in Sources */,
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
@@ -256,11 +254,12 @@
 				783657FB257BC9F800CC4FF3 /* GIEmptyStateView.swift in Sources */,
 				7828E8B7256D7505005C02B3 /* GITestVC.swift in Sources */,
 				7828E8792567B06C005C02B3 /* GIListVC.swift in Sources */,
+				885223F5259891720079794C /* Settings.swift in Sources */,
 				8854982225878C8800CAF135 /* ListModel+CoreDataProperties.swift in Sources */,
 				8854982425878C8800CAF135 /* WordModel+CoreDataProperties.swift in Sources */,
 				7828E85E25629495005C02B3 /* SceneDelegate.swift in Sources */,
 				783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */,
-				7836580B258A89D300CC4FF3 /* Settings.swift in Sources */,
+				885223F2259891480079794C /* GISettingsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

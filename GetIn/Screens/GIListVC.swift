@@ -27,14 +27,9 @@ class GIListVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
         
+        print(dictionary.count)
 
-//        if dictionary.isEmpty {
-//        configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: view)
-//        } else {
-//            configureView()
-//        }
         
-        configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +104,7 @@ class GIListVC: UIViewController {
 
                     vc.fetchData()
                 }
-                
+                self!.configureView()
             } else {
                 let ac = UIAlertController(title: "Name Already Exists", message: "Please choose another name for your new list", preferredStyle: .alert)
                 let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
@@ -151,7 +146,7 @@ class GIListVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseID)
         view.addSubview(tableView)
-        
+        tableView.isHidden = false
 
         view.backgroundColor = .systemBackground
         
@@ -166,8 +161,8 @@ class GIListVC: UIViewController {
     
     private func configureEmptyStateView(with message: String, in view: UIView) {
         let emptyStateView = GIEmptyStateView(message: message)
-        emptyStateView.frame = view.bounds
         view.addSubview(emptyStateView)
+        emptyStateView.frame = view.bounds
     }
     
     private func fetchData() {
@@ -177,6 +172,12 @@ class GIListVC: UIViewController {
         do {
             self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
             DispatchQueue.main.async {
+                if self.dictionary.isEmpty {
+                    print("empty")
+                    self.configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: self.view)
+                } else {
+                    self.configureView()
+                }
                 self.tableView.reloadData()
             }
         } catch {
@@ -244,6 +245,11 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             completed(true)
+            
+            if self?.dictionary.count == 0 {
+                self!.configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: self!.view)
+                self!.tableView.isHidden = true
+            }
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])

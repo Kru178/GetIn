@@ -50,7 +50,11 @@ class GIStartTestVC: UIViewController {
         
         var learningList = [WordModel]()
         
+        if UserDefaults.standard.integer(forKey: "wordsQty") != 0 {
         wordsInTest = UserDefaults.standard.integer(forKey: "wordsQty")
+        } else {
+            wordsInTest = 10
+        }
         print(wordsInTest)
         
         for list in dictionary {

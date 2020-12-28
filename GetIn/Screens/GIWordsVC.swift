@@ -32,14 +32,14 @@ class GIWordsVC: UIViewController {
         
         words = list.words?.allObjects as? [WordModel]
         
-//        if let words = self.words {
-//            if words.count == 0 {
-//            configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
-//            } else {
-//                configureTableView()
-//            }
-//        }
-        configureTableView()
+        if let words = self.words {
+            if words.count == 0 {
+            configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+            } else {
+                configureTableView()
+            }
+        }
+//        configureTableView()
         
     }
     
@@ -77,6 +77,7 @@ class GIWordsVC: UIViewController {
                     self.tableView.reloadData()
                     
                 }
+                self.configureTableView()
             } else {
                 let ac = UIAlertController(title: "Word Already Exists", message: "You already have this word on your list.\nMaybe you should test yourself more often? 👀", preferredStyle: .alert)
                 let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
@@ -127,6 +128,7 @@ class GIWordsVC: UIViewController {
     func configureTableView() {
         view.addSubview(tableView)
         
+        tableView.isHidden = false
         tableView.frame = view.bounds
         tableView.rowHeight = 60
         tableView.dataSource = self
@@ -204,6 +206,11 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             completed(true)
+            
+            if self!.words?.count == 0 {
+                self!.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+                self?.tableView.isHidden = true
+            }
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])

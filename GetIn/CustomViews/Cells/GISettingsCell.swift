@@ -85,14 +85,19 @@ class GISettingsCell: UITableViewCell {
     @objc func handleSwitchAction(sender: UISwitch) {
         if sender == switchControlNotif && !sender.isOn {
             notifSwitchState = false
-            //            DispatchQueue.main.async {
-            //                self.switchControlSounds.setOn(false, animated: true)
-            //            }
+                        DispatchQueue.main.async {
+                            self.switchControlSounds.setOn(false, animated: true)
+                            
+                            print(sender)
+                            print(self.switchControlSounds.isOn)
+                            print(self.switchControlNotif.isOn)
+                        }
         } else if sender == switchControlNotif && sender.isOn {
             notifSwitchState = true
         } else if sender == switchControlSounds && !sender.isOn {
             soundsSwitchState = false
         } else if sender == switchControlSounds && sender.isOn {
+            print(self.switchControlSounds.isOn)
             soundsSwitchState = true
         }
     }

@@ -32,10 +32,12 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         title = "Settings"
         configureTebleView()
         configureCells()
+        print(UserDefaults.standard.integer(forKey: "wordsQty"))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         
+        print("disappearing")
         wordsQty = wordsQtyCell.counter
         notifOn = notifCell.notifSwitchState
         soundsOn = soundsCell.soundsSwitchState

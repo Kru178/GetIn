@@ -200,7 +200,11 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         cell.nameLabel.text = list.title
         cell.wordsLabel.text = "Words: \(list.words?.count ?? 0)"
         
-        let progress = list.learned
+        var progress = 0
+        
+        if let words = list.words?.allObjects as? [WordModel] {
+            progress = calculateExp(words: words)
+        }
         
         cell.progressLabel.text = "Learned: \(progress) %"
         
@@ -214,6 +218,22 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+    }
+    
+    func calculateExp(words: [WordModel]) -> Int {
+        
+        if words.count > 0 {
+            var totalExp = 0
+            for word in words {
+                totalExp += Int(word.exp)
+            }
+            
+            let lrnPct = Int(totalExp * 100 / words.count / 1000)
+            return lrnPct
+            
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

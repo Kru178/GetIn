@@ -27,6 +27,8 @@ class GITestVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         navigationController?.navigationBar.tintColor = .systemGreen
         
+        print(UserDefaults.standard.integer(forKey: "wordsQty"))
+        
         configureButtons()
     }
     

@@ -29,7 +29,8 @@ class GISettingsCell: UITableViewCell {
     
     let stepper = UIStepper(frame: .zero)
     let wordsNumberLabel = UILabel()
-    var counter = 0
+    var counter = Int()
+    
     var notifSwitchState = false
     var soundsSwitchState = false
     
@@ -49,9 +50,8 @@ class GISettingsCell: UITableViewCell {
         switchControlSounds.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         switchControlSounds.isHidden = true
         
-        
-        stepper.maximumValue = 25
         stepper.minimumValue = 10
+        stepper.maximumValue = 25
         stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
         stepper.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stepper)
@@ -59,6 +59,7 @@ class GISettingsCell: UITableViewCell {
         stepper.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         stepper.isHidden = true
         
+        counter = UserDefaults.standard.integer(forKey: "wordsQty")
         wordsNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         wordsNumberLabel.text = String(Int(stepper.value))
         contentView.addSubview(wordsNumberLabel)
@@ -73,9 +74,9 @@ class GISettingsCell: UITableViewCell {
     
     
     @objc func stepperValueChanged(sender: UIStepper) {
-        wordsNumberLabel.text = String(Int(sender.value))
         
         counter = Int(sender.value)
+        wordsNumberLabel.text = String(counter)
         //TODO: save to user defaults
     }
     
@@ -85,13 +86,13 @@ class GISettingsCell: UITableViewCell {
     @objc func handleSwitchAction(sender: UISwitch) {
         if sender == switchControlNotif && !sender.isOn {
             notifSwitchState = false
-                        DispatchQueue.main.async {
-                            self.switchControlSounds.setOn(false, animated: true)
-                            
-                            print(sender)
-                            print(self.switchControlSounds.isOn)
-                            print(self.switchControlNotif.isOn)
-                        }
+            DispatchQueue.main.async {
+                self.switchControlSounds.setOn(false, animated: true)
+                
+                print(sender)
+                print(self.switchControlSounds.isOn)
+                print(self.switchControlNotif.isOn)
+            }
         } else if sender == switchControlNotif && sender.isOn {
             notifSwitchState = true
         } else if sender == switchControlSounds && !sender.isOn {

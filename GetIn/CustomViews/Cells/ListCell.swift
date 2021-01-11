@@ -28,9 +28,15 @@ class ListCell: UITableViewCell {
     
     func configure() {
         
+        
+        
         selectionStyle = .none
         backgroundColor = .secondarySystemBackground
         addSubview(cellView)
+        
+        cellView.layer.shadowRadius = 8
+        cellView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        cellView.layer.shadowOpacity = 0.5
         
         cellView.addSubview(nameLabel)
         cellView.addSubview(wordsLabel)

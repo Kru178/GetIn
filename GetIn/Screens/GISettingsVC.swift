@@ -26,6 +26,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     var notifOn = Bool()
     var soundsOn = Bool()
     
+    
+    let email = "s.krupe@gmail.com"
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,6 +145,17 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 2 && indexPath.row == 0 {
+            print("mail")
+        if let url = URL(string: "mailto:\(email)") {
+          if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url)
+          } else {
+            UIApplication.shared.openURL(url)
+          }
+        }
+        }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }

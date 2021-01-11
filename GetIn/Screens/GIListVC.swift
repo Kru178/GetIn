@@ -11,16 +11,16 @@ import CoreData
 class GIListVC: UIViewController {
     
     let tableView = UITableView()
-
+    
     
     var container: NSPersistentContainer?
     var dictionary = [ListModel]()
     let center = UNUserNotificationCenter.current()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        
         
         title = "Your Lists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
@@ -28,14 +28,14 @@ class GIListVC: UIViewController {
         navigationController?.navigationBar.tintColor = .systemGreen
         
         print(dictionary.count)
-
+        
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
-      
-
+        
+        
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
             if granted {
                 print("Yay!")
@@ -45,11 +45,11 @@ class GIListVC: UIViewController {
         }
         scheduleNotification()
     }
-
+    
     
     func scheduleNotification() {
         let center = UNUserNotificationCenter.current()
-
+        
         let content = UNMutableNotificationContent()
         content.title = "Repetition Time!"
         content.body = "Hey! It's time to repeat something, don't you think?!"
@@ -57,17 +57,17 @@ class GIListVC: UIViewController {
         content.categoryIdentifier = "alarm"
         content.userInfo = ["customData": "fizzbuzz"]
         content.sound = UNNotificationSound.default
-
+        
         var dateComponents = DateComponents()
         dateComponents.hour = 11
         dateComponents.minute = 26
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
-
+        
     }
     
     
@@ -101,7 +101,7 @@ class GIListVC: UIViewController {
                     } catch {
                         print("cannot save context: addList")
                     }
-
+                    
                     vc.fetchData()
                 }
                 self!.configureView()
@@ -119,12 +119,12 @@ class GIListVC: UIViewController {
             textField.placeholder = "List name"
             action.isEnabled = false
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
-                   {_ in
-                       // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
-                       let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
-                       let textIsNotEmpty = textCount > 0
-                       action.isEnabled = textIsNotEmpty
-               })
+                                                    {_ in
+                                                        // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                                                        let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                                                        let textIsNotEmpty = textCount > 0
+                                                        action.isEnabled = textIsNotEmpty
+                                                    })
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -147,7 +147,7 @@ class GIListVC: UIViewController {
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseID)
         view.addSubview(tableView)
         tableView.isHidden = false
-
+        
         view.backgroundColor = .systemBackground
         
         NSLayoutConstraint.activate([
@@ -257,20 +257,35 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(style: .normal, title: "Edit") { (action, view, completed) in
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, completed) in
             
             let ac = UIAlertController(title: "Edit Title", message: "Please enter the new title" , preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Save", style: .default, handler: { (action) in
-                
-//                self.dictionaryModel.vocabulary[indexPath.row].title = textf
-            }))
-            ac.addTextField { (textField) in
-                textField.placeholder = "title"
-                
+            
+            ac.addTextField { (tf) in
+                tf.text = self.dictionary[indexPath.row].title
             }
+            let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
+//                let textField = ac.textFields![0] as UITextField
+                self.dictionary[indexPath.row].title = ac.textFields![0].text
+                DispatchQueue.main.async {
+                    do {
+                        try self.container?.viewContext.save()
+                    } catch {
+                        print("cannot save context: addList")
+                    }
+                    self.fetchData()
+                }
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){_ in
+                self.dictionary[indexPath.row].managedObjectContext?.rollback()
+                self.tableView.reloadData()
+            }
+            
+            ac.addAction(saveAction)
+            ac.addAction(cancelAction)
             self.present(ac, animated: true, completion: nil)
         }
         
-        return UISwipeActionsConfiguration(actions: [action])
+        return UISwipeActionsConfiguration(actions: [editAction])
     }
 }

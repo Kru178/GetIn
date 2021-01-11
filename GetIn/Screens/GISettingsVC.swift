@@ -80,7 +80,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GISettingsCell.self, forCellReuseIdentifier: "cell")
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIView.layoutFittingCompressedSize.height))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 1))
         footerView.backgroundColor = .systemGroupedBackground
         tableView.tableFooterView = footerView
     }

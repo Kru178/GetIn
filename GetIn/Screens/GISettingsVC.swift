@@ -28,7 +28,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     
     let email = "s.krupe@gmail.com"
-    
+    let center = UNUserNotificationCenter.current()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,11 +64,13 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         notifCell.switchControlNotif.isOn = UserDefaults.standard.bool(forKey: "notifOn")
         notifOn = notifCell.switchControlNotif.isOn
         notifCell.textLabel?.text = Notifications.Notifications.description
+        notifCell.switchControlNotif.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
         
         soundsCell.switchControlSounds.isHidden = false
         soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
         soundsOn = soundsCell.switchControlSounds.isOn
         soundsCell.textLabel?.text = Notifications.Sounds.description
+        soundsCell.switchControlSounds.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
 
         emailCell.textLabel?.text = Feedback.Email.description
         emailCell.selectionStyle = .default
@@ -160,5 +162,56 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    
+    @objc func settingsSwitched(sender: UISwitch) {
+        if sender == notifCell.switchControlNotif {
+            
+            switch sender.isOn {
+            case true:
+                center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+                                if granted {
+                                    print("Yay!")
+                                    self.scheduleNotification()
+                                } else {
+                                    print("D'oh")
+                                }
+                            }
+            case false:
+                soundsCell.switchControlSounds.setOn(false, animated: true)
+            }
+            
+        } else {
+            
+//            switch sender.isOn {
+//            case true:
+//               
+//            case false:
+//                
+//            }
+        }
+    }
+    
+    func scheduleNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Repetition Time!"
+        content.body = "Hey! It's time to repeat something, don't you think?!"
+        content.badge = NSNumber(value: 3)
+        content.categoryIdentifier = "alarm"
+        content.userInfo = ["customData": "fizzbuzz"]
+        content.sound = UNNotificationSound.default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 11
+        dateComponents.minute = 26
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        //        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+        
+    }
 }
 

@@ -15,7 +15,7 @@ class GIListVC: UIViewController {
     
     var container: NSPersistentContainer?
     var dictionary = [ListModel]()
-    let center = UNUserNotificationCenter.current()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,14 +36,7 @@ class GIListVC: UIViewController {
         fetchData()
         
         
-        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-            if granted {
-                print("Yay!")
-            } else {
-                print("D'oh")
-            }
-        }
-        scheduleNotification()
+        
     }
     
     

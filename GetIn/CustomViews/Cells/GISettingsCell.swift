@@ -14,7 +14,6 @@ class GISettingsCell: UITableViewCell {
         switchControl.isOn = true
         switchControl.onTintColor = .systemGreen
         switchControl.translatesAutoresizingMaskIntoConstraints = false
-        switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
         return switchControl
     }()
     
@@ -23,7 +22,6 @@ class GISettingsCell: UITableViewCell {
         switchControl.isOn = true
         switchControl.onTintColor = .systemGreen
         switchControl.translatesAutoresizingMaskIntoConstraints = false
-        switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
         return switchControl
     }()
     
@@ -77,29 +75,5 @@ class GISettingsCell: UITableViewCell {
         
         counter = Int(sender.value)
         wordsNumberLabel.text = String(counter)
-        //TODO: save to user defaults
-    }
-    
-    
-    
-    
-    @objc func handleSwitchAction(sender: UISwitch) {
-        if sender == switchControlNotif && !sender.isOn {
-            notifSwitchState = false
-            DispatchQueue.main.async {
-                self.switchControlSounds.setOn(false, animated: true)
-                
-                print(sender)
-                print(self.switchControlSounds.isOn)
-                print(self.switchControlNotif.isOn)
-            }
-        } else if sender == switchControlNotif && sender.isOn {
-            notifSwitchState = true
-        } else if sender == switchControlSounds && !sender.isOn {
-            soundsSwitchState = false
-        } else if sender == switchControlSounds && sender.isOn {
-            print(self.switchControlSounds.isOn)
-            soundsSwitchState = true
-        }
     }
 }

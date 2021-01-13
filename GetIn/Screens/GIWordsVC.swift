@@ -114,6 +114,7 @@ class GIWordsVC: UIViewController {
                })
         }
         
+        
         alert.addAction(cancelAction)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)

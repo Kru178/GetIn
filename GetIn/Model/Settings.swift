@@ -54,7 +54,7 @@ enum Feedback: Int, CaseIterable, CustomStringConvertible {
     var description: String {
         
         switch self {
-        case .Email: return "Send email"
+        case .Email: return "Contact us"
 //        case .Phone: return "Phone"
         }
     }

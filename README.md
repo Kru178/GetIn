@@ -1,5 +1,5 @@
 # GetIn
 My first app in cooperation with @GhostJavaWriter
 
-If you are anything like us, then you always forget new words...
-Make them Get In there via spaced repetition!
+If you are anything like us, then in most cases you forget new words after you learn them...
+Make them Get In your head via spaced repetition!

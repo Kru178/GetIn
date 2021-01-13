@@ -151,17 +151,15 @@ class GIStartTestVC: UIViewController {
             sender.backgroundColor = .systemGreen
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 sender.backgroundColor = .systemYellow
-                UIView.animate(withDuration: 0.5) {
+                if self.questionArray.isEmpty {
                     
-                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
-                    self.testView.transform = .identity
-                    
-                    if self.questionArray.isEmpty {
-                        
                         self.presentAlertController()
                     } else {
-                            self.startConfig()
+                        UIView.animate(withDuration: 0.5) {
+                        self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
+                        self.testView.transform = .identity
                     }
+                        self.startConfig()
                 }
             }
             

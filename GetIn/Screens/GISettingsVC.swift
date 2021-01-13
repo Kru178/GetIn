@@ -15,7 +15,7 @@ import UserNotifications
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()
-//    let defaults = UserDefaults.standard
+    //    let defaults = UserDefaults.standard
     
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
@@ -43,8 +43,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         print("disappearing")
         wordsQty = wordsQtyCell.counter
-        notifOn = notifCell.notifSwitchState
-        soundsOn = soundsCell.soundsSwitchState
+//        notifOn = notifCell.notifSwitchState
+//        soundsOn = soundsCell.soundsSwitchState
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
@@ -71,7 +71,12 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         soundsOn = soundsCell.switchControlSounds.isOn
         soundsCell.textLabel?.text = Notifications.Sounds.description
         soundsCell.switchControlSounds.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
-
+        if notifOn {
+            soundsCell.switchControlSounds.isEnabled = true
+        } else {
+            soundsCell.switchControlSounds.isEnabled = false
+        }
+        
         emailCell.textLabel?.text = Feedback.Email.description
         emailCell.selectionStyle = .default
     }
@@ -150,13 +155,13 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         if indexPath.section == 2 && indexPath.row == 0 {
             print("mail")
-        if let url = URL(string: "mailto:\(email)") {
-          if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url)
-          } else {
-            UIApplication.shared.openURL(url)
-          }
-        }
+            if let url = URL(string: "mailto:\(email)") {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -168,26 +173,30 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             
             switch sender.isOn {
             case true:
+                soundsCell.switchControlSounds.isEnabled = true
                 center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-                                if granted {
-                                    print("Yay!")
-                                    self.scheduleNotification()
-                                } else {
-                                    print("D'oh")
-                                }
-                            }
+                    if granted {
+                        print("Yay!")
+                        self.scheduleNotification()
+                        self.notifOn = true
+                    } else {
+                        print("D'oh")
+                    }
+                }
             case false:
+                notifOn = false
                 soundsCell.switchControlSounds.setOn(false, animated: true)
+                soundsCell.switchControlSounds.isEnabled = false
             }
             
         } else {
             
-//            switch sender.isOn {
-//            case true:
-//               
-//            case false:
-//                
-//            }
+            switch sender.isOn {
+            case true:
+                soundsOn = true
+            case false:
+                soundsOn = false
+            }
         }
     }
     

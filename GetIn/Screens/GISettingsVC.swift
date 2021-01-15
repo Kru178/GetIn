@@ -52,7 +52,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         //add here
         let value = Double(UserDefaults.standard.integer(forKey: "wordsQty"))
         wordsQtyCell.stepper.value = value
-        print(value)
         wordsQty = Int(wordsQtyCell.stepper.value)
         wordsQtyCell.wordsNumberLabel.text = "\(wordsQty)"
         

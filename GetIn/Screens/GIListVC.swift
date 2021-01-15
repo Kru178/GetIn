@@ -28,27 +28,6 @@ class GIListVC: UIViewController {
         fetchData()
     }
     
-    func scheduleNotification() {
-        let center = UNUserNotificationCenter.current()
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Repetition Time!"
-        content.body = "Hey! It's time to repeat something, don't you think?!"
-        content.badge = NSNumber(value: 3)
-        content.categoryIdentifier = "alarm"
-        content.userInfo = ["customData": "fizzbuzz"]
-        content.sound = UNNotificationSound.default
-        
-        var dateComponents = DateComponents()
-        dateComponents.hour = 11
-        dateComponents.minute = 26
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        center.add(request)
-        
-    }
-    
     
     @objc func addList() {
         var listTitle: String = ""

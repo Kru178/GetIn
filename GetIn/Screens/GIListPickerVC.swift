@@ -28,6 +28,8 @@ class GIListPickerVC: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start Test", style: .plain, target: self, action: #selector(start))
         navigationItem.rightBarButtonItem?.isEnabled = false
         
+        customDict = []
+        
         configureTableView()
     }
     
@@ -108,7 +110,7 @@ extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dictionary?[indexPath.row].selected.toggle()
-        customDict = []
+        
         guard let dict = dictionary else { return }
         
             if dict[indexPath.row].selected {

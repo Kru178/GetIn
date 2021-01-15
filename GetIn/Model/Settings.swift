@@ -35,12 +35,14 @@ enum General: Int, CaseIterable, CustomStringConvertible {
 
 enum Notifications: Int, CaseIterable, CustomStringConvertible {
     case Notifications
+    case Schedule
     case Sounds
     
     var description: String {
         
         switch self {
         case .Notifications: return "Enable notifications"
+        case .Schedule: return "Schedule"
         case .Sounds: return "Sounds"
         }
     }

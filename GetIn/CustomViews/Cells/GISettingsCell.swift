@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GISettingsCell: UITableViewCell {
+class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     lazy var switchControlNotif: UISwitch = {
         let switchControl = UISwitch()
@@ -24,6 +24,8 @@ class GISettingsCell: UITableViewCell {
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         return switchControl
     }()
+    
+    let picker = UIPickerView()
     
     let stepper = UIStepper(frame: .zero)
     let wordsNumberLabel = UILabel()
@@ -64,6 +66,17 @@ class GISettingsCell: UITableViewCell {
         wordsNumberLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         wordsNumberLabel.trailingAnchor.constraint(equalTo: stepper.leadingAnchor, constant: -20).isActive = true
         wordsNumberLabel.isHidden = true
+        
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(picker)
+//        picker.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        picker.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        picker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        picker.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        picker.isHidden = true
+        picker.dataSource = self
+        picker.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -75,5 +88,26 @@ class GISettingsCell: UITableViewCell {
         
         counter = Int(sender.value)
         wordsNumberLabel.text = String(counter)
+    }
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return 10
+        } else {
+            return 100
+        }
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return "First \(row)"
+        } else {
+            return "Second \(row)"
+        }
     }
 }

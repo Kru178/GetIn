@@ -21,6 +21,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
+    let scheduleCell = GISettingsCell(style: .default, reuseIdentifier: "schedule")
+//    let picker = UIPickerView(frame: .zero)
     
     var wordsQty = Int()
     var notifOn = Bool()
@@ -34,7 +36,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         super.viewDidLoad()
         
         title = "Settings"
-        configureTebleView()
+        configureTableView()
         configureCells()
         print(UserDefaults.standard.integer(forKey: "wordsQty"))
     }
@@ -43,8 +45,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         print("disappearing")
         wordsQty = wordsQtyCell.counter
-//        notifOn = notifCell.notifSwitchState
-//        soundsOn = soundsCell.soundsSwitchState
+        //        notifOn = notifCell.notifSwitchState
+        //        soundsOn = soundsCell.soundsSwitchState
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
@@ -66,6 +68,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         notifCell.textLabel?.text = Notifications.Notifications.description
         notifCell.switchControlNotif.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
         
+        scheduleCell.textLabel?.text = "Schedule"
+        scheduleCell.picker.isHidden = false
+        
+        
         soundsCell.switchControlSounds.isHidden = false
         soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
         soundsOn = soundsCell.switchControlSounds.isOn
@@ -82,12 +88,14 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     
-    func configureTebleView() {
+    func configureTableView() {
         
         view.addSubview(tableView)
         tableView.frame = view.bounds
         tableView.backgroundColor = .systemGroupedBackground
         tableView.rowHeight = 50
+        //            UITableView.automaticDimension
+        //        tableView.estimatedRowHeight = 50
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GISettingsCell.self, forCellReuseIdentifier: "cell")
@@ -131,6 +139,33 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            if notifCell.switchControlNotif.isOn {
+                return 100
+            } else {
+            return 0
+            }
+        }
+        
+        return tableView.rowHeight
+    }
+    
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//       
+//        if indexPath.section == 1 && indexPath.row == 1{
+//                cell.center.y = cell.center.y + cell.frame.height / 2
+//                cell.alpha = 0
+//                UIView.animate(withDuration: 0.5, delay: 0.05*Double(indexPath.row), options: [.curveEaseInOut], animations: {
+//                    cell.center.y = cell.center.y - cell.frame.height / 2
+//                    cell.alpha = 1
+//                }, completion: nil)
+//            }
+//    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
@@ -142,6 +177,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             switch indexPath.row {
             case 0:
                 return notifCell
+            case 1:
+                return scheduleCell
             default:
                 return soundsCell
             }
@@ -173,6 +210,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             
             switch sender.isOn {
             case true:
+//                scheduleCell.isHidden = false
                 soundsCell.switchControlSounds.isEnabled = true
                 center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
                     if granted {
@@ -184,7 +222,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                     }
                 }
             case false:
+//                scheduleCell.isHidden = true
                 notifOn = false
+                soundsOn = false
                 soundsCell.switchControlSounds.setOn(false, animated: true)
                 soundsCell.switchControlSounds.isEnabled = false
             }
@@ -198,6 +238,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 soundsOn = false
             }
         }
+
+            self.tableView.reloadData()
     }
     
     func scheduleNotification() {

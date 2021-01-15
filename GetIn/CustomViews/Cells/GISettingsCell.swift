@@ -49,7 +49,7 @@ class GISettingsCell: UITableViewCell {
         switchControlSounds.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         switchControlSounds.isHidden = true
         
-        
+        counter = UserDefaults.standard.integer(forKey: "wordsQty")
         stepper.maximumValue = 25
         stepper.minimumValue = 10
         stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
@@ -65,6 +65,7 @@ class GISettingsCell: UITableViewCell {
         wordsNumberLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         wordsNumberLabel.trailingAnchor.constraint(equalTo: stepper.leadingAnchor, constant: -20).isActive = true
         wordsNumberLabel.isHidden = true
+        
     }
     
     required init?(coder: NSCoder) {
@@ -73,14 +74,13 @@ class GISettingsCell: UITableViewCell {
     
     
     @objc func stepperValueChanged(sender: UIStepper) {
-        wordsNumberLabel.text = String(Int(sender.value))
+        let value = Int(sender.value)
         
-        counter = Int(sender.value)
+        wordsNumberLabel.text = String(Int(sender.value))
+        //UserDefaults.standard.set(value, forKey: "wordsQty")
+        counter = value
         //TODO: save to user defaults
     }
-    
-    
-    
     
     @objc func handleSwitchAction(sender: UISwitch) {
         if sender == switchControlNotif && !sender.isOn {

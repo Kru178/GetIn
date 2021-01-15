@@ -31,7 +31,7 @@ class GIEmptyStateView: UIView {
     
     func configure() {
         addSubview(label)
-            backgroundColor = .systemBackground
+        backgroundColor = .systemBackground
         
         label.font = .boldSystemFont(ofSize: 30)
         label.textColor = .secondaryLabel

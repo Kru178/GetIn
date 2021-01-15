@@ -5,6 +5,14 @@
 //  Created by Sergei Krupenikov on 20.11.2020.
 //
 
+//FIXME: bugs
+//start test in pick list vc with less than 10 words
+//fatal error when you try to start test first launch without change settings count words
+
+//TODO: notifications doesn't work
+//TODO: notifications able to select a specific date
+//TODO: send email
+
 import UIKit
 
 class GITabBarController: UITabBarController {

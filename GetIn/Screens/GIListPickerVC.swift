@@ -115,6 +115,8 @@ extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {
         
             if dict[indexPath.row].selected {
                 customDict?.append(dict[indexPath.row])
+            } else {
+                customDict?.removeAll { $0.title == dict[indexPath.row].title }
             }
         
         if customDict?.count != 0 {

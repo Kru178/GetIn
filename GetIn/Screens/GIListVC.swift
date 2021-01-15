@@ -193,8 +193,10 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
             cell.progressLabel.backgroundColor = .secondarySystemBackground
         case 31...70:
             cell.progressLabel.backgroundColor = .systemYellow
-        default:
+        case 71...100:
             cell.progressLabel.backgroundColor = .systemGreen
+        default:
+            cell.progressLabel.backgroundColor = .systemRed
         }
         
         return cell

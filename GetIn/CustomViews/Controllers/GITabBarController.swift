@@ -27,7 +27,7 @@ class GITabBarController: UITabBarController {
         
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [createListVC(), createTestVC(), createSettingsVC()]
-        selectedIndex = 2
+        selectedIndex = 0
     }
     
     

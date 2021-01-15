@@ -7,14 +7,13 @@
 
 import UIKit
 
-class GISettingsCell: UITableViewCell {
+class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     lazy var switchControlNotif: UISwitch = {
         let switchControl = UISwitch()
         switchControl.isOn = true
         switchControl.onTintColor = .systemGreen
         switchControl.translatesAutoresizingMaskIntoConstraints = false
-        switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
         return switchControl
     }()
     
@@ -23,13 +22,15 @@ class GISettingsCell: UITableViewCell {
         switchControl.isOn = true
         switchControl.onTintColor = .systemGreen
         switchControl.translatesAutoresizingMaskIntoConstraints = false
-        switchControl.addTarget(self, action: #selector(handleSwitchAction), for: .valueChanged)
         return switchControl
     }()
     
+    let picker = UIPickerView()
+    
     let stepper = UIStepper(frame: .zero)
     let wordsNumberLabel = UILabel()
-    var counter = 0
+    var counter = Int()
+    
     var notifSwitchState = false
     var soundsSwitchState = false
     
@@ -50,8 +51,8 @@ class GISettingsCell: UITableViewCell {
         switchControlSounds.isHidden = true
         
         counter = UserDefaults.standard.integer(forKey: "wordsQty")
-        stepper.maximumValue = 25
         stepper.minimumValue = 10
+        stepper.maximumValue = 25
         stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
         stepper.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stepper)
@@ -59,6 +60,7 @@ class GISettingsCell: UITableViewCell {
         stepper.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         stepper.isHidden = true
         
+        counter = UserDefaults.standard.integer(forKey: "wordsQty")
         wordsNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         wordsNumberLabel.text = String(Int(stepper.value))
         contentView.addSubview(wordsNumberLabel)
@@ -66,6 +68,16 @@ class GISettingsCell: UITableViewCell {
         wordsNumberLabel.trailingAnchor.constraint(equalTo: stepper.leadingAnchor, constant: -20).isActive = true
         wordsNumberLabel.isHidden = true
         
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(picker)
+//        picker.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        picker.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        picker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        picker.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        picker.isHidden = true
+        picker.dataSource = self
+        picker.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -74,26 +86,29 @@ class GISettingsCell: UITableViewCell {
     
     
     @objc func stepperValueChanged(sender: UIStepper) {
-        let value = Int(sender.value)
-        
-        wordsNumberLabel.text = String(Int(sender.value))
-        //UserDefaults.standard.set(value, forKey: "wordsQty")
-        counter = value
-        //TODO: save to user defaults
+
+        counter = Int(sender.value)
+        wordsNumberLabel.text = String(counter)
     }
     
-    @objc func handleSwitchAction(sender: UISwitch) {
-        if sender == switchControlNotif && !sender.isOn {
-            notifSwitchState = false
-            //            DispatchQueue.main.async {
-            //                self.switchControlSounds.setOn(false, animated: true)
-            //            }
-        } else if sender == switchControlNotif && sender.isOn {
-            notifSwitchState = true
-        } else if sender == switchControlSounds && !sender.isOn {
-            soundsSwitchState = false
-        } else if sender == switchControlSounds && sender.isOn {
-            soundsSwitchState = true
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return 10
+        } else {
+            return 100
+        }
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return "First \(row)"
+        } else {
+            return "Second \(row)"
         }
     }
 }

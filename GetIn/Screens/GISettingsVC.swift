@@ -16,10 +16,16 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
+    let scheduleCell = GISettingsCell(style: .default, reuseIdentifier: "schedule")
+//    let picker = UIPickerView(frame: .zero)
     
     var wordsQty = Int()
     var notifOn = Bool()
     var soundsOn = Bool()
+    
+    
+    let email = "s.krupe@gmail.com"
+    let center = UNUserNotificationCenter.current()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,15 +33,14 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         title = "Settings"
         configureTableView()
         configureCells()
-        //print(<#T##items: Any...##Any#>)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         
+        print("disappearing")
         wordsQty = wordsQtyCell.counter
-        notifOn = notifCell.notifSwitchState
-        soundsOn = soundsCell.soundsSwitchState
-        
+        //        notifOn = notifCell.notifSwitchState
+        //        soundsOn = soundsCell.soundsSwitchState
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
@@ -59,12 +64,23 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         notifCell.switchControlNotif.isOn = UserDefaults.standard.bool(forKey: "notifOn")
         notifOn = notifCell.switchControlNotif.isOn
         notifCell.textLabel?.text = Notifications.Notifications.description
+        notifCell.switchControlNotif.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
+        
+        scheduleCell.textLabel?.text = "Schedule"
+        scheduleCell.picker.isHidden = false
+        
         
         soundsCell.switchControlSounds.isHidden = false
         soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
         soundsOn = soundsCell.switchControlSounds.isOn
         soundsCell.textLabel?.text = Notifications.Sounds.description
-
+        soundsCell.switchControlSounds.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
+        if notifOn {
+            soundsCell.switchControlSounds.isEnabled = true
+        } else {
+            soundsCell.switchControlSounds.isEnabled = false
+        }
+        
         emailCell.textLabel?.text = Feedback.Email.description
         emailCell.selectionStyle = .default
     }
@@ -75,10 +91,12 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.frame = view.bounds
         tableView.backgroundColor = .systemGroupedBackground
         tableView.rowHeight = 50
+        //            UITableView.automaticDimension
+        //        tableView.estimatedRowHeight = 50
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GISettingsCell.self, forCellReuseIdentifier: "cell")
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: UIView.layoutFittingCompressedSize.height))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 1))
         footerView.backgroundColor = .systemGroupedBackground
         tableView.tableFooterView = footerView
     }
@@ -113,6 +131,32 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         40.0
     }
     
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            if notifCell.switchControlNotif.isOn {
+                return 100
+            } else {
+            return 0
+            }
+        }
+        
+        return tableView.rowHeight
+    }
+    
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//       
+//        if indexPath.section == 1 && indexPath.row == 1{
+//                cell.center.y = cell.center.y + cell.frame.height / 2
+//                cell.alpha = 0
+//                UIView.animate(withDuration: 0.5, delay: 0.05*Double(indexPath.row), options: [.curveEaseInOut], animations: {
+//                    cell.center.y = cell.center.y - cell.frame.height / 2
+//                    cell.alpha = 1
+//                }, completion: nil)
+//            }
+//    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
@@ -124,6 +168,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             switch indexPath.row {
             case 0:
                 return notifCell
+            case 1:
+                return scheduleCell
             default:
                 return soundsCell
             }
@@ -134,8 +180,79 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if indexPath.section == 2 && indexPath.row == 0 {
+            print("mail")
+            if let url = URL(string: "mailto:\(email)") {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    
+    @objc func settingsSwitched(sender: UISwitch) {
+        if sender == notifCell.switchControlNotif {
+            
+            switch sender.isOn {
+            case true:
+//                scheduleCell.isHidden = false
+                soundsCell.switchControlSounds.isEnabled = true
+                center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+                    if granted {
+                        print("Yay!")
+                        self.scheduleNotification()
+                        self.notifOn = true
+                    } else {
+                        print("D'oh")
+                    }
+                }
+            case false:
+//                scheduleCell.isHidden = true
+                notifOn = false
+                soundsOn = false
+                soundsCell.switchControlSounds.setOn(false, animated: true)
+                soundsCell.switchControlSounds.isEnabled = false
+            }
+            
+        } else {
+            
+            switch sender.isOn {
+            case true:
+                soundsOn = true
+            case false:
+                soundsOn = false
+            }
+        }
+
+            self.tableView.reloadData()
+    }
+    
+    func scheduleNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Repetition Time!"
+        content.body = "Hey! It's time to repeat something, don't you think?!"
+        content.badge = NSNumber(value: 3)
+        content.categoryIdentifier = "alarm"
+        content.userInfo = ["customData": "fizzbuzz"]
+        content.sound = UNNotificationSound.default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 11
+        dateComponents.minute = 26
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        //        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+        
+    }
 }
 

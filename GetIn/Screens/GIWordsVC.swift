@@ -32,14 +32,14 @@ class GIWordsVC: UIViewController {
         
         words = list.words?.allObjects as? [WordModel]
         
-//        if let words = self.words {
-//            if words.count == 0 {
-//            configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
-//            } else {
-//                configureTableView()
-//            }
-//        }
-        configureTableView()
+        if let words = self.words {
+            if words.count == 0 {
+            configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+            } else {
+                configureTableView()
+            }
+        }
+//        configureTableView()
         
     }
     
@@ -77,6 +77,7 @@ class GIWordsVC: UIViewController {
                     self.tableView.reloadData()
                     
                 }
+                self.configureTableView()
             } else {
                 let ac = UIAlertController(title: "Word Already Exists", message: "You already have this word on your list.\nMaybe you should test yourself more often? 👀", preferredStyle: .alert)
                 let acAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
@@ -113,6 +114,7 @@ class GIWordsVC: UIViewController {
                })
         }
         
+        
         alert.addAction(cancelAction)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -127,6 +129,7 @@ class GIWordsVC: UIViewController {
     func configureTableView() {
         view.addSubview(tableView)
         
+        tableView.isHidden = false
         tableView.frame = view.bounds
         tableView.rowHeight = 60
         tableView.dataSource = self
@@ -204,16 +207,52 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             completed(true)
+            
+            if self!.words?.count == 0 {
+                self!.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+                self?.tableView.isHidden = true
+            }
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(style: .normal, title: "Favorite") { (action, view, completed) in
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, completed) in
+            
+            let ac = UIAlertController(title: "Edit", message: "Please edit the word or translation" , preferredStyle: .alert)
+            
+            ac.addTextField { (tf) in
+                tf.text = self.words?[indexPath.row].word
+            }
+            ac.addTextField { (tf) in
+                tf.text = self.words?[indexPath.row].translation
+            }
+            let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
+//                let textField = ac.textFields![0] as UITextField
+                self.words?[indexPath.row].word = ac.textFields![0].text
+                self.words?[indexPath.row].translation = ac.textFields![1].text
+                DispatchQueue.main.async {
+                    do {
+                        try self.container?.viewContext.save()
+                    } catch {
+                        print("cannot save context: addList")
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){_ in
+                self.words?[indexPath.row].managedObjectContext?.rollback()
+                self.tableView.reloadData()
+            }
+            
+            ac.addAction(saveAction)
+            ac.addAction(cancelAction)
+            self.present(ac, animated: true, completion: nil)
+        
             
         }
-        action.backgroundColor = .systemYellow
-        return UISwipeActionsConfiguration(actions: [action])
+        editAction.backgroundColor = .systemYellow
+        return UISwipeActionsConfiguration(actions: [editAction])
     }
 }

@@ -23,8 +23,10 @@ class GIListPickerVC: UIViewController {
         navigationController?.navigationBar.tintColor = .systemGreen
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
+        
         view.backgroundColor = .systemGray2
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start Test", style: .plain, target: self, action: #selector(start))
+        navigationItem.rightBarButtonItem?.isEnabled = false
         
         configureTableView()
     }
@@ -35,29 +37,34 @@ class GIListPickerVC: UIViewController {
 
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     @objc private func start() {
         
         //FIXME: check words count. If count less than 10 do not start the test
-        
-        customDict = []
-        
-        guard let dict = dictionary else { return }
-        
+        guard let dict = customDict else { return }
+        var counter = 0
         for list in dict {
-            if list.selected {
-                customDict?.append(list)
-            }
-        }
-        //FIXME: turn on the start button when at least one list is selected
-        if customDict == nil {
-           return
+            counter += list.words!.count
         }
 
-        let vc = GIStartTestVC()
-        vc.dictionary = customDict
-        navigationController?.pushViewController(vc, animated: true)
+        if counter > 9 {
+            
+            let vc = GIStartTestVC()
+            vc.dictionary = customDict
+            navigationController?.pushViewController(vc, animated: true)
+            for list in dict {
+                list.selected = false
+            }
+        } else {
+            let ac = UIAlertController(title: "Add some words first", message: "You need to have at least 10 words in your lists to start test", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(ac, animated: true, completion: nil)
+        }
+
         
-        //FIXME: uncheck lists when test have started
     }
     
     
@@ -101,6 +108,19 @@ extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dictionary?[indexPath.row].selected.toggle()
+        customDict = []
+        guard let dict = dictionary else { return }
+        
+            if dict[indexPath.row].selected {
+                customDict?.append(dict[indexPath.row])
+            }
+        
+        if customDict?.count != 0 {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
         tableView.reloadData()
+        
     }
 }

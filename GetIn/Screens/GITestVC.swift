@@ -24,7 +24,7 @@ class GITestVC: UIViewController {
         
         view.backgroundColor = .secondarySystemBackground
         navigationController?.navigationBar.isHidden = true
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back To Options", style: .plain, target: nil, action: nil)
         navigationController?.navigationBar.tintColor = .systemGreen
         
         configureButtons()
@@ -74,7 +74,7 @@ class GITestVC: UIViewController {
             vc.container = container
             navigationController?.pushViewController(vc, animated: true)
         } else {
-            let ac = UIAlertController(title: "Add some words first", message: "You need to add at least 10 words to your lists to start test", preferredStyle: .alert)
+            let ac = UIAlertController(title: "Add some words first", message: "You need to have at least 10 words in your lists to start test", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(ac, animated: true, completion: nil)
         }

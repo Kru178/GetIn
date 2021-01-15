@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
+class GISettingsCell: UITableViewCell {
     
     lazy var switchControlNotif: UISwitch = {
         let switchControl = UISwitch()
@@ -71,13 +71,13 @@ class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSou
         picker.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(picker)
 //        picker.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+//        picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        picker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         picker.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         picker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-        picker.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        picker.widthAnchor.constraint(equalToConstant: 300).isActive = true
         picker.isHidden = true
-        picker.dataSource = self
-        picker.delegate = self
+        
     }
     
     required init?(coder: NSCoder) {
@@ -92,23 +92,5 @@ class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if component == 0 {
-            return 10
-        } else {
-            return 100
-        }
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0 {
-            return "First \(row)"
-        } else {
-            return "Second \(row)"
-        }
-    }
+   
 }

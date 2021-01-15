@@ -10,9 +10,8 @@ import CoreData
 
 class GIStartTestVC: UIViewController {
     
-    var dictionary = [ListModel]()
+    var dictionary : [ListModel]?
     var container : NSPersistentContainer?
-//    let defaults = UserDefaults.standard
     var wordsInTest = 10
     
     private let testView = UIView()
@@ -55,9 +54,10 @@ class GIStartTestVC: UIViewController {
         } else {
             wordsInTest = 10
         }
-        print(wordsInTest)
         
-        for list in dictionary {
+        guard let dict = dictionary else { return }
+        
+        for list in dict {
             
             guard let words = list.words?.allObjects as? [WordModel] else { continue }
             

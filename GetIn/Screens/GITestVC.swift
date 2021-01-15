@@ -11,7 +11,7 @@ import CoreData
 class GITestVC: UIViewController {
     
     var container : NSPersistentContainer?
-    private var dictionary = [ListModel]()
+    private var dictionary: [ListModel]?
 
     private let options = ["Test Over All Lists", "Pick A List"]
     private let allButton = GIButton(backgroundColor: .systemGreen, title: "Test Over All Lists")
@@ -26,8 +26,6 @@ class GITestVC: UIViewController {
         navigationController?.navigationBar.isHidden = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         navigationController?.navigationBar.tintColor = .systemGreen
-        
-        print(UserDefaults.standard.integer(forKey: "wordsQty"))
         
         configureButtons()
     }
@@ -61,16 +59,18 @@ class GITestVC: UIViewController {
         
         var count = 0
         
-        for index in 0..<dictionary.count {
+        guard let dict = dictionary else { return }
+        
+        for index in 0..<dict.count {
             
-            if let words = dictionary[index].words {
+            if let words = dict[index].words {
                 count += words.count
             }
         }
         
         if count > 9 {
             let vc = GIStartTestVC()
-            vc.dictionary = dictionary
+            vc.dictionary = dict
             vc.container = container
             navigationController?.pushViewController(vc, animated: true)
         } else {
@@ -84,7 +84,8 @@ class GITestVC: UIViewController {
     @objc func pickList() {
         let choiceVC = GIListPickerVC()
         navigationController?.pushViewController(choiceVC, animated: true)
-        choiceVC.dictionary = dictionary
+        guard let dict = dictionary else { return }
+        choiceVC.dictionary = dict
     }
     
     private func fetchData() {

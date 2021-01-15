@@ -11,34 +11,22 @@ import CoreData
 class GIListVC: UIViewController {
     
     let tableView = UITableView()
-    
-    
     var container: NSPersistentContainer?
     var dictionary = [ListModel]()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
+
         title = "Your Lists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
         
-        print(dictionary.count)
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
-        
-        
-        
     }
-    
     
     func scheduleNotification() {
         let center = UNUserNotificationCenter.current()
@@ -55,8 +43,6 @@ class GIListVC: UIViewController {
         dateComponents.hour = 11
         dateComponents.minute = 26
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        //        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
@@ -166,7 +152,7 @@ class GIListVC: UIViewController {
             self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
             DispatchQueue.main.async {
                 if self.dictionary.isEmpty {
-                    print("empty")
+                    
                     self.configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: self.view)
                 } else {
                     self.configureView()

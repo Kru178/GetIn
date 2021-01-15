@@ -15,7 +15,7 @@ class GIWordsVC: UIViewController {
     private let tableView = UITableView()
     
     var listName = "default"
-    var list = ListModel()
+    var list: ListModel?
     var container : NSPersistentContainer?
     private var words : [WordModel]?
 
@@ -28,9 +28,7 @@ class GIWordsVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
         
-        
-        
-        words = list.words?.allObjects as? [WordModel]
+        words = list?.words?.allObjects as? [WordModel]
         
         if let words = self.words {
             if words.count == 0 {

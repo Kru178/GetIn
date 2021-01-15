@@ -17,7 +17,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
     let scheduleCell = GISettingsCell(style: .default, reuseIdentifier: "schedule")
-//    let picker = UIPickerView(frame: .zero)
     
     var wordsQty = Int()
     var notifOn = Bool()
@@ -37,15 +36,11 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        print("disappearing")
         wordsQty = wordsQtyCell.counter
-        //        notifOn = notifCell.notifSwitchState
-        //        soundsOn = soundsCell.soundsSwitchState
+
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
-        
-        //print(<#T##items: Any...##Any#>)
     }
     
     func configureCells() {

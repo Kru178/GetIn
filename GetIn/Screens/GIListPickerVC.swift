@@ -9,8 +9,8 @@ import UIKit
 
 class GIListPickerVC: UIViewController {
     
-    var dictionary = [ListModel]()
-    private var customDict = [ListModel]()
+    var dictionary : [ListModel]?
+    private var customDict : [ListModel]?
     
     private let tableView = UITableView()
     
@@ -40,14 +40,16 @@ class GIListPickerVC: UIViewController {
         //FIXME: check words count. If count less than 10 do not start the test
         
         customDict = []
-
-        for list in dictionary {
+        
+        guard let dict = dictionary else { return }
+        
+        for list in dict {
             if list.selected {
-                customDict.append(list)
+                customDict?.append(list)
             }
         }
         //FIXME: turn on the start button when at least one list is selected
-        if customDict.isEmpty {
+        if customDict == nil {
            return
         }
 
@@ -74,18 +76,21 @@ class GIListPickerVC: UIViewController {
 extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dictionary.count
+        
+        guard let dict = dictionary else { return 0 }
+        
+        return dict.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let listRowAt = dictionary[indexPath.row]
+        let listRowAt = dictionary?[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = listRowAt.title
+        cell.textLabel?.text = listRowAt?.title
         cell.tintColor = .black
         
-        if listRowAt.selected == true {
+        if listRowAt?.selected == true {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -95,7 +100,7 @@ extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dictionary[indexPath.row].selected.toggle()
+        dictionary?[indexPath.row].selected.toggle()
         tableView.reloadData()
     }
 }

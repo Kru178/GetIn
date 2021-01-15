@@ -12,6 +12,5 @@ import CoreData
 @objc(ListModel)
 public class ListModel: NSManagedObject {
 
-    var learned = 0
     var selected = false
 }

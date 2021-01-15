@@ -14,7 +14,7 @@ class WordCell: UITableViewCell {
     let wordLabel = UILabel()
     let separatorLabel = UILabel()
     let translationLabel = UILabel()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -27,14 +27,14 @@ class WordCell: UITableViewCell {
     
     func configure() {
         backgroundColor = .secondarySystemBackground
-//        layer.cornerRadius = 30
-//        clipsToBounds = true
+        //        layer.cornerRadius = 30
+        //        clipsToBounds = true
         
         addSubview(cellView)
         
-            cellView.layer.shadowRadius = 4
-            cellView.layer.shadowOffset = CGSize(width: 1, height: 1)
-            cellView.layer.shadowOpacity = 0.5
+        cellView.layer.shadowRadius = 4
+        cellView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        cellView.layer.shadowOpacity = 0.5
         
         cellView.addSubview(wordLabel)
         cellView.addSubview(separatorLabel)
@@ -42,7 +42,7 @@ class WordCell: UITableViewCell {
         
         cellView.layer.cornerRadius = 10
         cellView.backgroundColor = .systemBackground
-//        cellView.clipsToBounds = true
+        //        cellView.clipsToBounds = true
         cellView.translatesAutoresizingMaskIntoConstraints = false
         
         wordLabel.textAlignment = .center

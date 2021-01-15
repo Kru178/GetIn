@@ -50,6 +50,7 @@ class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSou
         switchControlSounds.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         switchControlSounds.isHidden = true
         
+        counter = UserDefaults.standard.integer(forKey: "wordsQty")
         stepper.minimumValue = 10
         stepper.maximumValue = 25
         stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
@@ -85,7 +86,7 @@ class GISettingsCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSou
     
     
     @objc func stepperValueChanged(sender: UIStepper) {
-        
+
         counter = Int(sender.value)
         wordsNumberLabel.text = String(counter)
     }

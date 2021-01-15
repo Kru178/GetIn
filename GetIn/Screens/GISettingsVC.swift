@@ -8,21 +8,15 @@
 import UIKit
 import UserNotifications
 
-
-//TODO: Add functionality to change default quantity of words property (dictionary.wordsInTest)
-
-
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()
-    //    let defaults = UserDefaults.standard
     
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
     let scheduleCell = GISettingsCell(style: .default, reuseIdentifier: "schedule")
-//    let picker = UIPickerView(frame: .zero)
     
     var wordsQty = Int()
     var notifOn = Bool()
@@ -38,15 +32,12 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         title = "Settings"
         configureTableView()
         configureCells()
-        print(UserDefaults.standard.integer(forKey: "wordsQty"))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        print("disappearing")
         wordsQty = wordsQtyCell.counter
-        //        notifOn = notifCell.notifSwitchState
-        //        soundsOn = soundsCell.soundsSwitchState
+
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
@@ -58,7 +49,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         wordsQtyCell.stepper.isHidden = false
         wordsQtyCell.textLabel?.text = General.NumberOfWords.description
         wordsQtyCell.detailTextLabel?.text = "10 to 25"
-        wordsQtyCell.stepper.value = Double(UserDefaults.standard.integer(forKey: "wordsQty"))
+        //add here
+        let value = Double(UserDefaults.standard.integer(forKey: "wordsQty"))
+        wordsQtyCell.stepper.value = value
         wordsQty = Int(wordsQtyCell.stepper.value)
         wordsQtyCell.wordsNumberLabel.text = "\(wordsQty)"
         
@@ -87,7 +80,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         emailCell.selectionStyle = .default
     }
     
-    
     func configureTableView() {
         
         view.addSubview(tableView)
@@ -104,11 +96,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.tableFooterView = footerView
     }
     
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return Section.allCases.count
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let section = Section(rawValue: section) else { return 0 }
@@ -119,7 +109,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         case .Feedback: return Feedback.allCases.count
         }
     }
-    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 40))
@@ -133,11 +122,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         return view
     }
     
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         40.0
     }
-    
     
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -165,7 +152,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
 //            }
 //    }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
@@ -186,7 +172,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             return emailCell
         }
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

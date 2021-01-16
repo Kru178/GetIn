@@ -26,8 +26,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     var notifOn = Bool()
     var soundsOn = Bool()
     
-    var hour = 0
-    var min = 0
+    var hour = Int()
+    var min = Int()
     
     let center = UNUserNotificationCenter.current()
     
@@ -39,6 +39,15 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         title = "Settings"
         configureTableView()
         configureCells()
+        
+        hour = UserDefaults.standard.integer(forKey: "hour")
+        min = UserDefaults.standard.integer(forKey: "min")
+        timeCell.picker.selectRow(hour, inComponent: 0, animated: false)
+        timeCell.picker.selectRow(min, inComponent: 1, animated: false)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,6 +57,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
+        UserDefaults.standard.set(hour, forKey: "hour")
+        UserDefaults.standard.set(min, forKey: "min")
     }
     
     func configureCells() {
@@ -251,8 +262,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         var dateComponents = DateComponents()
 //        dateComponents.weekday = 1
-        dateComponents.hour = hour
-        dateComponents.minute = min
+        dateComponents.hour = Int(hours[hour])
+        dateComponents.minute = Int(minutes[min])
         //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -309,10 +320,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         
         if component == 0 {
-            hour = Int(hours[row])!
+            hour = row
             print(hour)
         } else {
-            min = Int(minutes[row])!
+            min = row
             print(min)
         }
         

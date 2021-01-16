@@ -91,13 +91,12 @@ class GIWordsVC: UIViewController {
         alert.addTextField { (textField) in
             textField.placeholder = "Word"
             action.isEnabled = false
-            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
-                   {_ in
-                       // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
-                       let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
-                       let textIsNotEmpty = textCount > 0
-                       action.isEnabled = textIsNotEmpty
-               })
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: { _ in
+                // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                let textIsNotEmpty = textCount > 0
+                action.isEnabled = textIsNotEmpty
+            })
         }
         
         alert.addTextField { (textField) in

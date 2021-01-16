@@ -22,6 +22,7 @@ class GIListVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .systemGreen
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,13 +77,12 @@ class GIListVC: UIViewController {
         alert.addTextField { textField in
             textField.placeholder = "List name"
             action.isEnabled = false
-            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
-                                                    {_ in
-                                                        // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
-                                                        let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
-                                                        let textIsNotEmpty = textCount > 0
-                                                        action.isEnabled = textIsNotEmpty
-                                                    })
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using: { _ in
+                // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                let textIsNotEmpty = textCount > 0
+                action.isEnabled = textIsNotEmpty
+            })
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -186,6 +186,9 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         if words.count > 0 {
             var totalExp = 0
             for word in words {
+                if word.exp < 0 {
+                    word.exp = 0
+                }
                 totalExp += Int(word.exp)
             }
             

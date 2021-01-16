@@ -45,7 +45,6 @@ class GIListPickerVC: UIViewController {
     
     @objc private func start() {
         
-        //FIXME: check words count. If count less than 10 do not start the test
         guard let dict = customDict else { return }
         var counter = 0
         for list in dict {
@@ -65,10 +64,7 @@ class GIListPickerVC: UIViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(ac, animated: true, completion: nil)
         }
-
-        
     }
-    
     
     private func configureTableView() {
         tableView.frame = view.bounds
@@ -79,7 +75,6 @@ class GIListPickerVC: UIViewController {
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
-    
 }
 
 extension GIListPickerVC : UITableViewDelegate, UITableViewDataSource {

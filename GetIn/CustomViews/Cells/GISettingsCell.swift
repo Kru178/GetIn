@@ -26,6 +26,7 @@ class GISettingsCell: UITableViewCell {
     }()
     
     let picker = UIPickerView()
+    let setButton = UIButton(frame: .zero)
     
     let stepper = UIStepper(frame: .zero)
     let wordsNumberLabel = UILabel()
@@ -71,13 +72,28 @@ class GISettingsCell: UITableViewCell {
         picker.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(picker)
 //        picker.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-//        picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        picker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+//        picker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         picker.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         picker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-        picker.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        picker.widthAnchor.constraint(equalToConstant: 160).isActive = true
         picker.isHidden = true
         
+        setButton.translatesAutoresizingMaskIntoConstraints = false
+        setButton.setTitle("Set", for: .normal)
+        setButton.backgroundColor = .gray
+        setButton.setTitleColor(.black, for: .normal)
+        setButton.layer.cornerRadius = 10
+        contentView.addSubview(setButton)
+        setButton.leadingAnchor.constraint(equalTo: picker.trailingAnchor, constant: 10).isActive = true
+        setButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        setButton.topAnchor.constraint(equalTo: topAnchor, constant: 51).isActive = true
+        setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -51).isActive = true
+//        setButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        setButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
+//        setButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+//        setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
+        setButton.isHidden = true
     }
     
     required init?(coder: NSCoder) {

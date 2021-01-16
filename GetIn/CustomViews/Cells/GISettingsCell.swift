@@ -87,7 +87,9 @@ class GISettingsCell: UITableViewCell {
         contentView.addSubview(setButton)
         setButton.leadingAnchor.constraint(equalTo: picker.trailingAnchor, constant: 10).isActive = true
         setButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-        setButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        setButton.topAnchor.constraint(equalTo: topAnchor, constant: 51).isActive = true
+        setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -51).isActive = true
+//        setButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         setButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
 //        setButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
 //        setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true

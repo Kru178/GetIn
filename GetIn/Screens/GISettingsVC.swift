@@ -16,15 +16,18 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
-    let scheduleCell = GISettingsCell(style: .default, reuseIdentifier: "schedule")
+    let timeCell = GISettingsCell(style: .default, reuseIdentifier: "time")
     
     let days = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
-    let minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"]
+    let minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "38", "39", "40", "43", "44", "45", "46", "50", "55"]
     
     var wordsQty = Int()
     var notifOn = Bool()
     var soundsOn = Bool()
+    
+    var hour = 0
+    var min = 0
     
     
     let email = "nadtsalov@gmail.com"
@@ -65,10 +68,13 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         notifCell.textLabel?.text = Notifications.Notifications.description
         notifCell.switchControlNotif.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
         
-        scheduleCell.textLabel?.text = "Schedule"
-        scheduleCell.picker.isHidden = false
-        scheduleCell.picker.dataSource = self
-        scheduleCell.picker.delegate = self
+        timeCell.textLabel?.text = Notifications.Time.description
+        timeCell.picker.isHidden = false
+        timeCell.picker.dataSource = self
+        timeCell.picker.delegate = self
+        timeCell.setButton.isHidden = false
+        timeCell.setButton.addTarget(self, action: #selector(scheduleNotification), for: .touchUpInside)
+//        timeCell.picker.target(forAction: #selector(scheduleNotification), withSender: self)
         
         soundsCell.switchControlSounds.isHidden = false
         soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
@@ -168,7 +174,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             case 0:
                 return notifCell
             case 1:
-                return scheduleCell
+                return timeCell
             default:
                 return soundsCell
             }
@@ -203,7 +209,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
                     if granted {
                         print("Yay!")
-                        self.scheduleNotification()
+//                        self.scheduleNotification()
                         self.notifOn = true
                     } else {
                         print("D'oh")
@@ -228,7 +234,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         self.tableView.reloadData()
     }
     
-    func scheduleNotification() {
+    @objc func scheduleNotification() {
+        
+        timeCell.setButton.backgroundColor = .systemGreen
+        
         let center = UNUserNotificationCenter.current()
         
         let content = UNMutableNotificationContent()
@@ -240,30 +249,31 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         content.sound = UNNotificationSound.default
         
         var dateComponents = DateComponents()
-        dateComponents.weekday = 1
-        dateComponents.hour = 11
-        dateComponents.minute = 26
+//        dateComponents.weekday = 1
+        dateComponents.hour = hour
+        dateComponents.minute = min
         //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
+        print("set")
         
     }
     
+   
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 3
+        return 2
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case 0:
-            return days.count
-        case 1:
             return hours.count
-        case 2:
+        case 1:
             return minutes.count
         default:
             return 0
@@ -273,10 +283,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
         case 0:
-            return days[row]
-        case 1:
             return hours[row]
-        case 2:
+        case 1:
             return minutes[row]
         default:
             return "0"
@@ -286,14 +294,28 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         switch component {
         case 0:
-            return 160
-        case 1:
             return 50
-        case 2:
+        case 1:
             return 50
         default:
             return 0
         }
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+         
+        
+        
+        if component == 0 {
+            hour = Int(hours[row])!
+            print(hour)
+        } else {
+            min = Int(minutes[row])!
+            print(min)
+        }
+        
+        
     }
 }
 

@@ -187,6 +187,7 @@ class GIStartTestVC: UIViewController {
                     }
                 }
             }
+            
             currentWord.exp -= 30
         }
         DispatchQueue.main.async {

@@ -6,12 +6,22 @@
 //
 
 //FIXME: bugs
-//start test in pick list vc with less than 10 words
-//fatal error when you try to start test first launch without change settings count words
+//(done) start test in pick list vc with less than 10 words
+//(done) fatal error when you try to start test first launch without change settings count words
 
-//TODO: notifications doesn't work
-//TODO: notifications able to select a specific date
-//TODO: send email
+//notifications doesn't work
+//notifications able to select a specific date
+//send email
+
+//TODO: add change the list for word
+//TODO: fix WordModel error
+//TODO: refactor throghout code
+//FIXME: fix bug add word with one empty field
+//TODO: highlight exp of word in list
+//TODO: add max limit of exp
+//TODO: add feature: highlight learned word in list
+//TODO: change adding exp logic
+
 
 import UIKit
 

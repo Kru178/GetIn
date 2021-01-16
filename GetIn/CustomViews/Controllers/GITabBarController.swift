@@ -21,7 +21,7 @@
 //TODO: add max limit of exp
 //TODO: add feature: highlight learned word in list
 //TODO: change adding exp logic
-
+//TODO: architecture think about it
 
 import UIKit
 

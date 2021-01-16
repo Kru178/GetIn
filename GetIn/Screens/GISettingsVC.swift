@@ -20,7 +20,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     let days = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
-    let minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "38", "39", "40", "43", "44", "45", "46", "50", "55"]
+    let minutes = ["00", "05", "10", "12", "13", "14", "15", "20", "25", "30", "35", "38", "39", "40", "43", "44", "45", "46", "50", "55"]
     
     var wordsQty = Int()
     var notifOn = Bool()
@@ -29,9 +29,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     var hour = 0
     var min = 0
     
+    let center = UNUserNotificationCenter.current()
     
     let email = "nadtsalov@gmail.com"
-    let center = UNUserNotificationCenter.current()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -220,6 +220,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 soundsOn = false
                 soundsCell.switchControlSounds.setOn(false, animated: true)
                 soundsCell.switchControlSounds.isEnabled = false
+                center.removeAllPendingNotificationRequests()
             }
             
         } else {
@@ -237,8 +238,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     @objc func scheduleNotification() {
         
         timeCell.setButton.backgroundColor = .systemGreen
+        timeCell.setButton.isEnabled = false
         
-        let center = UNUserNotificationCenter.current()
         
         let content = UNMutableNotificationContent()
         content.title = "Repetition Time!"

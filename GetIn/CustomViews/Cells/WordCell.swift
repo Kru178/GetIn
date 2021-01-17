@@ -40,10 +40,12 @@ class WordCell: UITableViewCell {
         //        clipsToBounds = true
         
         addSubview(cellView)
+        contentView.layer.cornerRadius = 10
         
         cellView.layer.shadowRadius = 4
         cellView.layer.shadowOffset = CGSize(width: 1, height: 1)
         cellView.layer.shadowOpacity = 0.5
+        cellView.layer.masksToBounds = true
         
         cellView.addSubview(wordLabel)
         cellView.addSubview(separatorLabel)

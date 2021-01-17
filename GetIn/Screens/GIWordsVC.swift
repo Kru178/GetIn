@@ -211,7 +211,7 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
 //MARK: Support methods
     
     private func addMoveAction(indexPath: IndexPath) -> UIContextualAction {
-        print("move")
+        
         let moveAction = UIContextualAction(style: .normal, title: "Move") { [weak self] (action, view, complited) in
             let ac = UIAlertController(title: "Move", message: "Choose a list where you wanna move that word", preferredStyle: .actionSheet)
             
@@ -243,6 +243,12 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                 ac.addAction(action)
             }
             
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ [weak self] _ in
+                self?.words?[indexPath.row].managedObjectContext?.rollback()
+                self?.tableView.reloadData()
+            }
+            
+            ac.addAction(cancelAction)
             self?.present(ac, animated: true, completion: nil)
         }
         return moveAction

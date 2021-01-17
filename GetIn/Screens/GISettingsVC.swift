@@ -254,6 +254,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     @objc func scheduleNotification() {
         
+        center.removeAllPendingNotificationRequests()
+        
         timeCell.setButton.backgroundColor = .systemGreen
         timeCell.setButton.isEnabled = false
         
@@ -277,11 +279,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
         print("set")
-        
     }
-    
-   
-    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
@@ -299,6 +297,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        timeCell.setButton.isEnabled = true
+        timeCell.setButton.backgroundColor = .gray
         switch component {
         case 0:
             return hours[row]

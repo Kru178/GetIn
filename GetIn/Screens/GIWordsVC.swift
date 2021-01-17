@@ -16,9 +16,10 @@ class GIWordsVC: UIViewController {
     
     var listName = "default"
     var list: ListModel?
+    var dictionary: [ListModel]?
     var container : NSPersistentContainer?
     private var words : [WordModel]?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,12 +33,11 @@ class GIWordsVC: UIViewController {
         
         if let words = self.words {
             if words.count == 0 {
-            configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+                configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
             } else {
                 configureTableView()
             }
         }
-//        configureTableView()
         
     }
     
@@ -49,7 +49,7 @@ class GIWordsVC: UIViewController {
         let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField1 = alert.textFields![0] as UITextField
             let textField2 = alert.textFields![1] as UITextField
-
+            
             guard let word = textField1.text else { return }
             guard let translation = textField2.text else { return }
             
@@ -103,14 +103,13 @@ class GIWordsVC: UIViewController {
             textField.placeholder = "Translation"
             action.isEnabled = false
             NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main, using:
-                   {_ in
-                       // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
-                       let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
-                       let textIsNotEmpty = textCount > 0
-                       action.isEnabled = textIsNotEmpty
-               })
+            { _ in
+                // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
+                let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
+                let textIsNotEmpty = textCount > 0
+                action.isEnabled = textIsNotEmpty
+            })
         }
-        
         
         alert.addAction(cancelAction)
         alert.addAction(action)
@@ -137,22 +136,6 @@ class GIWordsVC: UIViewController {
         
         tableView.register(WordCell.self, forCellReuseIdentifier: WordCell.reuseID)
     }
-    
-//    private func fetchData() {
-//
-//        guard let container = container else { return }
-//
-//        do {
-//            self.words = try container.viewContext.fetch(WordModel.fetchRequest())
-//
-//        } catch {
-//            print("cannot read context")
-//        }
-//
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//        }
-//    }
 }
 
 extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
@@ -174,21 +157,22 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             if words[indexPath.row].translation == "" {
                 cell.translationLabel.text = "Add translation here"
             } else {
+
             cell.translationLabel.text = words[indexPath.row].translation
                 cell.progressView.progress = Float(words[indexPath.row].exp) / 1000
             }
-            print(words[indexPath.row].exp)
         }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completed) in
+        let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] ( _ , view, completed) in
             
             guard let vc = self else { return }
             
@@ -216,41 +200,88 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, completed) in
+        
+        let editAction = addEditAction(indexPath: indexPath)
+        let moveAction = addMoveAction(indexPath: indexPath)
+        
+        editAction.backgroundColor = .systemYellow
+        return UISwipeActionsConfiguration(actions: [editAction, moveAction])
+    }
+    
+//MARK: Support methods
+    
+    private func addMoveAction(indexPath: IndexPath) -> UIContextualAction {
+        print("move")
+        let moveAction = UIContextualAction(style: .normal, title: "Move") { [weak self] (action, view, complited) in
+            let ac = UIAlertController(title: "Move", message: "Choose a list where you wanna move that word", preferredStyle: .actionSheet)
+            
+            guard let lists = self?.dictionary else { return }
+            for list in lists {
+                
+                let action = UIAlertAction(title: "\(list.title ?? "no title")", style: .default) { (act) in
+                    
+                    guard let currentList = self?.words else { return }
+                    let word = currentList[indexPath.row]
+                    list.addToWords(word)
+                    self?.words?.remove(at: indexPath.row)
+                    DispatchQueue.main.async {
+                        
+                        do {
+                            try self?.container?.viewContext.save()
+                            
+                        } catch {
+                            print("cannot save context: addWord")
+                        }
+                        self?.tableView.reloadData()
+                        if self!.words?.count == 0 {
+                            self!.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+                            self?.tableView.isHidden = true
+                            
+                        }
+                    }
+                }
+                ac.addAction(action)
+            }
+            
+            self?.present(ac, animated: true, completion: nil)
+        }
+        return moveAction
+    }
+    
+    private func addEditAction(indexPath: IndexPath) -> UIContextualAction {
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (action, view, completed) in
             
             let ac = UIAlertController(title: "Edit", message: "Please edit the word or translation" , preferredStyle: .alert)
             
             ac.addTextField { (tf) in
-                tf.text = self.words?[indexPath.row].word
+                tf.text = self?.words?[indexPath.row].word
             }
             ac.addTextField { (tf) in
-                tf.text = self.words?[indexPath.row].translation
+                tf.text = self?.words?[indexPath.row].translation
             }
             let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
-//                let textField = ac.textFields![0] as UITextField
-                self.words?[indexPath.row].word = ac.textFields![0].text
-                self.words?[indexPath.row].translation = ac.textFields![1].text
+                
+                self?.words?[indexPath.row].word = ac.textFields![0].text
+                self?.words?[indexPath.row].translation = ac.textFields![1].text
                 DispatchQueue.main.async {
                     do {
-                        try self.container?.viewContext.save()
+                        try self?.container?.viewContext.save()
                     } catch {
                         print("cannot save context: addList")
                     }
-                    self.tableView.reloadData()
+                    self?.tableView.reloadData()
                 }
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){_ in
-                self.words?[indexPath.row].managedObjectContext?.rollback()
-                self.tableView.reloadData()
+                self?.words?[indexPath.row].managedObjectContext?.rollback()
+                self?.tableView.reloadData()
             }
             
             ac.addAction(saveAction)
             ac.addAction(cancelAction)
-            self.present(ac, animated: true, completion: nil)
-        
-            
+            self?.present(ac, animated: true, completion: nil)
         }
-        editAction.backgroundColor = .systemYellow
-        return UISwipeActionsConfiguration(actions: [editAction])
+        return editAction
     }
 }
+

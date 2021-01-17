@@ -20,7 +20,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     let days = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
-    let minutes = ["00", "05", "10", "12", "13", "14", "15", "20", "25", "30", "35", "38", "39", "40", "43", "44", "45", "46", "50", "55"]
+    var minutes = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"]
+//                   "10", "12", "13", "14", "15", "20", "25", "30", "35", "38", "39", "40", "43", "44", "45", "46", "50", "55"]
     
     var wordsQty = Int()
     var notifOn = Bool()
@@ -40,6 +41,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         configureTableView()
         configureCells()
         
+        for i in 10...59 {
+            minutes.append(String(i))
+        }
         hour = UserDefaults.standard.integer(forKey: "hour")
         min = UserDefaults.standard.integer(forKey: "min")
         timeCell.picker.selectRow(hour, inComponent: 0, animated: false)
@@ -217,6 +221,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             switch sender.isOn {
             case true:
                 soundsCell.switchControlSounds.isEnabled = true
+                timeCell.setButton.isEnabled = true
                 center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
                     if granted {
                         print("Yay!")
@@ -232,6 +237,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 soundsCell.switchControlSounds.setOn(false, animated: true)
                 soundsCell.switchControlSounds.isEnabled = false
                 center.removeAllPendingNotificationRequests()
+                timeCell.setButton.backgroundColor = .gray
             }
             
         } else {

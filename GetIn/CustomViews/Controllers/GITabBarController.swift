@@ -9,9 +9,9 @@
 //(done) start test in pick list vc with less than 10 words
 //(done) fatal error when you try to start test first launch without change settings count words
 
-//notifications doesn't work
-//notifications able to select a specific date
-//send email
+//(done) notifications doesn't work
+//(done) notifications able to select a specific date
+//(done) send email
 
 //TODO: add change the list for word
 //TODO: fix WordModel error

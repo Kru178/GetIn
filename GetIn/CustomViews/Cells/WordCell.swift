@@ -15,6 +15,14 @@ class WordCell: UITableViewCell {
     let separatorLabel = UILabel()
     let translationLabel = UILabel()
     
+    private let progressView: UIProgressView = {
+        let progressView = UIProgressView(progressViewStyle: .bar)
+        progressView.trackTintColor = .gray
+        progressView.progressTintColor = .systemGreen
+        
+        return progressView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -39,6 +47,7 @@ class WordCell: UITableViewCell {
         cellView.addSubview(wordLabel)
         cellView.addSubview(separatorLabel)
         cellView.addSubview(translationLabel)
+        cellView.addSubview(progressView)
         
         cellView.layer.cornerRadius = 10
         cellView.backgroundColor = .systemBackground
@@ -54,6 +63,8 @@ class WordCell: UITableViewCell {
         translationLabel.textAlignment = .center
         translationLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        progressView.clipsToBounds = true
+        progressView.setProgress(0.5, animated: false)
         
         NSLayoutConstraint.activate([
             cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
@@ -74,7 +85,12 @@ class WordCell: UITableViewCell {
             translationLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 10),
             translationLabel.leadingAnchor.constraint(equalTo: separatorLabel.trailingAnchor, constant: 20),
             translationLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -20),
-            translationLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10)
+            translationLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10),
+            
+            progressView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
+            progressView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor),
+            progressView.heightAnchor.constraint(equalToConstant: 10)
         ])
     }
 }

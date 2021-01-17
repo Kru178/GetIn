@@ -15,10 +15,11 @@ class WordCell: UITableViewCell {
     let separatorLabel = UILabel()
     let translationLabel = UILabel()
     
-    private let progressView: UIProgressView = {
+    let progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.trackTintColor = .gray
         progressView.progressTintColor = .systemGreen
+//        progressView.
         
         return progressView
     }()
@@ -39,10 +40,12 @@ class WordCell: UITableViewCell {
         //        clipsToBounds = true
         
         addSubview(cellView)
+        contentView.layer.cornerRadius = 10
         
         cellView.layer.shadowRadius = 4
         cellView.layer.shadowOffset = CGSize(width: 1, height: 1)
         cellView.layer.shadowOpacity = 0.5
+        cellView.layer.masksToBounds = true
         
         cellView.addSubview(wordLabel)
         cellView.addSubview(separatorLabel)
@@ -65,6 +68,7 @@ class WordCell: UITableViewCell {
         
         progressView.clipsToBounds = true
         progressView.setProgress(0.5, animated: false)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
@@ -90,7 +94,7 @@ class WordCell: UITableViewCell {
             progressView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
             progressView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor),
-            progressView.heightAnchor.constraint(equalToConstant: 10)
+            progressView.heightAnchor.constraint(equalToConstant: 3)
         ])
     }
 }

@@ -90,7 +90,7 @@ class GISettingsCell: UITableViewCell {
         setButton.topAnchor.constraint(equalTo: topAnchor, constant: 51).isActive = true
         //setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -51).isActive = true
 //        setButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        setButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
+//        setButton.heightAnchor.constraint(equalToConstant: 28).isActive = true
 //        setButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
 //        setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
         setButton.isHidden = true

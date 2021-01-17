@@ -157,7 +157,9 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             if words[indexPath.row].translation == "" {
                 cell.translationLabel.text = "Add translation here"
             } else {
-                cell.translationLabel.text = words[indexPath.row].translation
+
+            cell.translationLabel.text = words[indexPath.row].translation
+                cell.progressView.progress = Float(words[indexPath.row].exp) / 1000
             }
         }
         

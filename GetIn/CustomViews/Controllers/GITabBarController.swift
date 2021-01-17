@@ -5,15 +5,7 @@
 //  Created by Sergei Krupenikov on 20.11.2020.
 //
 
-//FIXME: bugs
-//(done) start test in pick list vc with less than 10 words
-//(done) fatal error when you try to start test first launch without change settings count words
-
-//notifications doesn't work
-//notifications able to select a specific date
-//send email
-
-//TODO: add change the list for word
+//FEAT: add change the list for word
 //TODO: fix WordModel error
 //TODO: refactor throghout code
 //FIXME: fix bug add word with one empty field
@@ -21,7 +13,9 @@
 //TODO: add max limit of exp
 //TODO: add feature: highlight learned word in list
 //TODO: change adding exp logic
-
+//TODO: architecture think about it
+//FIXME: turned on notification slider by default when rebuild app i.e. when user install app, notifications is on by default
+//FIXME: blue screen when list become empty after delete or move last word in list
 
 import UIKit
 

@@ -206,6 +206,7 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
         
         vc.listName = dictionary[indexPath.row].title ?? "default"
         vc.list = dictionary[indexPath.row]
+        vc.dictionary = dictionary
         vc.container = container
         
         navigationController?.pushViewController(vc, animated: true)

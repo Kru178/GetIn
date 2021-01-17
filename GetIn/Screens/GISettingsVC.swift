@@ -8,7 +8,7 @@
 import UIKit
 import UserNotifications
 
-class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let tableView = UITableView()
     
@@ -46,6 +46,10 @@ class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         timeCell.picker.selectRow(min, inComponent: 1, animated: false)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         
         wordsQty = wordsQtyCell.counter
@@ -63,7 +67,7 @@ class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         wordsQtyCell.stepper.isHidden = false
         wordsQtyCell.textLabel?.text = General.NumberOfWords.description
         wordsQtyCell.detailTextLabel?.text = "10 to 25"
-
+        //add here
         let value = Double(UserDefaults.standard.integer(forKey: "wordsQty"))
         wordsQtyCell.stepper.value = value
         wordsQty = Int(wordsQtyCell.stepper.value)
@@ -114,6 +118,99 @@ class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         tableView.tableFooterView = footerView
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Section.allCases.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let section = Section(rawValue: section) else { return 0 }
+        
+        switch section {
+        case .General: return General.allCases.count
+        case .Notifications: return Notifications.allCases.count
+        case .Feedback: return Feedback.allCases.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 40))
+        view.backgroundColor = .systemGroupedBackground
+        let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: 40))
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = UIColor.black
+        
+        label.text = Section(rawValue: section)?.description
+        view.addSubview(label)
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        40.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            if notifCell.switchControlNotif.isOn {
+                return 130
+            } else {
+                return 0
+            }
+        }
+        
+        return tableView.rowHeight
+    }
+    
+    
+    //    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    //
+    //        if indexPath.section == 1 && indexPath.row == 1{
+    //                cell.center.y = cell.center.y + cell.frame.height / 2
+    //                cell.alpha = 0
+    //                UIView.animate(withDuration: 0.5, delay: 0.05*Double(indexPath.row), options: [.curveEaseInOut], animations: {
+    //                    cell.center.y = cell.center.y - cell.frame.height / 2
+    //                    cell.alpha = 1
+    //                }, completion: nil)
+    //            }
+    //    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
+        
+        switch section {
+        case .General:
+            return wordsQtyCell
+        case .Notifications:
+            switch indexPath.row {
+            case 0:
+                return notifCell
+            case 1:
+                return timeCell
+            default:
+                return soundsCell
+            }
+        case .Feedback:
+            return emailCell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 2 && indexPath.row == 0 {
+            
+            if let url = URL(string: "mailto:\(email)") {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
     @objc func settingsSwitched(sender: UISwitch) {
         if sender == notifCell.switchControlNotif {
             
@@ -151,10 +248,9 @@ class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
     
     @objc func scheduleNotification() {
         
-        center.removeAllPendingNotificationRequests()
-        
         timeCell.setButton.backgroundColor = .systemGreen
-        //timeCell.setButton.isEnabled = false
+        timeCell.setButton.isEnabled = false
+        
         
         let content = UNMutableNotificationContent()
         content.title = "Repetition Time!"
@@ -177,8 +273,9 @@ class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         print("set")
         
     }
+    
    
-//MARK: - PickerView
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
@@ -232,88 +329,5 @@ class GISettingsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSour
         
         
     }
-}
-
-extension GISettingsVC: UITableViewDataSource, UITableViewDelegate {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return Section.allCases.count
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if indexPath.section == 2 && indexPath.row == 0 {
-            
-            if let url = URL(string: "mailto:\(email)") {
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(url)
-                } else {
-                    UIApplication.shared.openURL(url)
-                }
-            }
-        }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = Section(rawValue: section) else { return 0 }
-        
-        switch section {
-        case .General: return General.allCases.count
-        case .Notifications: return Notifications.allCases.count
-        case .Feedback: return Feedback.allCases.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 40))
-        view.backgroundColor = .systemGroupedBackground
-        let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: 40))
-        label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.textColor = UIColor.black
-        
-        label.text = Section(rawValue: section)?.description
-        view.addSubview(label)
-        return view
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        40.0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 && indexPath.row == 1 {
-            if notifCell.switchControlNotif.isOn {
-                return 130
-            } else {
-                return 0
-            }
-        }
-        
-        return tableView.rowHeight
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
-        
-        switch section {
-        case .General:
-            return wordsQtyCell
-        case .Notifications:
-            switch indexPath.row {
-            case 0:
-                return notifCell
-            case 1:
-                return timeCell
-            default:
-                return soundsCell
-            }
-        case .Feedback:
-            return emailCell
-        }
-    }
-    
 }
 

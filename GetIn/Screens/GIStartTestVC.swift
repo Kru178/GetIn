@@ -80,7 +80,7 @@ class GIStartTestVC: UIViewController {
     private func selectWords(words: [WordModel]) {
         
         let sortedByExp = words.sorted(by: { (current, next) -> Bool in
-            if current.exp > next.exp {
+            if current.exp < next.exp {
                 return true
             } else {
                 return false

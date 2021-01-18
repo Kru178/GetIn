@@ -22,6 +22,7 @@
 //TODO: add feature: highlight learned word in list
 //TODO: change adding exp logic
 //add cancel button to actionsheet in moveAction
+//TODO: add learned list. it shoul be created as soon as the first word riches max rating. the word should be moved there.
 
 import UIKit
 
@@ -37,7 +38,7 @@ class GITabBarController: UITabBarController {
         
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [createListVC(), createTestVC(), createSettingsVC()]
-        selectedIndex = 2
+        selectedIndex = 0
     }
     
     

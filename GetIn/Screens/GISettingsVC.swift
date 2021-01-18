@@ -30,6 +30,18 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     var hour = Int()
     var min = Int()
     
+    var set = Bool() {
+        didSet {
+            if set {
+                timeCell.setButton.backgroundColor = .systemGreen
+                timeCell.setButton.isEnabled = false
+            } else {
+                timeCell.setButton.backgroundColor = .gray
+                timeCell.setButton.isEnabled = true
+            }
+        }
+    }
+    
     let center = UNUserNotificationCenter.current()
     
     let email = "nadtsalov@gmail.com"
@@ -48,10 +60,15 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         min = UserDefaults.standard.integer(forKey: "min")
         timeCell.picker.selectRow(hour, inComponent: 0, animated: false)
         timeCell.picker.selectRow(min, inComponent: 1, animated: false)
+        set = UserDefaults.standard.bool(forKey: "set")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
+            
+            
+            
+                    self.notifCell.setButton.backgroundColor = .systemGreen
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,6 +80,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
         UserDefaults.standard.set(hour, forKey: "hour")
         UserDefaults.standard.set(min, forKey: "min")
+        UserDefaults.standard.set(set, forKey: "set")
     }
     
     func configureCells() {
@@ -89,7 +107,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         timeCell.picker.delegate = self
         timeCell.setButton.isHidden = false
         timeCell.setButton.addTarget(self, action: #selector(scheduleNotification), for: .touchUpInside)
-//        timeCell.picker.target(forAction: #selector(scheduleNotification), withSender: self)
         
         soundsCell.switchControlSounds.isHidden = false
         soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
@@ -221,7 +238,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             switch sender.isOn {
             case true:
                 soundsCell.switchControlSounds.isEnabled = true
-                timeCell.setButton.isEnabled = true
+                set = true
                 center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
                     if granted {
                         print("Yay!")
@@ -236,8 +253,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 soundsOn = false
                 soundsCell.switchControlSounds.setOn(false, animated: true)
                 soundsCell.switchControlSounds.isEnabled = false
+                set = false
                 center.removeAllPendingNotificationRequests()
-                timeCell.setButton.backgroundColor = .gray
             }
             
         } else {
@@ -256,8 +273,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         center.removeAllPendingNotificationRequests()
         
-        timeCell.setButton.backgroundColor = .systemGreen
-        timeCell.setButton.isEnabled = false
+        set = true
         
         
         let content = UNMutableNotificationContent()
@@ -297,8 +313,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        timeCell.setButton.isEnabled = true
-        timeCell.setButton.backgroundColor = .gray
+       
+        
         switch component {
         case 0:
             return hours[row]
@@ -322,8 +338,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-         
-        
+        set = false
+        center.removeAllPendingNotificationRequests()
         
         if component == 0 {
             hour = row

@@ -10,6 +10,7 @@ import UIKit
 class WordCell: UITableViewCell {
     
     static let reuseID = "WordCell"
+    let containerView = UIView()
     let cellView = UIView()
     let wordLabel = UILabel()
     let separatorLabel = UILabel()
@@ -36,26 +37,22 @@ class WordCell: UITableViewCell {
     
     func configure() {
         backgroundColor = .secondarySystemBackground
-        //        layer.cornerRadius = 30
-        //        clipsToBounds = true
+        addSubview(containerView)
         
-        addSubview(cellView)
-        contentView.layer.cornerRadius = 10
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        containerView.layer.shadowOpacity = 0.5
+        containerView.addSubview(cellView)
         
-        cellView.layer.shadowRadius = 4
-        cellView.layer.shadowOffset = CGSize(width: 1, height: 1)
-        cellView.layer.shadowOpacity = 0.5
+        cellView.translatesAutoresizingMaskIntoConstraints = false
         cellView.layer.masksToBounds = true
-        
         cellView.addSubview(wordLabel)
         cellView.addSubview(separatorLabel)
         cellView.addSubview(translationLabel)
         cellView.addSubview(progressView)
-        
         cellView.layer.cornerRadius = 10
         cellView.backgroundColor = .systemBackground
-        //        cellView.clipsToBounds = true
-        cellView.translatesAutoresizingMaskIntoConstraints = false
         
         wordLabel.textAlignment = .center
         wordLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -71,10 +68,15 @@ class WordCell: UITableViewCell {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            cellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            cellView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+            containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+            
+            cellView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            cellView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            cellView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            cellView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             separatorLabel.centerXAnchor.constraint(equalTo: cellView.centerXAnchor),
             separatorLabel.topAnchor.constraint(equalTo: cellView.topAnchor),
@@ -91,8 +93,8 @@ class WordCell: UITableViewCell {
             translationLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -20),
             translationLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -10),
             
-            progressView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor),
-            progressView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor),
+            progressView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 0),
+            progressView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: 0),
             progressView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor),
             progressView.heightAnchor.constraint(equalToConstant: 3)
         ])

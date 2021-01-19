@@ -20,6 +20,7 @@ class GIWordsVC: UIViewController {
     var container : NSPersistentContainer?
     private var words : [WordModel]?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,6 +46,8 @@ class GIWordsVC: UIViewController {
     @objc func addWord() {
         
         let alert = UIAlertController(title: "Add New Word", message: "and translation :)", preferredStyle: .alert)
+        
+        var tf1 = Bool()
         
         let action = UIAlertAction(title: "Done", style: .default) { (_) in
             let textField1 = alert.textFields![0] as UITextField
@@ -88,6 +91,8 @@ class GIWordsVC: UIViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
+       
+        
         alert.addTextField { (textField) in
             textField.placeholder = "Word"
             action.isEnabled = false
@@ -95,7 +100,12 @@ class GIWordsVC: UIViewController {
                 // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
                 let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
                 let textIsNotEmpty = textCount > 0
-                action.isEnabled = textIsNotEmpty
+//                action.isEnabled
+                if textIsNotEmpty {
+                tf1 = textIsNotEmpty
+                } else {
+                    action.isEnabled = false
+                }
             })
         }
         
@@ -107,9 +117,15 @@ class GIWordsVC: UIViewController {
                 // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
                 let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
                 let textIsNotEmpty = textCount > 0
-                action.isEnabled = textIsNotEmpty
+//                action.isEnabled
+                if tf1 && textIsNotEmpty {
+                    action.isEnabled = true
+                } else {
+                    action.isEnabled = false
+                }
             })
         }
+        
         
         alert.addAction(cancelAction)
         alert.addAction(action)

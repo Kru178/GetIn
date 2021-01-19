@@ -24,6 +24,7 @@
 //TODO: change adding exp logic
 //TODO: add learned list. it shoul be created as soon as the first word riches max rating. the word should be moved there.
 //TODO: improve animations of tableviews
+//TODO: add deletion confirmation
 
 
 

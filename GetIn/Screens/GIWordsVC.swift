@@ -213,10 +213,12 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
     private func addMoveAction(indexPath: IndexPath) -> UIContextualAction {
         
         let moveAction = UIContextualAction(style: .normal, title: "Move") { [weak self] (action, view, complited) in
-            let ac = UIAlertController(title: "Move", message: "Choose a list where you wanna move that word", preferredStyle: .actionSheet)
+            let ac = UIAlertController(title: "Move", message: "Choose a list you wanna move that word to", preferredStyle: .actionSheet)
             
             guard let lists = self?.dictionary else { return }
-            for list in lists {
+            var dict = self?.dictionary
+            dict!.removeAll { $0.title == lists[indexPath.row].title }
+            for list in dict! {
                 
                 let action = UIAlertAction(title: "\(list.title ?? "no title")", style: .default) { (act) in
                     

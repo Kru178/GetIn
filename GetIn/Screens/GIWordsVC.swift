@@ -217,7 +217,7 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             
             guard let lists = self?.dictionary else { return }
             var dict = self?.dictionary
-            dict!.removeAll { $0.title == lists[indexPath.row].title }
+            dict!.removeAll { $0.title == self?.list!.title }
             for list in dict! {
                 
                 let action = UIAlertAction(title: "\(list.title ?? "no title")", style: .default) { (act) in

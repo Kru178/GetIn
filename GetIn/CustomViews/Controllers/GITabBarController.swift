@@ -8,21 +8,24 @@
 //FIXME: bugs
 //(done) start test in pick list vc with less than 10 words
 //(done) fatal error when you try to start test first launch without change settings count words
-
 //(done) notifications doesn't work
 //(done) notifications able to select a specific date
 //(done) send email
+//(done) highlight exp of word in list
+//(done) add change the list for word
+//(done) add cancel button to actionsheet in moveAction
 
-//TODO: add change the list for word
+
 //TODO: fix WordModel error
 //TODO: refactor throghout code
 //FIXME: fix bug add word with one empty field
-//TODO: highlight exp of word in list
 //TODO: add max limit of exp
 //TODO: add feature: highlight learned word in list
 //TODO: change adding exp logic
-//add cancel button to actionsheet in moveAction
 //TODO: add learned list. it shoul be created as soon as the first word riches max rating. the word should be moved there.
+//TODO: improve animations of tableviews
+
+
 
 import UIKit
 

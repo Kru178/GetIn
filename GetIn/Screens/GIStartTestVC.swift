@@ -204,7 +204,27 @@ class GIStartTestVC: UIViewController {
     
     private func presentAlertController() {
         
-        let message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
+        var message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
+        
+        let pct = correctAnswerCounter / answersArray.count * 100
+        
+        switch pct {
+        case 100:
+            message = message + "\n\nImmaculate! 🤩"
+        case 90...99:
+            message = message + "\n\nGood job! You are almost there! 😎"
+        case 75...89:
+            message = message + "\n\nWell, you can do better. 😉"
+        case 50...74:
+            message = message + "\n\nYou have to try harder. ✊"
+        case 30...49:
+            message = message + "\n\nHave you been studying at all? 🤨"
+        case 0...29:
+            message = message + "\n\nAm I a joke to you?! 😢"
+        default:
+            message = "What's going on? O_o"
+        }
+        
         let ac = UIAlertController(title: "Test Finished", message: message , preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             self.navigationController?.popViewController(animated: true)

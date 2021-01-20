@@ -216,24 +216,36 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completed) in
             
-            guard let listToRemove = self?.dictionary[indexPath.row] else { return }
-            self?.container?.viewContext.delete(listToRemove)
-            
-            do {
-                try self?.container?.viewContext.save()
-            } catch {
-                print("save when delete error")
+            let ac = UIAlertController(title: "Delete?", message: "Do you really want to delete this list? You won't be able to restore it.", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+                guard let listToRemove = self?.dictionary[indexPath.row] else { return }
+                self?.container?.viewContext.delete(listToRemove)
+                
+                do {
+                    try self?.container?.viewContext.save()
+                } catch {
+                    print("save when delete error")
+                }
+                
+                self?.dictionary.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+                completed(true)
+                
+                if self?.dictionary.count == 0 {
+                    self!.configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: self!.view)
+                    self!.tableView.isHidden = true
+                }
             }
-            
-            self?.dictionary.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
-            completed(true)
-            
-            if self?.dictionary.count == 0 {
-                self!.configureEmptyStateView(with: "You have no lists yet.\nStart creating!", in: self!.view)
-                self!.tableView.isHidden = true
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
+            ac.addAction(confirmAction)
+            ac.addAction(cancelAction)
+            
+            self?.present(ac, animated: true)
+            
+            
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])

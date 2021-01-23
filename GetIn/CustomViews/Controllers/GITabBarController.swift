@@ -5,7 +5,6 @@
 //  Created by Sergei Krupenikov on 20.11.2020.
 //
 
-//FIXME: bugs
 //(done) start test in pick list vc with less than 10 words
 //(done) fatal error when you try to start test first launch without change settings count words
 //(done) notifications doesn't work
@@ -18,13 +17,14 @@
 
 //TODO: fix WordModel error
 //TODO: refactor throghout code
-//FIXME: fix bug add word with one empty field
+//(done): fix bug add word with one empty field
 //TODO: add max limit of exp
 //TODO: add feature: highlight learned word in list
 //TODO: change adding exp logic
-//TODO: add learned list. it shoul be created as soon as the first word riches max rating. the word should be moved there.
+//TODO: add learned list. it should be created as soon as the first word riches max rating. the word should be moved there.
 //TODO: improve animations of tableviews
-//TODO: add deletion confirmation
+//(done) add deletion confirmation
+//TODO: add some stats like total learned words
 
 
 

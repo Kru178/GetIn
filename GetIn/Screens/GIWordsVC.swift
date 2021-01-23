@@ -209,10 +209,12 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 completed(true)
                 
-                if self!.words?.count == 0 {
-                    self!.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
-                    self?.tableView.isHidden = true
-                }
+//                if self?.words?.count == 0 {
+//                    print("whats wrong?")
+//                    self?.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+//                    self?.tableView.isHidden = true
+//                    self?.tableView.reloadData()
+//                }
                 
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -243,29 +245,33 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
         let moveAction = UIContextualAction(style: .normal, title: "Move") { [weak self] (action, view, complited) in
             let ac = UIAlertController(title: "Move", message: "Choose a list you wanna move that word to", preferredStyle: .actionSheet)
             
-            guard let lists = self?.dictionary else { return }
-            var dict = self?.dictionary
-            dict!.removeAll { $0.title == self?.list!.title }
-            for list in dict! {
+            guard let vc = self else { return }
+            guard var dict = vc.dictionary else { return }
+            guard let currentListName = vc.list?.title else { return }
+            
+            dict.removeAll { $0.title == currentListName }
+            
+            for list in dict {
                 
                 let action = UIAlertAction(title: "\(list.title ?? "no title")", style: .default) { (act) in
                     
-                    guard let currentList = self?.words else { return }
+                    guard let currentList = vc.words else { return }
+                    
                     let word = currentList[indexPath.row]
                     list.addToWords(word)
-                    self?.words?.remove(at: indexPath.row)
+                    vc.words?.remove(at: indexPath.row)
                     DispatchQueue.main.async {
                         
                         do {
-                            try self?.container?.viewContext.save()
+                            try vc.container?.viewContext.save()
                             
                         } catch {
                             print("cannot save context: addWord")
                         }
-                        self?.tableView.reloadData()
-                        if self!.words?.count == 0 {
-                            self!.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
-                            self?.tableView.isHidden = true
+                        vc.tableView.reloadData()
+                        if vc.words?.count == 0 {
+                            vc.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
+                            vc.tableView.isHidden = true
                             
                         }
                     }
@@ -279,7 +285,15 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             }
             
             ac.addAction(cancelAction)
-            self?.present(ac, animated: true, completion: nil)
+            if dict.isEmpty {
+                
+                let ac = UIAlertController(title: nil, message: "You have just one list", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                vc.present(ac, animated: true)
+            } else {
+                vc.present(ac, animated: true, completion: nil)
+            }
+            
         }
         return moveAction
     }

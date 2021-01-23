@@ -169,14 +169,22 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: WordCell.reuseID, for: indexPath) as! WordCell
         
         if let words = self.words {
-            cell.wordLabel.text = words[indexPath.row].word
+            let currentWord = words[indexPath.row]
+            
+            if currentWord.isLearned {
+                cell.cellView.backgroundColor = .green
+            }
+            
+            cell.wordLabel.text = currentWord.word
             if words[indexPath.row].translation == "" {
                 cell.translationLabel.text = "Add translation here"
             } else {
-
-            cell.translationLabel.text = words[indexPath.row].translation
-                cell.progressView.progress = Float(words[indexPath.row].exp) / 1000
+                
+                cell.translationLabel.text = currentWord.translation
+                cell.progressView.progress = Float(currentWord.exp) / 1000
             }
+            print(currentWord.exp)
+            
         }
         
         return cell

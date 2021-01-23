@@ -19,6 +19,7 @@ extension WordModel {
     @NSManaged public var word: String?
     @NSManaged public var translation: String?
     @NSManaged public var exp: Int16
+    @NSManaged public var isLearned: Bool
     @NSManaged public var inList: ListModel?
 
 }

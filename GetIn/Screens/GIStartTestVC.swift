@@ -61,7 +61,15 @@ class GIStartTestVC: UIViewController {
             
             guard let words = list.words?.allObjects as? [WordModel] else { continue }
             
-            learningList.append(contentsOf: words)
+            var finalList = words
+            finalList.removeAll()
+            for word in words {
+                if !word.isLearned {
+                    finalList.append(word)
+                }
+            }
+            
+            learningList.append(contentsOf: finalList)
         }
         
         selectWords(words: learningList)
@@ -86,8 +94,6 @@ class GIStartTestVC: UIViewController {
                 return false
             }
         })
-        
-        //TODO: add a line below after adding settings property of words in test
         
         questionArray = Array(sortedByExp.prefix(wordsInTest))
         
@@ -163,7 +169,12 @@ class GIStartTestVC: UIViewController {
                 }
             }
             
-            currentWord.exp += 72
+            currentWord.exp += 100
+            if currentWord.exp >= 1000 {
+                currentWord.isLearned = true
+            } else {
+                currentWord.isLearned = false
+            }
             
         } else {
             button1.isEnabled = false
@@ -188,7 +199,7 @@ class GIStartTestVC: UIViewController {
                 }
             }
             
-            currentWord.exp -= 30
+            currentWord.exp -= 200
         }
         DispatchQueue.main.async {
             

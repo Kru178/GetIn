@@ -18,10 +18,10 @@
 //TODO: fix WordModel error
 //TODO: refactor throghout code
 //(done): fix bug add word with one empty field
-//TODO: add max limit of exp
-//TODO: add feature: highlight learned word in list
-//TODO: change adding exp logic
-//TODO: add learned list. it should be created as soon as the first word riches max rating. the word should be moved there.
+//(done): add max limit of exp
+//(done): add feature: highlight learned word in list
+//(done): change adding exp logic
+//TODO: ???add learned list. it should be created as soon as the first word riches max rating. the word should be moved there.
 //TODO: improve animations of tableviews
 //(done) add deletion confirmation
 //TODO: add some stats like total learned words

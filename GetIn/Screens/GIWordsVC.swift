@@ -225,7 +225,8 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                 
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+//                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self?.tableView.reloadData()
             }
             ac.addAction(confirmAction)
             ac.addAction(cancelAction)

@@ -20,7 +20,7 @@ class GIListVC: UIViewController {
         title = "Your Lists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addList))
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .systemGreen
+        navigationController?.navigationBar.tintColor = .black
         
         
     }

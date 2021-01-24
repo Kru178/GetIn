@@ -28,8 +28,7 @@ class GIWordsVC: UIViewController {
         view.backgroundColor = .systemTeal
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addWord))
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .systemGreen
-        
+        navigationController?.navigationBar.tintColor = .black
         words = list?.words?.allObjects as? [WordModel]
         
         if let words = self.words {

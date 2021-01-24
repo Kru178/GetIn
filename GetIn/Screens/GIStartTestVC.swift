@@ -10,7 +10,7 @@ import CoreData
 
 class GIStartTestVC: UIViewController {
     
-    var dictionary : [ListModel]?
+    var wordsForLearn : [WordModel]?
     var container : NSPersistentContainer?
     var wordsInTest = 10
     
@@ -47,32 +47,15 @@ class GIStartTestVC: UIViewController {
         view.backgroundColor = .systemBackground
         tabBarController?.tabBar.isHidden = true
         
-        var learningList = [WordModel]()
-        
         if UserDefaults.standard.integer(forKey: "wordsQty") != 0 {
         wordsInTest = UserDefaults.standard.integer(forKey: "wordsQty")
         } else {
             wordsInTest = 10
         }
         
-        guard let dict = dictionary else { return }
+        guard let dict = wordsForLearn else { return }
         
-        for list in dict {
-            
-            guard let words = list.words?.allObjects as? [WordModel] else { continue }
-            
-            var finalList = words
-            finalList.removeAll()
-            for word in words {
-                if !word.isLearned {
-                    finalList.append(word)
-                }
-            }
-            
-            learningList.append(contentsOf: finalList)
-        }
-        
-        selectWords(words: learningList)
+        selectWords(words: dict)
         
         answersArray = questionArray
         

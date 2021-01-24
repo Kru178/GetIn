@@ -46,15 +46,13 @@ class GIListPickerVC: UIViewController {
     @objc private func start() {
         
         guard let dict = customDict else { return }
-        var counter = 0
-        for list in dict {
-            counter += list.words!.count
-        }
+        
+        let learningList = selectWords(dict: dict)
 
-        if counter > 9 {
+        if learningList.count > 9 {
             
             let vc = GIStartTestVC()
-            vc.dictionary = customDict
+            vc.wordsForLearn = learningList
             navigationController?.pushViewController(vc, animated: true)
             for list in dict {
                 list.selected = false
@@ -64,6 +62,28 @@ class GIListPickerVC: UIViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(ac, animated: true, completion: nil)
         }
+    }
+    
+    private func selectWords(dict: [ListModel]) -> [WordModel]{
+        
+        var learningList = [WordModel]()
+        
+        for list in dict {
+            
+            guard let words = list.words?.allObjects as? [WordModel] else { continue }
+            
+            var finalList = words
+            finalList.removeAll()
+            for word in words {
+                if !word.isLearned {
+                    finalList.append(word)
+                }
+            }
+            
+            learningList.append(contentsOf: finalList)
+        }
+        
+        return learningList
     }
     
     private func configureTableView() {

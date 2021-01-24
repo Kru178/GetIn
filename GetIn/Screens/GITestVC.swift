@@ -57,20 +57,13 @@ class GITestVC: UIViewController {
     
     @objc func startTest() {
         
-        var count = 0
-        
         guard let dict = dictionary else { return }
         
-        for index in 0..<dict.count {
-            
-            if let words = dict[index].words {
-                count += words.count
-            }
-        }
+        let wordsToLearn = selectWords(dict: dict)
         
-        if count > 9 {
+        if wordsToLearn.count > 9 {
             let vc = GIStartTestVC()
-            vc.dictionary = dict
+            vc.wordsForLearn = wordsToLearn
             vc.container = container
             navigationController?.pushViewController(vc, animated: true)
         } else {
@@ -80,6 +73,27 @@ class GITestVC: UIViewController {
         }
     }
     
+    private func selectWords(dict: [ListModel]) -> [WordModel]{
+        
+        var learningList = [WordModel]()
+        
+        for list in dict {
+            
+            guard let words = list.words?.allObjects as? [WordModel] else { continue }
+            
+            var finalList = words
+            finalList.removeAll()
+            for word in words {
+                if !word.isLearned {
+                    finalList.append(word)
+                }
+            }
+            
+            learningList.append(contentsOf: finalList)
+        }
+        
+        return learningList
+    }
     
     @objc func pickList() {
         let choiceVC = GIListPickerVC()

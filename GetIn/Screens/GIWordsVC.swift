@@ -172,7 +172,7 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             let currentWord = words[indexPath.row]
             
             if currentWord.isLearned {
-                cell.cellView.backgroundColor = .green
+                cell.cellView.backgroundColor = .systemGreen
             }
             
             cell.wordLabel.text = currentWord.word

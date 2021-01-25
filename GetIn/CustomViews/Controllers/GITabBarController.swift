@@ -24,9 +24,13 @@
 //TODO: ???add learned list. it should be created as soon as the first word riches max rating. the word should be moved there.
 //TODO: improve animations of tableviews
 //(done) add deletion confirmation
+//TODO: rate app button
+
 //TODO: add some stats like total learned words
-
-
+//TODO: change opened list when user select another tab and get back
+//TODO: get some order rule for words list
+//TODO: save to iCloud
+//TODO: create the app icon
 
 import UIKit
 

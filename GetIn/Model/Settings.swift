@@ -8,6 +8,7 @@
 enum Section: Int, CaseIterable, CustomStringConvertible {
     case General
     case Notifications
+    case Stats
     case Feedback
     
     var description: String {
@@ -15,6 +16,7 @@ enum Section: Int, CaseIterable, CustomStringConvertible {
         switch self {
         case .General: return "General"
         case .Notifications: return "Notifications"
+        case .Stats: return "Statictics"
         case .Feedback: return "Feedback"
         }
     }
@@ -44,6 +46,22 @@ enum Notifications: Int, CaseIterable, CustomStringConvertible {
         case .Notifications: return "Enable notifications"
         case .Time: return "Time"
         case .Sounds: return "Sounds"
+        }
+    }
+}
+
+
+enum Stats: Int, CaseIterable, CustomStringConvertible {
+    case AllLists
+    case AllWords
+    case LearnedWords
+    
+    var description: String {
+        
+        switch self {
+        case .AllLists: return "Overall lists added"
+        case .AllWords: return "Overall words added"
+        case .LearnedWords: return "Words Learned"
         }
     }
 }

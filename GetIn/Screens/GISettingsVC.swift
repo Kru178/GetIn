@@ -14,9 +14,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
+    let timeCell = GISettingsCell(style: .default, reuseIdentifier: "time")
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
-    let timeCell = GISettingsCell(style: .default, reuseIdentifier: "time")
+    let rateCell = GISettingsCell(style: .subtitle, reuseIdentifier: "rate")
     
     let days = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
@@ -121,6 +122,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         emailCell.textLabel?.text = Feedback.Email.description
         emailCell.selectionStyle = .default
+        
+        rateCell.textLabel?.text = Feedback.RateApp.description
+        rateCell.selectionStyle = .default
     }
     
     func configureTableView() {
@@ -199,20 +203,20 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
-        case .General:
-            return wordsQtyCell
+        case .General: return wordsQtyCell
         case .Notifications:
             switch indexPath.row {
-            case 0:
-                return notifCell
-            case 1:
-                return timeCell
-            default:
-                return soundsCell
+            case 0: return notifCell
+            case 1: return timeCell
+            default: return soundsCell
             }
         case .Feedback:
-            return emailCell
+            switch indexPath.row {
+            case 0: return emailCell
+            case 1: return rateCell
+            default: return UITableViewCell()
         }
+    }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -51,11 +51,13 @@ enum Notifications: Int, CaseIterable, CustomStringConvertible {
 
 enum Feedback: Int, CaseIterable, CustomStringConvertible {
     case Email
+    case RateApp
     
     var description: String {
         
         switch self {
         case .Email: return "Contact Us"
+        case .RateApp: return "Rate App"
         }
     }
 }

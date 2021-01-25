@@ -200,7 +200,8 @@ class GIStartTestVC: UIViewController {
         
         var message = "Your result:\n \(correctAnswerCounter) correct answers\n \(wrongAnswerCounter) wrong answers"
         
-        let pct = correctAnswerCounter / answersArray.count * 100
+        let pct = correctAnswerCounter * 100 / answersArray.count
+        print("pct = \(pct)")
         
         switch pct {
         case 100:

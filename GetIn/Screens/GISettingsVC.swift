@@ -7,21 +7,28 @@
 
 import UIKit
 import UserNotifications
+import CoreData
 
 class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let tableView = UITableView()
+    var container: NSPersistentContainer?
+    var dictionary = [ListModel]()
+    var words = Int()
+    var learned = Int()
     
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
+    let timeCell = GISettingsCell(style: .default, reuseIdentifier: "time")
     let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
-    let timeCell = GISettingsCell(style: .default, reuseIdentifier: "time")
+    let rateCell = GISettingsCell(style: .subtitle, reuseIdentifier: "rate")
+    let statsListsCell = GISettingsCell(style: .value1, reuseIdentifier: "statsLists")
+    let statsWordsCell = GISettingsCell(style: .value1, reuseIdentifier: "statsWords")
+    let statsLearnedCell = GISettingsCell(style: .value1, reuseIdentifier: "statsLearned")
     
-    let days = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
     var minutes = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"]
-//                   "10", "12", "13", "14", "15", "20", "25", "30", "35", "38", "39", "40", "43", "44", "45", "46", "50", "55"]
     
     var wordsQty = Int()
     var notifOn = Bool()
@@ -50,25 +57,19 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         super.viewDidLoad()
         
         title = "Settings"
-        configureTableView()
         configureCells()
+        configureTableView()
+        configurePicker()
         
-        for i in 10...59 {
-            minutes.append(String(i))
-        }
-        hour = UserDefaults.standard.integer(forKey: "hour")
-        min = UserDefaults.standard.integer(forKey: "min")
-        timeCell.picker.selectRow(hour, inComponent: 0, animated: false)
-        timeCell.picker.selectRow(min, inComponent: 1, animated: false)
-        set = UserDefaults.standard.bool(forKey: "set")
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        fetchData()
         
-            
-            
-            
-                    self.notifCell.setButton.backgroundColor = .systemGreen
+        
+        
+        
+        self.notifCell.setButton.backgroundColor = .systemGreen
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -121,6 +122,27 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         emailCell.textLabel?.text = Feedback.Email.description
         emailCell.selectionStyle = .default
+        
+        rateCell.textLabel?.text = Feedback.RateApp.description
+        rateCell.selectionStyle = .default
+        
+        statsListsCell.textLabel?.text = Stats.AllLists.description
+        statsListsCell.detailTextLabel?.text = "\(dictionary.count)"
+        statsWordsCell.textLabel?.text = Stats.AllWords.description
+        statsWordsCell.detailTextLabel?.text = "\(words)"
+        statsLearnedCell.textLabel?.text = Stats.LearnedWords.description
+        statsLearnedCell.detailTextLabel?.text = "\(learned)"
+    }
+    
+    func configurePicker() {
+        for i in 10...59 {
+            minutes.append(String(i))
+        }
+        hour = UserDefaults.standard.integer(forKey: "hour")
+        min = UserDefaults.standard.integer(forKey: "min")
+        timeCell.picker.selectRow(hour, inComponent: 0, animated: false)
+        timeCell.picker.selectRow(min, inComponent: 1, animated: false)
+        set = UserDefaults.standard.bool(forKey: "set")
     }
     
     func configureTableView() {
@@ -149,6 +171,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         switch section {
         case .General: return General.allCases.count
         case .Notifications: return Notifications.allCases.count
+        case .Stats: return Stats.allCases.count
         case .Feedback: return Feedback.allCases.count
         }
     }
@@ -199,25 +222,31 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
-        case .General:
-            return wordsQtyCell
+        case .General: return wordsQtyCell
         case .Notifications:
             switch indexPath.row {
-            case 0:
-                return notifCell
-            case 1:
-                return timeCell
-            default:
-                return soundsCell
+            case 0: return notifCell
+            case 1: return timeCell
+            default: return soundsCell
+            }
+        case .Stats:
+            switch indexPath.row {
+            case 0: return statsListsCell
+            case 1: return statsWordsCell
+            default: return statsLearnedCell
             }
         case .Feedback:
-            return emailCell
+            switch indexPath.row {
+            case 0: return emailCell
+            case 1: return rateCell
+            default: return UITableViewCell()
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.section == 2 && indexPath.row == 0 {
+        if indexPath.section == 3 && indexPath.row == 0 {
             
             if let url = URL(string: "mailto:\(email)") {
                 if #available(iOS 10.0, *) {
@@ -242,7 +271,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
                     if granted {
                         print("Yay!")
-//                        self.scheduleNotification()
+                        //                        self.scheduleNotification()
                         self.notifOn = true
                     } else {
                         print("D'oh")
@@ -285,7 +314,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         content.sound = UNNotificationSound.default
         
         var dateComponents = DateComponents()
-//        dateComponents.weekday = 1
+        //        dateComponents.weekday = 1
         dateComponents.hour = Int(hours[hour])
         dateComponents.minute = Int(minutes[min])
         //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
@@ -300,7 +329,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
         case 0:
@@ -311,9 +340,9 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             return 0
         }
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-       
+        
         
         switch component {
         case 0:
@@ -350,6 +379,37 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         }
         
         
+    }
+    
+    
+    private func fetchData() {
+        guard let container = self.container else {
+            return
+        }
+        do {
+            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
+            DispatchQueue.main.async {
+                self.statsCalc()
+                self.tableView.reloadData()
+            }
+        } catch {
+            print("fetchData fail: GIListVC")
+        }
+    }
+    
+    func statsCalc() {
+        for list in self.dictionary {
+            words += list.words?.count ?? 0
+            print(words)
+            guard let list1 = list.words else {return}
+            for word in list1 {
+                if (word as AnyObject).isLearned {
+                    self.learned += 1
+                }
+            }
+            print(learned)
+            
+        }
     }
 }
 

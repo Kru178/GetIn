@@ -13,24 +13,24 @@
 //(done) highlight exp of word in list
 //(done) add change the list for word
 //(done) add cancel button to actionsheet in moveAction
-
-
-//TODO: fix WordModel error
-//TODO: refactor throghout code
 //(done): fix bug add word with one empty field
 //(done): add max limit of exp
 //(done): add feature: highlight learned word in list
 //(done): change adding exp logic
-//TODO: ???add learned list. it should be created as soon as the first word riches max rating. the word should be moved there.
-//TODO: improve animations of tableviews
 //(done) add deletion confirmation
-//TODO: rate app button
+//(done): rate app button
 
-//TODO: add some stats like total learned words
+
+//TODO: fix WordModel error
+//TODO: refactor throghout code
+//TODO: improve animations of tableviews
+//TODO: add some stats like total learned words << improve stats calculation
 //TODO: change opened list when user select another tab and get back
 //TODO: get some order rule for words list
+//TODO: return words from learned
 //TODO: save to iCloud
 //TODO: create the app icon
+
 
 import UIKit
 

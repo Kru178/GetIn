@@ -22,7 +22,6 @@ enum Section: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
-
 enum General: Int, CaseIterable, CustomStringConvertible {
     case NumberOfWords
     
@@ -33,7 +32,6 @@ enum General: Int, CaseIterable, CustomStringConvertible {
         }
     }
 }
-
 
 enum Notifications: Int, CaseIterable, CustomStringConvertible {
     case Notifications
@@ -50,7 +48,6 @@ enum Notifications: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
-
 enum Stats: Int, CaseIterable, CustomStringConvertible {
     case AllLists
     case AllWords
@@ -65,7 +62,6 @@ enum Stats: Int, CaseIterable, CustomStringConvertible {
         }
     }
 }
-
 
 enum Feedback: Int, CaseIterable, CustomStringConvertible {
     case Email

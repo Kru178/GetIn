@@ -20,7 +20,6 @@ class WordCell: UITableViewCell {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.trackTintColor = .gray
         progressView.progressTintColor = .systemGreen
-//        progressView.
         
         return progressView
     }()

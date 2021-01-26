@@ -74,6 +74,7 @@ class GITabBarController: UITabBarController {
     private func createSettingsVC() -> UINavigationController {
         let settingsVC = GISettingsVC()
         settingsVC.title = "Settings"
+        settingsVC.container = container
         settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), selectedImage: UIImage(systemName: "gear"))
       
         return UINavigationController(rootViewController: settingsVC)

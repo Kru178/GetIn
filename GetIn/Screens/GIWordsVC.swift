@@ -116,7 +116,7 @@ class GIWordsVC: UIViewController {
                 // Access the textField object from alertController.addTextField(configurationHandler:) above and get the character count of its non whitespace characters
                 let textCount = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0
                 let textIsNotEmpty = textCount > 0
-//                action.isEnabled
+                
                 if tf1 && textIsNotEmpty {
                     action.isEnabled = true
                 } else {

@@ -57,23 +57,23 @@ class GISettingsCell: UITableViewCell {
         stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
         stepper.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stepper)
+        
         stepper.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         stepper.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         stepper.isHidden = true
         
-        counter = UserDefaults.standard.integer(forKey: "wordsQty")
         wordsNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         wordsNumberLabel.text = String(Int(stepper.value))
         contentView.addSubview(wordsNumberLabel)
+        
         wordsNumberLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         wordsNumberLabel.trailingAnchor.constraint(equalTo: stepper.leadingAnchor, constant: -20).isActive = true
         wordsNumberLabel.isHidden = true
         
         picker.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(picker)
-//        picker.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+
         picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-//        picker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         picker.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         picker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
         picker.widthAnchor.constraint(equalToConstant: 160).isActive = true
@@ -85,14 +85,11 @@ class GISettingsCell: UITableViewCell {
         setButton.setTitleColor(.black, for: .normal)
         setButton.layer.cornerRadius = 10
         contentView.addSubview(setButton)
+        
         setButton.leadingAnchor.constraint(equalTo: picker.trailingAnchor, constant: 10).isActive = true
         setButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         setButton.topAnchor.constraint(equalTo: topAnchor, constant: 51).isActive = true
-        //setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -51).isActive = true
-//        setButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         setButton.heightAnchor.constraint(equalToConstant: 27).isActive = true
-//        setButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-//        setButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
         setButton.isHidden = true
     }
     

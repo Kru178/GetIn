@@ -84,8 +84,6 @@ class GIStartTestVC: UIViewController {
     
     private func startConfig() {
         
-        //FIXME: Words selection working wrong
-        
         let randomCurrentIndex = Int.random(in: 0..<questionArray.count)
         currentWord = questionArray[randomCurrentIndex]
         questionArray.remove(at: randomCurrentIndex)

@@ -55,8 +55,6 @@ class GIListVC: UIViewController {
                     
                     do {
                         try container.viewContext.save()
-                        
-                        
                     } catch {
                         print("cannot save context: addList")
                     }
@@ -144,8 +142,8 @@ class GIListVC: UIViewController {
     }
 }
 
+//MARK: - UITableViewDataSource, UITableViewDelegate
 extension GIListVC: UITableViewDataSource, UITableViewDelegate {
-    //MARK: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dictionary.count
@@ -238,7 +236,6 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
                 }
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-//                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
                 self?.tableView.reloadData()
             }
             ac.addAction(confirmAction)
@@ -262,7 +259,7 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
                 tf.text = self.dictionary[indexPath.row].title
             }
             let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
-//                let textField = ac.textFields![0] as UITextField
+
                 self.dictionary[indexPath.row].title = ac.textFields![0].text
                 DispatchQueue.main.async {
                     do {

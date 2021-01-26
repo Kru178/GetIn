@@ -9,7 +9,7 @@ import UIKit
 import UserNotifications
 import CoreData
 
-class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class GISettingsVC: UIViewController {
     
     let tableView = UITableView()
     var container: NSPersistentContainer?
@@ -53,6 +53,8 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     let email = "nadtsalov@gmail.com"
     
+    //MARK: - functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,9 +67,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
-        
-        
-        
         
         self.notifCell.setButton.backgroundColor = .systemGreen
     }
@@ -90,7 +89,7 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         wordsQtyCell.stepper.isHidden = false
         wordsQtyCell.textLabel?.text = General.NumberOfWords.description
         wordsQtyCell.detailTextLabel?.text = "10 to 25"
-        //add here
+        
         let value = Double(UserDefaults.standard.integer(forKey: "wordsQty"))
         wordsQtyCell.stepper.value = value
         wordsQty = Int(wordsQtyCell.stepper.value)
@@ -151,8 +150,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         tableView.frame = view.bounds
         tableView.backgroundColor = .systemGroupedBackground
         tableView.rowHeight = 50
-        //            UITableView.automaticDimension
-        //        tableView.estimatedRowHeight = 50
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GISettingsCell.self, forCellReuseIdentifier: "cell")
@@ -160,6 +157,98 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         footerView.backgroundColor = .systemGroupedBackground
         tableView.tableFooterView = footerView
     }
+    
+    @objc func settingsSwitched(sender: UISwitch) {
+        if sender == notifCell.switchControlNotif {
+            
+            switch sender.isOn {
+            case true:
+                soundsCell.switchControlSounds.isEnabled = true
+                set = true
+                center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+                    if granted {
+                        self.notifOn = true
+                    }
+                }
+            case false:
+                notifOn = false
+                soundsOn = false
+                soundsCell.switchControlSounds.setOn(false, animated: true)
+                soundsCell.switchControlSounds.isEnabled = false
+                set = false
+                center.removeAllPendingNotificationRequests()
+            }
+            
+        } else {
+            
+            switch sender.isOn {
+            case true:
+                soundsOn = true
+            case false:
+                soundsOn = false
+            }
+        }
+        self.tableView.reloadData()
+    }
+    
+    @objc func scheduleNotification() {
+        
+        center.removeAllPendingNotificationRequests()
+        
+        set = true
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Repetition Time!"
+        content.body = "Hey! It's time to repeat something, don't you think?!"
+        content.badge = NSNumber(value: 1)
+        content.categoryIdentifier = "alarm"
+        content.userInfo = ["customData": "fizzbuzz"]
+        content.sound = UNNotificationSound.default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = Int(hours[hour])
+        dateComponents.minute = Int(minutes[min])
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+        print("set")
+    }
+    
+    private func fetchData() {
+        guard let container = self.container else {
+            return
+        }
+        do {
+            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
+            DispatchQueue.main.async {
+                self.statsCalc()
+                self.tableView.reloadData()
+            }
+        } catch {
+            print("fetchData fail: GIListVC")
+        }
+    }
+    
+    func statsCalc() {
+        for list in self.dictionary {
+            words += list.words?.count ?? 0
+            print(words)
+            guard let list1 = list.words else {return}
+            for word in list1 {
+                if (word as AnyObject).isLearned {
+                    self.learned += 1
+                }
+            }
+            print(learned)
+            
+        }
+    }
+}
+
+//MARK: - UITableViewDataSource, UITableViewDelegate
+extension GISettingsVC: UITableViewDataSource, UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return Section.allCases.count
@@ -204,19 +293,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         return tableView.rowHeight
     }
     
-    
-    //    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    //
-    //        if indexPath.section == 1 && indexPath.row == 1{
-    //                cell.center.y = cell.center.y + cell.frame.height / 2
-    //                cell.alpha = 0
-    //                UIView.animate(withDuration: 0.5, delay: 0.05*Double(indexPath.row), options: [.curveEaseInOut], animations: {
-    //                    cell.center.y = cell.center.y - cell.frame.height / 2
-    //                    cell.alpha = 1
-    //                }, completion: nil)
-    //            }
-    //    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
@@ -259,73 +335,10 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
-    @objc func settingsSwitched(sender: UISwitch) {
-        if sender == notifCell.switchControlNotif {
-            
-            switch sender.isOn {
-            case true:
-                soundsCell.switchControlSounds.isEnabled = true
-                set = true
-                center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-                    if granted {
-                        print("Yay!")
-                        //                        self.scheduleNotification()
-                        self.notifOn = true
-                    } else {
-                        print("D'oh")
-                    }
-                }
-            case false:
-                notifOn = false
-                soundsOn = false
-                soundsCell.switchControlSounds.setOn(false, animated: true)
-                soundsCell.switchControlSounds.isEnabled = false
-                set = false
-                center.removeAllPendingNotificationRequests()
-            }
-            
-        } else {
-            
-            switch sender.isOn {
-            case true:
-                soundsOn = true
-            case false:
-                soundsOn = false
-            }
-        }
-        self.tableView.reloadData()
-    }
-    
-    @objc func scheduleNotification() {
-        
-        center.removeAllPendingNotificationRequests()
-        
-        set = true
-        
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Repetition Time!"
-        content.body = "Hey! It's time to repeat something, don't you think?!"
-        content.badge = NSNumber(value: 1)
-        content.categoryIdentifier = "alarm"
-        content.userInfo = ["customData": "fizzbuzz"]
-        content.sound = UNNotificationSound.default
-        
-        var dateComponents = DateComponents()
-        //        dateComponents.weekday = 1
-        dateComponents.hour = Int(hours[hour])
-        dateComponents.minute = Int(minutes[min])
-        //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        center.add(request)
-        print("set")
-    }
-    
+}
+
+//MARK: - UIPickerViewDelegate, UIPickerViewDataSource
+extension GISettingsVC: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
@@ -365,7 +378,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         }
     }
     
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         set = false
         center.removeAllPendingNotificationRequests()
@@ -376,39 +388,6 @@ class GISettingsVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         } else {
             min = row
             print(min)
-        }
-        
-        
-    }
-    
-    
-    private func fetchData() {
-        guard let container = self.container else {
-            return
-        }
-        do {
-            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
-            DispatchQueue.main.async {
-                self.statsCalc()
-                self.tableView.reloadData()
-            }
-        } catch {
-            print("fetchData fail: GIListVC")
-        }
-    }
-    
-    func statsCalc() {
-        for list in self.dictionary {
-            words += list.words?.count ?? 0
-            print(words)
-            guard let list1 = list.words else {return}
-            for word in list1 {
-                if (word as AnyObject).isLearned {
-                    self.learned += 1
-                }
-            }
-            print(learned)
-            
         }
     }
 }

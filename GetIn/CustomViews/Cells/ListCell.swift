@@ -41,17 +41,14 @@ class ListCell: UITableViewCell {
         cellView.backgroundColor = .systemBackground
         cellView.translatesAutoresizingMaskIntoConstraints = false
         cellView.layer.cornerRadius = 10
-//        cellView.alpha = 0.5
         
         nameLabel.text = "Hello!"
         nameLabel.font = .boldSystemFont(ofSize: 25)
         nameLabel.numberOfLines = 0
-//        nameLabel.backgroundColor = .green
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         wordsLabel.text = "Words: N"
         wordsLabel.font = .systemFont(ofSize: 16)
-//        wordsLabel.backgroundColor = .green
         wordsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         progressLabel.text = "Words: N"

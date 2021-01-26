@@ -19,12 +19,12 @@
 //(done): change adding exp logic
 //(done) add deletion confirmation
 //(done): rate app button
+//(done): add some stats like total learned words << improve stats calculation
 
 
 //TODO: fix WordModel error
 //TODO: refactor throghout code
 //TODO: improve animations of tableviews
-//TODO: add some stats like total learned words << improve stats calculation
 //TODO: change opened list when user select another tab and get back
 //TODO: get some order rule for words list
 //TODO: return words from learned

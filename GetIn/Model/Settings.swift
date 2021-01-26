@@ -16,7 +16,7 @@ enum Section: Int, CaseIterable, CustomStringConvertible {
         switch self {
         case .General: return "General"
         case .Notifications: return "Notifications"
-        case .Stats: return "Statictics"
+        case .Stats: return "Stats"
         case .Feedback: return "Feedback"
         }
     }

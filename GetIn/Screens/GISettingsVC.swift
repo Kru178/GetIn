@@ -59,15 +59,10 @@ class GISettingsVC: UIViewController {
         super.viewDidLoad()
         
         title = "Settings"
-        configureCells()
-        configureTableView()
-        configurePicker()
-        
-    }
+}
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
-        
         self.notifCell.setButton.backgroundColor = .systemGreen
     }
     
@@ -232,18 +227,24 @@ class GISettingsVC: UIViewController {
     }
     
     func statsCalc() {
+        
+        words = 0
+        learned = 0
         for list in self.dictionary {
             words += list.words?.count ?? 0
-            print(words)
             guard let list1 = list.words else {return}
             for word in list1 {
                 if (word as AnyObject).isLearned {
                     self.learned += 1
                 }
             }
-            print(learned)
             
         }
+        print("words: \(words)")
+        print("learned: \(learned)")
+        self.configureCells()
+        self.configureTableView()
+        self.configurePicker()
     }
 }
 

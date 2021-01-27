@@ -57,13 +57,17 @@ class GISettingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fetchData()
+        self.configureCells()
+        self.configureTableView()
+        self.configurePicker()
         title = "Settings"
 }
     
+    
     override func viewWillAppear(_ animated: Bool) {
-        fetchData()
         self.notifCell.setButton.backgroundColor = .systemGreen
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -240,11 +244,10 @@ class GISettingsVC: UIViewController {
             }
             
         }
+        self.tableView.reloadData()
         print("words: \(words)")
         print("learned: \(learned)")
-        self.configureCells()
-        self.configureTableView()
-        self.configurePicker()
+        
     }
 }
 

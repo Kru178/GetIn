@@ -66,6 +66,10 @@ class GISettingsVC: UIViewController {
         configureTableView()
         configurePicker()
         
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         DispatchQueue.global().async {
             self.loadStats()
         }
@@ -84,6 +88,9 @@ class GISettingsVC: UIViewController {
     }
     
     private func loadStats() {
+        lists = 0
+        words = 0
+        learned = 0
         
         do {
             try dictionary = container?.viewContext.fetch(ListModel.fetchRequest())

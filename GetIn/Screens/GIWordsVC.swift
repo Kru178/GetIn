@@ -186,7 +186,6 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                 cell.translationLabel.text = currentWord.translation
                 cell.progressView.progress = Float(currentWord.exp) / 1000
             }
-            print(currentWord.exp)
             
         }
         
@@ -220,16 +219,8 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 completed(true)
                 
-//                if self?.words?.count == 0 {
-//                    print("whats wrong?")
-//                    self?.configureEmptyStateView(with: "No words here.\nAdd some :)", in: view)
-//                    self?.tableView.isHidden = true
-//                    self?.tableView.reloadData()
-//                }
-                
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-//                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
                 self?.tableView.reloadData()
             }
             ac.addAction(confirmAction)

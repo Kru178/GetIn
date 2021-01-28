@@ -5,19 +5,19 @@
 //  Created by Sergei Krupenikov on 20.11.2020.
 //
 
-//(done) start test in pick list vc with less than 10 words
-//(done) fatal error when you try to start test first launch without change settings count words
-//(done) notifications doesn't work
-//(done) notifications able to select a specific date
-//(done) send email
-//(done) highlight exp of word in list
-//(done) add change the list for word
-//(done) add cancel button to actionsheet in moveAction
+//(done): start test in pick list vc with less than 10 words
+//(done): fatal error when you try to start test first launch without change settings count words
+//(done): notifications doesn't work
+//(done): notifications able to select a specific date
+//(done): send email
+//(done): highlight exp of word in list
+//(done): add change the list for word
+//(done): add cancel button to actionsheet in moveAction
 //(done): fix bug add word with one empty field
 //(done): add max limit of exp
 //(done): add feature: highlight learned word in list
 //(done): change adding exp logic
-//(done) add deletion confirmation
+//(done): add deletion confirmation
 //(done): rate app button
 //(done): add some stats like total learned words << improve stats calculation
 
@@ -28,7 +28,7 @@
 //TODO: change opened list when user select another tab and get back
 //TODO: get some order rule for words list
 //TODO: return words from learned
-//TODO: save to iCloud
+//TODO: save to iCloud << paid developer acc required
 //TODO: create the app icon
 
 
@@ -46,7 +46,7 @@ class GITabBarController: UITabBarController {
         
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [createListVC(), createTestVC(), createSettingsVC()]
-        selectedIndex = 0
+        selectedIndex = 1
     }
     
     
@@ -82,8 +82,8 @@ class GITabBarController: UITabBarController {
     
     private func fetchData() {
         do {
-            dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
-            
+            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
+
         } catch {
             print("cannot read context")
         }

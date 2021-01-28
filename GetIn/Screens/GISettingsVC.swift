@@ -69,11 +69,6 @@ class GISettingsVC: UIViewController {
         DispatchQueue.global().async {
             self.loadStats()
         }
-}
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        self.notifCell.setButton.backgroundColor = .systemGreen
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -118,8 +113,7 @@ class GISettingsVC: UIViewController {
             
             self.statsLearnedCell.detailTextLabel?.text = "\(self.learned)"
         }
-        
-        
+
     }
     
     func configureCells() {

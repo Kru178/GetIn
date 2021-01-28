@@ -41,6 +41,10 @@ class GIWordsVC: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
     
     @objc func addWord() {
         

@@ -12,10 +12,12 @@ import CoreData
 class GISettingsVC: UIViewController {
     
     let tableView = UITableView()
-    var container: NSPersistentContainer?
-    var dictionary = [ListModel]()
-    var words = Int()
-    var learned = Int()
+    var container : NSPersistentContainer?
+    var dictionary : [ListModel]?
+    
+    private var lists = Int()
+    private var words = Int()
+    private var learned = Int()
     
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
@@ -59,10 +61,18 @@ class GISettingsVC: UIViewController {
         super.viewDidLoad()
         
         title = "Settings"
+        
+        configureCells()
+        configureTableView()
+        configurePicker()
+        
+        DispatchQueue.global().async {
+            self.loadStats()
+        }
 }
     
     override func viewWillAppear(_ animated: Bool) {
-        fetchData()
+        
         self.notifCell.setButton.backgroundColor = .systemGreen
     }
     
@@ -76,6 +86,40 @@ class GISettingsVC: UIViewController {
         UserDefaults.standard.set(hour, forKey: "hour")
         UserDefaults.standard.set(min, forKey: "min")
         UserDefaults.standard.set(set, forKey: "set")
+    }
+    
+    private func loadStats() {
+        
+        do {
+            try dictionary = container?.viewContext.fetch(ListModel.fetchRequest())
+        } catch {
+            print("GISettingsVC: cannot load data")
+        }
+        
+        guard let dict = dictionary else { return }
+        
+        for list in dict {
+            lists += 1
+            guard let words = list.words?.allObjects as? [WordModel] else { continue }
+            
+            for word in words {
+                self.words += 1
+                if word.isLearned {
+                    learned += 1
+                }
+            }
+        }
+        
+        DispatchQueue.main.async {
+            
+            self.statsListsCell.detailTextLabel?.text = "\(self.lists)"
+            
+            self.statsWordsCell.detailTextLabel?.text = "\(self.words)"
+            
+            self.statsLearnedCell.detailTextLabel?.text = "\(self.learned)"
+        }
+        
+        
     }
     
     func configureCells() {
@@ -121,7 +165,7 @@ class GISettingsVC: UIViewController {
         rateCell.selectionStyle = .default
         
         statsListsCell.textLabel?.text = Stats.AllLists.description
-        statsListsCell.detailTextLabel?.text = "\(dictionary.count)"
+        statsListsCell.detailTextLabel?.text = "\(lists)"
         statsWordsCell.textLabel?.text = Stats.AllWords.description
         statsWordsCell.detailTextLabel?.text = "\(words)"
         statsLearnedCell.textLabel?.text = Stats.LearnedWords.description
@@ -209,42 +253,6 @@ class GISettingsVC: UIViewController {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
         print("set")
-    }
-    
-    private func fetchData() {
-        guard let container = self.container else {
-            return
-        }
-        do {
-            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
-            DispatchQueue.main.async {
-                self.statsCalc()
-                self.tableView.reloadData()
-            }
-        } catch {
-            print("fetchData fail: GIListVC")
-        }
-    }
-    
-    func statsCalc() {
-        
-        words = 0
-        learned = 0
-        for list in self.dictionary {
-            words += list.words?.count ?? 0
-            guard let list1 = list.words else {return}
-            for word in list1 {
-                if (word as AnyObject).isLearned {
-                    self.learned += 1
-                }
-            }
-            
-        }
-        print("words: \(words)")
-        print("learned: \(learned)")
-        self.configureCells()
-        self.configureTableView()
-        self.configurePicker()
     }
 }
 

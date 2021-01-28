@@ -82,7 +82,7 @@ class GITabBarController: UITabBarController {
     
     private func fetchData() {
         do {
-            self.dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
+            dictionary = try container.viewContext.fetch(ListModel.fetchRequest())
             
         } catch {
             print("cannot read context")

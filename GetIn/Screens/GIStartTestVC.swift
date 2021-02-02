@@ -35,7 +35,7 @@ class GIStartTestVC: UIViewController {
     }
     private var answersArray = [WordModel]()
     
-    private var currentWord = WordModel()
+    private var currentWord = WordModel(context: context)
     private var correctAnswer = ""
     private var currentQuestion = 0
     

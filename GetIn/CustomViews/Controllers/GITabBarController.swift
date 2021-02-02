@@ -20,16 +20,17 @@
 //(done): add deletion confirmation
 //(done): rate app button
 //(done): add some stats like total learned words << improve stats calculation
+//(done): change opened list when user select another tab and get back
 
 
 //TODO: fix WordModel error
 //TODO: refactor throghout code
 //TODO: improve animations of tableviews
-//TODO: change opened list when user select another tab and get back
 //TODO: get some order rule for words list
 //TODO: return words from learned
 //TODO: save to iCloud << paid developer acc required
 //TODO: create the app icon
+//TODO: create onboarding flow
 
 
 import UIKit

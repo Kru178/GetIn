@@ -17,15 +17,7 @@ class GISettingsCell: UITableViewCell {
         return switchControl
     }()
     
-    lazy var switchControlSounds: UISwitch = {
-        let switchControl = UISwitch()
-        switchControl.isOn = true
-        switchControl.onTintColor = .systemGreen
-        switchControl.translatesAutoresizingMaskIntoConstraints = false
-        return switchControl
-    }()
-    
-    let picker = UIPickerView()
+    let picker = UIDatePicker()
     let setButton = UIButton(frame: .zero)
     
     let stepper = UIStepper(frame: .zero)
@@ -33,8 +25,6 @@ class GISettingsCell: UITableViewCell {
     var counter = Int()
     
     var notifSwitchState = false
-    var soundsSwitchState = false
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,11 +35,6 @@ class GISettingsCell: UITableViewCell {
         switchControlNotif.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         switchControlNotif.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         switchControlNotif.isHidden = true
-        
-        contentView.addSubview(switchControlSounds)
-        switchControlSounds.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        switchControlSounds.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
-        switchControlSounds.isHidden = true
         
         counter = UserDefaults.standard.integer(forKey: "wordsQty")
         stepper.minimumValue = 10
@@ -72,12 +57,14 @@ class GISettingsCell: UITableViewCell {
         
         picker.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(picker)
-
+        //
         picker.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         picker.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         picker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
         picker.widthAnchor.constraint(equalToConstant: 160).isActive = true
         picker.isHidden = true
+        picker.datePickerMode = .time
+        picker.preferredDatePickerStyle = .inline
         
         setButton.translatesAutoresizingMaskIntoConstraints = false
         setButton.setTitle("Set", for: .normal)
@@ -86,10 +73,10 @@ class GISettingsCell: UITableViewCell {
         setButton.layer.cornerRadius = 10
         contentView.addSubview(setButton)
         
-        setButton.leadingAnchor.constraint(equalTo: picker.trailingAnchor, constant: 10).isActive = true
-        setButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-        setButton.topAnchor.constraint(equalTo: topAnchor, constant: 51).isActive = true
-        setButton.heightAnchor.constraint(equalToConstant: 27).isActive = true
+        setButton.leadingAnchor.constraint(equalTo: picker.trailingAnchor, constant: 20).isActive = true
+        setButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        setButton.centerYAnchor.constraint(equalTo: picker.centerYAnchor).isActive = true
+        setButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
         setButton.isHidden = true
     }
     
@@ -99,11 +86,8 @@ class GISettingsCell: UITableViewCell {
     
     
     @objc func stepperValueChanged(sender: UIStepper) {
-
+        
         counter = Int(sender.value)
         wordsNumberLabel.text = String(counter)
     }
-    
-    
-   
 }

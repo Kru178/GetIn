@@ -26,8 +26,8 @@ class GIButton: UIButton {
 
     func configure() {
         layer.cornerRadius = 10
-        layer.shadowRadius = 8
-        layer.shadowOffset = CGSize(width: 3, height: 3)
+        layer.shadowRadius = 3
+        layer.shadowOffset = CGSize(width: 1, height: 1)
         layer.shadowOpacity = 0.5
         setTitleColor(.white, for: .normal)
         setTitleColor(.gray, for: .selected)

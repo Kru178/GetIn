@@ -30,8 +30,8 @@ class ListCell: UITableViewCell {
         backgroundColor = .secondarySystemBackground
         addSubview(cellView)
         
-        cellView.layer.shadowRadius = 8
-        cellView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        cellView.layer.shadowRadius = 3
+        cellView.layer.shadowOffset = CGSize(width: 1, height: 1)
         cellView.layer.shadowOpacity = 0.5
         
         cellView.addSubview(nameLabel)

@@ -20,7 +20,7 @@ class GIListPickerVC: UIViewController {
         super.viewDidLoad()
         
         title = "Pick Lists"
-        navigationController?.navigationBar.tintColor = .systemGreen
+        navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Finish Test", style: .plain, target: nil, action: nil)
         

@@ -39,7 +39,7 @@ class WordCell: UITableViewCell {
         addSubview(containerView)
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.layer.shadowRadius = 4
+        containerView.layer.shadowRadius = 1.5
         containerView.layer.shadowOffset = CGSize(width: 1, height: 1)
         containerView.layer.shadowOpacity = 0.5
         containerView.addSubview(cellView)
@@ -64,6 +64,8 @@ class WordCell: UITableViewCell {
         
         progressView.clipsToBounds = true
         progressView.setProgress(0.5, animated: false)
+        progressView.trackTintColor = .systemGroupedBackground
+        progressView.progressTintColor = .systemGreen
         progressView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

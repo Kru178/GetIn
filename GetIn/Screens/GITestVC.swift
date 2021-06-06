@@ -14,8 +14,8 @@ class GITestVC: UIViewController {
     private var dictionary: [ListModel]?
 
     private let options = ["Test Over All Lists", "Pick A List"]
-    private let allButton = GIButton(backgroundColor: .systemGreen, title: "Test Over All Lists")
-    private let pickButton = GIButton(backgroundColor: .systemGreen, title: "Pick A List")
+    private let allButton = GIButton(backgroundColor: .systemBackground, title: "Test Over All Lists")
+    private let pickButton = GIButton(backgroundColor: .systemBackground, title: "Pick A List")
     
 //MARK: - Methods
     
@@ -38,6 +38,8 @@ class GITestVC: UIViewController {
         view.addSubview(allButton)
         view.addSubview(pickButton)
         
+        allButton.setTitleColor(.black, for: .normal)
+        pickButton.setTitleColor(.black, for: .normal)
         allButton.addTarget(self, action: #selector(startTest), for: .touchUpInside)
         pickButton.addTarget(self, action: #selector(pickList), for: .touchUpInside)
         

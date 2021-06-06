@@ -217,11 +217,12 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                 vc.words?.remove(at: indexPath.row)
                 
                 tableView.deleteRows(at: [indexPath], with: .fade)
-                completed(true)
+//                completed(true)
                 
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-                self?.tableView.reloadData()
+//                self?.tableView.reloadData()
+                completed(true)
             }
             ac.addAction(confirmAction)
             ac.addAction(cancelAction)
@@ -285,6 +286,7 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ [weak self] _ in
                 self?.words?[indexPath.row].managedObjectContext?.rollback()
                 self?.tableView.reloadData()
+//                completed(true)
             }
             
             ac.addAction(cancelAction)
@@ -324,10 +326,12 @@ extension GIWordsVC : UITableViewDelegate, UITableViewDataSource {
                     }
                     self?.tableView.reloadData()
                 }
+                completed(true)
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){_ in
                 self?.words?[indexPath.row].managedObjectContext?.rollback()
                 self?.tableView.reloadData()
+                completed(true)
             }
             
             ac.addAction(saveAction)

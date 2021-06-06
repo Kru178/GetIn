@@ -15,6 +15,7 @@ class GIStartTestVC: UIViewController {
     var wordsInTest = 10
     
     private let testView = UIView()
+    private let questionView1 = UIView()
     private let questionView = UIView()
     private let questionLabel = UILabel()
     private let wordLabel = UILabel()
@@ -48,7 +49,7 @@ class GIStartTestVC: UIViewController {
         tabBarController?.tabBar.isHidden = true
         
         if UserDefaults.standard.integer(forKey: "wordsQty") != 0 {
-        wordsInTest = UserDefaults.standard.integer(forKey: "wordsQty")
+            wordsInTest = UserDefaults.standard.integer(forKey: "wordsQty")
         } else {
             wordsInTest = 10
         }
@@ -99,7 +100,7 @@ class GIStartTestVC: UIViewController {
             return
         }
         wordLabel.text = word
-
+        
         var allAnswers = answersArray
         
         guard let ind = allAnswers.firstIndex(where: {$0.translation == correctAnswer}) else {
@@ -109,7 +110,7 @@ class GIStartTestVC: UIViewController {
         allAnswers.remove(at: ind)
         
         var answers = [WordModel]()
-
+        
         for _ in 1...3 {
             let randomIndex = Int.random(in: 0..<allAnswers.count)
             let answerOption = allAnswers[randomIndex]
@@ -137,16 +138,38 @@ class GIStartTestVC: UIViewController {
             correctAnswerCounter += 1
             sender.backgroundColor = .systemGreen
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                sender.backgroundColor = .systemYellow
+                sender.backgroundColor = self.hexStringToUIColor(hex: "ffed99")
                 if self.questionArray.isEmpty {
                     
-                        self.presentAlertController()
-                    } else {
-                        UIView.animate(withDuration: 0.5) {
-                        self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
-                        self.testView.transform = .identity
-                    }
-                        self.startConfig()
+                    self.presentAlertController()
+                } else {
+                    
+                    UIView.transition(with: self.questionView, duration: 0.43,
+                                      options: [.curveEaseOut, .transitionFlipFromLeft],
+                                      animations: {
+                                      }
+                    )
+                    UIView.transition(with: self.button1, duration: 0.43,
+                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+                                      animations: {
+                                      }
+                    )
+                    UIView.transition(with: self.button2, duration: 0.43,
+                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+                                      animations: {
+                                      }
+                    )
+                    UIView.transition(with: self.button3, duration: 0.43,
+                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+                                      animations: {
+                                      }
+                    )
+                    UIView.transition(with: self.button4, duration: 0.43,
+                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+                                      animations: {
+                                      }
+                    )
+                    self.startConfig()
                 }
             }
             
@@ -165,18 +188,41 @@ class GIStartTestVC: UIViewController {
             wrongAnswerCounter += 1
             sender.backgroundColor = .systemRed
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                sender.backgroundColor = .systemYellow
-                UIView.animate(withDuration: 0.5) {
+                sender.backgroundColor = self.hexStringToUIColor(hex: "ffed99")
+                
+                
+                
+                if self.questionArray.isEmpty {
                     
-                    self.testView.layer.transform = CATransform3DMakeRotation(360, 0, 1, 0)
-                    self.testView.transform = .identity
+                    self.presentAlertController()
+                } else {
+                    UIView.transition(with: self.testView, duration: 0.43,
+                                      options: [.curveEaseOut, .transitionFlipFromLeft],
+                                      animations: {
+                                      }
+                    )
+//                    UIView.transition(with: self.button1, duration: 0.43,
+//                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+//                                      animations: {
+//                                      }
+//                    )
+//                    UIView.transition(with: self.button2, duration: 0.43,
+//                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+//                                      animations: {
+//                                      }
+//                    )
+//                    UIView.transition(with: self.button3, duration: 0.43,
+//                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+//                                      animations: {
+//                                      }
+//                    )
+//                    UIView.transition(with: self.button4, duration: 0.43,
+//                                      options: [.curveEaseOut, .transitionFlipFromBottom],
+//                                      animations: {
+//                                      }
+//                    )
                     
-                    if self.questionArray.isEmpty {
-                        
-                        self.presentAlertController()
-                    } else {
-                            self.startConfig()
-                    }
+                    self.startConfig()
                 }
             }
             
@@ -207,9 +253,9 @@ class GIStartTestVC: UIViewController {
         case 90...99:
             message = message + "\n\nGood job! You are almost there! 😎"
         case 75...89:
-            message = message + "\n\nWell, you can do better. 😉"
+            message = message + "\n\nYou can do better! 😉"
         case 50...74:
-            message = message + "\n\nYou have to try harder. ✊"
+            message = message + "\n\nYou have to try harder! ✊"
         case 30...49:
             message = message + "\n\nHave you been studying at all? 🤨"
         case 0...29:
@@ -228,8 +274,9 @@ class GIStartTestVC: UIViewController {
     
     private func configureView() {
         view.addSubview(testView)
+        view.addSubview(counterLabel)
         
-        testView.backgroundColor = .systemGray3
+        testView.backgroundColor = .clear
         testView.layer.cornerRadius = 10
         testView.addSubview(questionView)
         testView.addSubview(button1)
@@ -238,20 +285,20 @@ class GIStartTestVC: UIViewController {
         testView.addSubview(button4)
         testView.translatesAutoresizingMaskIntoConstraints = false
         
-        questionView.backgroundColor = .systemYellow
+        questionView.backgroundColor = hexStringToUIColor(hex: "ffed99")
         questionView.layer.cornerRadius = 10
-        
-        questionView.layer.borderWidth = 2
+        questionView.layer.shadowRadius = 3
+        questionView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        questionView.layer.shadowOpacity = 0.5
         questionView.layer.borderColor = UIColor.black.cgColor
         questionView.addSubview(questionLabel)
         questionView.addSubview(wordLabel)
-        questionView.addSubview(counterLabel)
         questionView.translatesAutoresizingMaskIntoConstraints = false
         
         questionLabel.text = "How would you translate:"
         questionLabel.textColor = .black
         questionLabel.numberOfLines = 0
-        questionLabel.font = .boldSystemFont(ofSize: 23)
+        questionLabel.font = .systemFont(ofSize: 21)
         questionLabel.textAlignment = .center
         questionLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -264,43 +311,47 @@ class GIStartTestVC: UIViewController {
         counterLabel.text = "-/-"
         counterLabel.textColor = .black
         counterLabel.numberOfLines = 0
-        counterLabel.font = .boldSystemFont(ofSize: 23)
+        counterLabel.font = .systemFont(ofSize: 21)
         counterLabel.textAlignment = .center
         counterLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        button1.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button1.backgroundColor = .systemYellow
+        button1.titleLabel?.font = .systemFont(ofSize: 20)
         button1.setTitleColor(.black, for: .normal)
         button1.layer.cornerRadius = 5
-        button1.layer.borderWidth = 2
-        button1.layer.borderColor = UIColor.black.cgColor
+        button1.backgroundColor = hexStringToUIColor(hex: "ffed99")
+        button1.layer.shadowRadius = 3
+        button1.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button1.layer.shadowOpacity = 0.5
         button1.translatesAutoresizingMaskIntoConstraints = false
         button1.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        button2.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button2.backgroundColor = .systemYellow
+        button2.titleLabel?.font = .systemFont(ofSize: 20)
         button2.setTitleColor(.black, for: .normal)
         button2.layer.cornerRadius = 5
-        button2.layer.borderWidth = 2
-        button2.layer.borderColor = UIColor.black.cgColor
+        button2.backgroundColor = hexStringToUIColor(hex: "ffed99")
+        button2.layer.shadowRadius = 3
+        button2.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button2.layer.shadowOpacity = 0.5
         button2.translatesAutoresizingMaskIntoConstraints = false
         button2.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        button3.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button3.backgroundColor = .systemYellow
+        button3.titleLabel?.font = .systemFont(ofSize: 20)
         button3.setTitleColor(.black, for: .normal)
         button3.layer.cornerRadius = 5
-        button3.layer.borderWidth = 2
-        button3.layer.borderColor = UIColor.black.cgColor
+        button3.backgroundColor = hexStringToUIColor(hex: "ffed99")
+        button3.layer.shadowRadius = 3
+        button3.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button3.layer.shadowOpacity = 0.5
         button3.translatesAutoresizingMaskIntoConstraints = false
         button3.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
-        button4.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button4.backgroundColor = .systemYellow
+        button4.titleLabel?.font = .systemFont(ofSize: 20)
         button4.setTitleColor(.black, for: .normal)
         button4.layer.cornerRadius = 5
-        button4.layer.borderWidth = 2
-        button4.layer.borderColor = UIColor.black.cgColor
+        button4.backgroundColor = hexStringToUIColor(hex: "ffed99")
+        button4.layer.shadowRadius = 3
+        button4.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button4.layer.shadowOpacity = 0.5
         button4.translatesAutoresizingMaskIntoConstraints = false
         button4.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
@@ -345,10 +396,32 @@ class GIStartTestVC: UIViewController {
             button4.widthAnchor.constraint(equalToConstant: 140),
             button4.heightAnchor.constraint(equalToConstant: 50),
             
-            counterLabel.topAnchor.constraint(equalTo: button4.bottomAnchor, constant: 10),
+            counterLabel.heightAnchor.constraint(equalToConstant: 30),
             counterLabel.leadingAnchor.constraint(equalTo: questionView.leadingAnchor),
             counterLabel.trailingAnchor.constraint(equalTo: questionView.trailingAnchor),
-            counterLabel.bottomAnchor.constraint(equalTo: testView.bottomAnchor)
+            counterLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
         ])
+    }
+    
+    func hexStringToUIColor (hex:String) -> UIColor {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+
+        var rgbValue:UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
 }

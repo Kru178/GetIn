@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import UserNotifications
 import CoreData
 
 class GISettingsVC: UIViewController {
@@ -22,22 +21,15 @@ class GISettingsVC: UIViewController {
     let wordsQtyCell = GISettingsCell(style: .subtitle, reuseIdentifier: "words")
     let notifCell = GISettingsCell(style: .subtitle, reuseIdentifier: "notif")
     let timeCell = GISettingsCell(style: .default, reuseIdentifier: "time")
-    let soundsCell = GISettingsCell(style: .subtitle, reuseIdentifier: "sounds")
     let emailCell = GISettingsCell(style: .subtitle, reuseIdentifier: "email")
     let rateCell = GISettingsCell(style: .subtitle, reuseIdentifier: "rate")
     let statsListsCell = GISettingsCell(style: .value1, reuseIdentifier: "statsLists")
     let statsWordsCell = GISettingsCell(style: .value1, reuseIdentifier: "statsWords")
     let statsLearnedCell = GISettingsCell(style: .value1, reuseIdentifier: "statsLearned")
     
-    let hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
-    var minutes = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"]
-    
     var wordsQty = Int()
     var notifOn = Bool()
-    var soundsOn = Bool()
-    
-    var hour = Int()
-    var min = Int()
+    var date = Date()
     
     var set = Bool() {
         didSet {
@@ -51,9 +43,7 @@ class GISettingsVC: UIViewController {
         }
     }
     
-    let center = UNUserNotificationCenter.current()
-    
-    let email = "nadtsalov@gmail.com"
+    let email = "s.krupe@gmail.com"
     
     //MARK: - functions
     
@@ -65,8 +55,6 @@ class GISettingsVC: UIViewController {
         configureCells()
         configureTableView()
         configurePicker()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,10 +69,8 @@ class GISettingsVC: UIViewController {
         
         UserDefaults.standard.set(wordsQty, forKey: "wordsQty")
         UserDefaults.standard.set(notifOn, forKey: "notifOn")
-        UserDefaults.standard.set(soundsOn, forKey: "soundsOn")
-        UserDefaults.standard.set(hour, forKey: "hour")
-        UserDefaults.standard.set(min, forKey: "min")
         UserDefaults.standard.set(set, forKey: "set")
+        UserDefaults.standard.set(date, forKey: "date")
     }
     
     private func loadStats() {
@@ -111,16 +97,11 @@ class GISettingsVC: UIViewController {
                 }
             }
         }
-        
         DispatchQueue.main.async {
-            
             self.statsListsCell.detailTextLabel?.text = "\(self.lists)"
-            
             self.statsWordsCell.detailTextLabel?.text = "\(self.words)"
-            
             self.statsLearnedCell.detailTextLabel?.text = "\(self.learned)"
         }
-
     }
     
     func configureCells() {
@@ -143,28 +124,18 @@ class GISettingsVC: UIViewController {
         
         timeCell.textLabel?.text = Notifications.Time.description
         timeCell.picker.isHidden = false
-        timeCell.picker.dataSource = self
-        timeCell.picker.delegate = self
+        timeCell.picker.addTarget(self, action: #selector(removeNotification), for: .valueChanged)
+        timeCell.picker.setDate(date, animated: true)
         timeCell.setButton.isHidden = false
         timeCell.setButton.addTarget(self, action: #selector(scheduleNotification), for: .touchUpInside)
         
-        soundsCell.switchControlSounds.isHidden = false
-        soundsCell.switchControlSounds.isOn = UserDefaults.standard.bool(forKey: "soundsOn")
-        soundsOn = soundsCell.switchControlSounds.isOn
-        soundsCell.textLabel?.text = Notifications.Sounds.description
-        soundsCell.switchControlSounds.addTarget(self, action: #selector(settingsSwitched), for: .valueChanged)
-        if notifOn {
-            soundsCell.switchControlSounds.isEnabled = true
-        } else {
-            soundsCell.switchControlSounds.isEnabled = false
-        }
-        
         emailCell.textLabel?.text = Feedback.Email.description
         emailCell.selectionStyle = .default
-        
+            
         rateCell.textLabel?.text = Feedback.RateApp.description
         rateCell.selectionStyle = .default
         
+        statsListsCell.setButton.isHidden = true
         statsListsCell.textLabel?.text = Stats.AllLists.description
         statsListsCell.detailTextLabel?.text = "\(lists)"
         statsWordsCell.textLabel?.text = Stats.AllWords.description
@@ -174,18 +145,15 @@ class GISettingsVC: UIViewController {
     }
     
     func configurePicker() {
-        for i in 10...59 {
-            minutes.append(String(i))
+        if let date = UserDefaults.standard.object(forKey: "date") as? Date {
+            self.date = date
+        } else {
+            self.date = Date()
         }
-        hour = UserDefaults.standard.integer(forKey: "hour")
-        min = UserDefaults.standard.integer(forKey: "min")
-        timeCell.picker.selectRow(hour, inComponent: 0, animated: false)
-        timeCell.picker.selectRow(min, inComponent: 1, animated: false)
         set = UserDefaults.standard.bool(forKey: "set")
     }
     
     func configureTableView() {
-        
         view.addSubview(tableView)
         tableView.frame = view.bounds
         tableView.backgroundColor = .systemGroupedBackground
@@ -200,60 +168,25 @@ class GISettingsVC: UIViewController {
     
     @objc func settingsSwitched(sender: UISwitch) {
         if sender == notifCell.switchControlNotif {
-            
             switch sender.isOn {
             case true:
-                soundsCell.switchControlSounds.isEnabled = true
-                set = true
-                center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-                    if granted {
-                        self.notifOn = true
-                    }
-                }
+                notifOn = true
             case false:
                 notifOn = false
-                soundsOn = false
-                soundsCell.switchControlSounds.setOn(false, animated: true)
-                soundsCell.switchControlSounds.isEnabled = false
                 set = false
-                center.removeAllPendingNotificationRequests()
-            }
-            
-        } else {
-            
-            switch sender.isOn {
-            case true:
-                soundsOn = true
-            case false:
-                soundsOn = false
+                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             }
         }
         self.tableView.reloadData()
     }
     
+    @objc func removeNotification() {
+        set = false
+    }
+    
     @objc func scheduleNotification() {
-        
-        center.removeAllPendingNotificationRequests()
-        
         set = true
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Repetition Time!"
-        content.body = "Hey! It's time to repeat something, don't you think?!"
-        content.badge = NSNumber(value: 1)
-        content.categoryIdentifier = "alarm"
-        content.userInfo = ["customData": "fizzbuzz"]
-        content.sound = UNNotificationSound.default
-        
-        var dateComponents = DateComponents()
-        dateComponents.hour = Int(hours[hour])
-        dateComponents.minute = Int(minutes[min])
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        center.add(request)
-        print("set")
+        NotificationScheduleCenter.shared.scheduleNotification(for: self, time: timeCell.picker.date)
     }
 }
 
@@ -294,12 +227,12 @@ extension GISettingsVC: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 && indexPath.row == 1 {
             if notifCell.switchControlNotif.isOn {
-                return 130
+                return 50
             } else {
+                self.notifCell.setButton.isHidden = true
                 return 0
             }
         }
-        
         return tableView.rowHeight
     }
     
@@ -312,8 +245,7 @@ extension GISettingsVC: UITableViewDataSource, UITableViewDelegate{
         case .Notifications:
             switch indexPath.row {
             case 0: return notifCell
-            case 1: return timeCell
-            default: return soundsCell
+            default: return timeCell
             }
         case .Stats:
             switch indexPath.row {
@@ -347,58 +279,4 @@ extension GISettingsVC: UITableViewDataSource, UITableViewDelegate{
     }
 }
 
-//MARK: - UIPickerViewDelegate, UIPickerViewDataSource
-extension GISettingsVC: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch component {
-        case 0:
-            return hours.count
-        case 1:
-            return minutes.count
-        default:
-            return 0
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        
-        
-        switch component {
-        case 0:
-            return hours[row]
-        case 1:
-            return minutes[row]
-        default:
-            return "0"
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        switch component {
-        case 0:
-            return 50
-        case 1:
-            return 50
-        default:
-            return 0
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        set = false
-        center.removeAllPendingNotificationRequests()
-        
-        if component == 0 {
-            hour = row
-            print(hour)
-        } else {
-            min = row
-            print(min)
-        }
-    }
-}
 

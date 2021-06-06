@@ -23,6 +23,9 @@
 		783657FB257BC9F800CC4FF3 /* GIEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */; };
 		783657FF257CE3C100CC4FF3 /* GIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783657FE257CE3C100CC4FF3 /* GIButton.swift */; };
 		78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78365801257D2B8E00CC4FF3 /* WordCell.swift */; };
+		78421673263DCD9F007B9608 /* NotificationScheduleCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78421672263DCD9F007B9608 /* NotificationScheduleCenter.swift */; };
+		78421678263DCF23007B9608 /* UIViewController+AlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78421677263DCF23007B9608 /* UIViewController+AlertExtension.swift */; };
+		7842167D26401979007B9608 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7842167C26401979007B9608 /* Date+Extension.swift */; };
 		885223F2259891480079794C /* GISettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885223F1259891480079794C /* GISettingsCell.swift */; };
 		885223F5259891720079794C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885223F4259891720079794C /* Settings.swift */; };
 		8854982125878C8800CAF135 /* ListModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */; };
@@ -50,6 +53,9 @@
 		783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIEmptyStateView.swift; sourceTree = "<group>"; };
 		783657FE257CE3C100CC4FF3 /* GIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIButton.swift; sourceTree = "<group>"; };
 		78365801257D2B8E00CC4FF3 /* WordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCell.swift; sourceTree = "<group>"; };
+		78421672263DCD9F007B9608 /* NotificationScheduleCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduleCenter.swift; sourceTree = "<group>"; };
+		78421677263DCF23007B9608 /* UIViewController+AlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertExtension.swift"; sourceTree = "<group>"; };
+		7842167C26401979007B9608 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		885223F1259891480079794C /* GISettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GISettingsCell.swift; sourceTree = "<group>"; };
 		885223F4259891720079794C /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		8854981B25878C8800CAF135 /* ListModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListModel+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -91,6 +97,7 @@
 				7828E88F2567E33B005C02B3 /* Model */,
 				7828E8812567B418005C02B3 /* CustomViews */,
 				7828E8802567B3E7005C02B3 /* Screens */,
+				78421675263DCDA6007B9608 /* Utility */,
 				7828E8832567B443005C02B3 /* Support */,
 			);
 			path = GetIn;
@@ -147,9 +154,9 @@
 		78365805257D30EE00CC4FF3 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				783657F6257B9CBF00CC4FF3 /* ListCell.swift */,
 				78365801257D2B8E00CC4FF3 /* WordCell.swift */,
 				885223F1259891480079794C /* GISettingsCell.swift */,
-				783657F6257B9CBF00CC4FF3 /* ListCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -169,6 +176,16 @@
 				783657FA257BC9F800CC4FF3 /* GIEmptyStateView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		78421675263DCDA6007B9608 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				78421672263DCD9F007B9608 /* NotificationScheduleCenter.swift */,
+				78421677263DCF23007B9608 /* UIViewController+AlertExtension.swift */,
+				7842167C26401979007B9608 /* Date+Extension.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,7 +260,10 @@
 				7828E8762567AF31005C02B3 /* GITabBarController.swift in Sources */,
 				8854982325878C8800CAF135 /* WordModel+CoreDataClass.swift in Sources */,
 				7828E89D256A8F19005C02B3 /* GISettingsVC.swift in Sources */,
+				78421678263DCF23007B9608 /* UIViewController+AlertExtension.swift in Sources */,
+				78421673263DCD9F007B9608 /* NotificationScheduleCenter.swift in Sources */,
 				78365802257D2B8E00CC4FF3 /* WordCell.swift in Sources */,
+				7842167D26401979007B9608 /* Date+Extension.swift in Sources */,
 				783657F7257B9CBF00CC4FF3 /* ListCell.swift in Sources */,
 				8854982125878C8800CAF135 /* ListModel+CoreDataClass.swift in Sources */,
 				7828E8992567E7B2005C02B3 /* GIWordsVC.swift in Sources */,
@@ -401,6 +421,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27ZNNP8X2D;
 				INFOPLIST_FILE = GetIn/Support/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -420,6 +441,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27ZNNP8X2D;
 				INFOPLIST_FILE = GetIn/Support/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

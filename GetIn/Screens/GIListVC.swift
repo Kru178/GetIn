@@ -212,7 +212,14 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+//        let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseID, for: indexPath) as! ListCell
+//        self.tableView.setEditing(true, animated: false)
+//        tableView.isEditing = true
+        
         let action = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (action, view, completed) in
+            
+            
             
             let ac = UIAlertController(title: "Delete?", message: "Do you really want to delete this list? You won't be able to restore it.", preferredStyle: .alert)
             let confirmAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
@@ -235,15 +242,15 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
                     self!.tableView.isHidden = true
                 }
             }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-                self?.tableView.reloadData()
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+//                    self!.tableView.reloadData()
+//                self!.tableView.setEditing(false, animated: true)
+                print("edit off")
+completed(true)
             }
             ac.addAction(confirmAction)
             ac.addAction(cancelAction)
-            
             self?.present(ac, animated: true)
-            
-            
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])
@@ -269,16 +276,24 @@ extension GIListVC: UITableViewDataSource, UITableViewDelegate {
                     }
                     self.fetchData()
                 }
+//                tableView.reloadRows(at: [indexPath], with: .automatic)
+//                self.tableView.setEditing(false, animated: true)
+                completed(true)
+
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){_ in
                 self.dictionary[indexPath.row].managedObjectContext?.rollback()
-                self.tableView.reloadData()
+//                self.tableView.setEditing(false, animated: true)
+//                self.tableView.reloadData()
+                completed(true)
             }
             
             ac.addAction(saveAction)
             ac.addAction(cancelAction)
             self.present(ac, animated: true, completion: nil)
         }
+        
+        editAction.image = UIImage(systemName: "dial")
         
         return UISwipeActionsConfiguration(actions: [editAction])
     }
